@@ -1,6 +1,15 @@
 apply plugin: "java"
 apply plugin: "war"
 
+// specify path to Tomcat root in gradle.properties as tomcatBase property
+def webAppDir = "$tomcatBase/webapps"
+
+task buildAndDeployWar(type: Copy) {
+    group = "build"
+    from war
+    into "$webAppDir"
+}
+
 repositories {
     mavenCentral()
 }
