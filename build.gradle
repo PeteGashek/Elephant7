@@ -4,7 +4,7 @@ apply plugin: "java"
 def webAppDir = "$tomcatBase/webapps"
 
 // default values for config.json
-def defaultWorkingDir = "Karaka"
+def defaultWorkingDir = "$tomcatBase/work/" + project.name
 
 def generatedDir = buildDir.path + "/generated"
 task generateConfig << {
