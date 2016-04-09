@@ -1,13 +1,87 @@
 apply plugin: "java"
-apply plugin: "war"
 
 // specify path to Tomcat root in gradle.properties as tomcatBase property
 def webAppDir = "$tomcatBase/webapps"
 
-task buildAndDeployWar(type: Copy) {
-    group = "build"
-    from war
-    into "$webAppDir"
+// default values for config.json
+def defaultWorkingDir = "Karaka"
+
+def generatedDir = buildDir.path + "/generated"
+task generateConfig << {
+    Reader baseConfig = new FileReader("base_config.json")
+    List<String> lines = baseConfig.readLines()
+    baseConfig.close()
+
+    File configFile = new File(generatedDir + "/config.json")
+    configFile.getParentFile().mkdirs()
+    Writer configWriter = new FileWriter(configFile)
+    for (String line : lines) {
+        configWriter.write(line
+                .replace('$workingDir', defaultWorkingDir))
+        configWriter.write("\n")
+    }
+    configWriter.close()
+}
+
+def buildAndDeployTaskGroup = "build and deploy"
+
+def explodedWarDir = buildDir.path + "/exploded-war/" + project.name
+task buildExplodedWar(dependsOn: [compileJava, generateConfig]) {
+    group = buildAndDeployTaskGroup
+
+    doLast {
+        delete explodedWarDir
+        copy {
+            from compileJava
+            from sourceSets.main.resources
+            into explodedWarDir + "/WEB-INF/classes"
+        }
+        copy {
+            from configurations.runtime
+            into explodedWarDir + "/WEB-INF/lib"
+        }
+        copy {
+            from "src/main/webapp"
+            from generatedDir
+            into explodedWarDir
+        }
+    }
+}
+
+task buildWar(dependsOn: buildExplodedWar, type: Jar) {
+    group = buildAndDeployTaskGroup
+
+    extension = "war"
+    from explodedWarDir
+}
+
+def deployedExplodedWarPath = webAppDir + "/" + project.name
+def deployedWarPath = deployedExplodedWarPath + ".war"
+task deployExplodedWar(dependsOn: buildExplodedWar, type: Copy) {
+    group = buildAndDeployTaskGroup
+
+    outputs.upToDateWhen { false }
+
+    doFirst {
+        delete deployedExplodedWarPath
+        delete deployedWarPath
+    }
+
+    from buildDir.path + "/exploded-war"
+    into webAppDir
+}
+
+task deployWar(dependsOn: buildWar, type: Copy) {
+    group = buildAndDeployTaskGroup
+
+    outputs.upToDateWhen { false }
+
+    doFirst {
+        delete deployedExplodedWarPath
+    }
+
+    from buildWar
+    into webAppDir
 }
 
 repositories {
@@ -21,7 +95,7 @@ dependencies {
 
     compile "com.h2database:h2:1.4.191"
 
-    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+    compileOnly "javax.servlet:javax.servlet-api:3.1.0"
 
     compile "org.springframework:spring-context:$springVersion"
     compile "org.springframework:spring-webmvc:$springVersion"
