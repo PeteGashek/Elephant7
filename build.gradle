@@ -17,6 +17,8 @@ repositories {
 def springVersion = "4.2.5.RELEASE"
 
 dependencies {
+    compile "com.google.code.gson:gson:2.6.2"
+
     compile "com.h2database:h2:1.4.191"
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
