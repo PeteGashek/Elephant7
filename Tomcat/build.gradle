@@ -1,3 +1,70 @@
+// specify path to Tomcat root in gradle.properties as tomcatBase property
+def webAppDir = "$tomcatBase/webapps"
+
+def explodedWarDir = buildDir.path + "/exploded-war/" + rootProject.name
+
+task buildExplodedWar(dependsOn: [compileJava, rootProject.generateConfig]) {
+    group = buildAndDeployTaskGroup
+
+    doLast {
+        delete explodedWarDir
+        copy {
+            from compileJava
+            from sourceSets.main.resources
+            into explodedWarDir + "/WEB-INF/classes"
+        }
+        copy {
+            from configurations.runtime
+            into explodedWarDir + "/WEB-INF/lib"
+        }
+        copy {
+            from "src/main/webapp"
+            from generatedDir
+            into explodedWarDir
+        }
+    }
+}
+
+task buildWar(dependsOn: buildExplodedWar, type: Jar) {
+    group = buildAndDeployTaskGroup
+
+    baseName = rootProject.name
+    extension = "war"
+    from explodedWarDir
+}
+
+def deployedExplodedWarPath = webAppDir + "/" + rootProject.name
+def deployedWarPath = deployedExplodedWarPath + ".war"
+
+task deployExplodedWar(dependsOn: buildExplodedWar, type: Copy) {
+    group = buildAndDeployTaskGroup
+
+    outputs.upToDateWhen { false }
+
+    doFirst {
+        delete deployedExplodedWarPath
+        delete deployedWarPath
+    }
+
+    from buildDir.path + "/exploded-war"
+    into webAppDir
+}
+
+task deployWar(dependsOn: buildWar, type: Copy) {
+    group = buildAndDeployTaskGroup
+
+    outputs.upToDateWhen { false }
+
+    doFirst {
+        delete deployedExplodedWarPath
+    }
+
+    from buildWar
+    into webAppDir
+}
+
 dependencies {
     compile rootProject
+
+    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
 }

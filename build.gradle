@@ -6,13 +6,13 @@ allprojects {
     }
 }
 
-// specify path to Tomcat root in gradle.properties as tomcatBase property
-def webAppDir = "$tomcatBase/webapps"
+project.ext.buildAndDeployTaskGroup = "build and deploy"
+
+project.ext.generatedDir = buildDir.path + "/generated"
 
 // default values for config.json
 def defaultWorkingDir = "$tomcatBase/work/" + project.name
 
-def generatedDir = buildDir.path + "/generated"
 task generateConfig(type: Copy) {
     from project.projectDir
     include "base_config.json"
@@ -23,71 +23,10 @@ task generateConfig(type: Copy) {
     expand(workingDir: defaultWorkingDir.replace("\\", "\\\\"))
 }
 
-def buildAndDeployTaskGroup = "build and deploy"
-
-def explodedWarDir = buildDir.path + "/exploded-war/" + project.name
-task buildExplodedWar(dependsOn: [compileJava, generateConfig]) {
-    group = buildAndDeployTaskGroup
-
-    doLast {
-        delete explodedWarDir
-        copy {
-            from compileJava
-            from sourceSets.main.resources
-            into explodedWarDir + "/WEB-INF/classes"
-        }
-        copy {
-            from configurations.runtime
-            into explodedWarDir + "/WEB-INF/lib"
-        }
-        copy {
-            from "src/main/webapp"
-            from generatedDir
-            into explodedWarDir
-        }
-    }
-}
-
-task buildWar(dependsOn: buildExplodedWar, type: Jar) {
-    group = buildAndDeployTaskGroup
-
-    extension = "war"
-    from explodedWarDir
-}
-
-def deployedExplodedWarPath = webAppDir + "/" + project.name
-def deployedWarPath = deployedExplodedWarPath + ".war"
-task deployExplodedWar(dependsOn: buildExplodedWar, type: Copy) {
-    group = buildAndDeployTaskGroup
-
-    outputs.upToDateWhen { false }
-
-    doFirst {
-        delete deployedExplodedWarPath
-        delete deployedWarPath
-    }
-
-    from buildDir.path + "/exploded-war"
-    into webAppDir
-}
-
-task deployWar(dependsOn: buildWar, type: Copy) {
-    group = buildAndDeployTaskGroup
-
-    outputs.upToDateWhen { false }
-
-    doFirst {
-        delete deployedExplodedWarPath
-    }
-
-    from buildWar
-    into webAppDir
-}
-
-def gsonVersion = "2.6.2"
-def h2Version = "1.4.191"
-def servletApiVersion = "3.1.0"
-def springVersion = "4.2.5.RELEASE"
+project.ext.gsonVersion = "2.6.2"
+project.ext.h2Version = "1.4.191"
+project.ext.servletApiVersion = "3.1.0"
+project.ext.springVersion = "4.2.5.RELEASE"
 
 dependencies {
     compile "com.google.code.gson:gson:$gsonVersion"
