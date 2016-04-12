@@ -1,4 +1,10 @@
-apply plugin: "java"
+allprojects {
+    apply plugin: "java"
+
+    repositories {
+        mavenCentral()
+    }
+}
 
 // specify path to Tomcat root in gradle.properties as tomcatBase property
 def webAppDir = "$tomcatBase/webapps"
@@ -76,10 +82,6 @@ task deployWar(dependsOn: buildWar, type: Copy) {
 
     from buildWar
     into webAppDir
-}
-
-repositories {
-    mavenCentral()
 }
 
 def gsonVersion = "2.6.2"
