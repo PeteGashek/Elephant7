@@ -3,5 +3,7 @@
 *.iml
 
 build/
+Standalone/build/
+Tomcat/build/
 
 gradle.properties
