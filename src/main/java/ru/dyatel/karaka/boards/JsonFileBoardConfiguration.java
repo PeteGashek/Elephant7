@@ -46,11 +46,11 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	@Override
 	public void reload() {
 		Resource boardConfig = getBoardConfig();
-		try (Reader config = new InputStreamReader(boardConfig.getInputStream())) {
+		try (Reader reader = new InputStreamReader(boardConfig.getInputStream())) {
 			boards = new GsonBuilder()
 					.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 					.create()
-					.fromJson(config, new TypeToken<ArrayList<Board>>() {
+					.fromJson(reader, new TypeToken<ArrayList<Board>>() {
 					}.getType());
 		} catch (Exception e) {
 			logger.error("Failed to read board configuration from " + boardConfig, e);
@@ -60,12 +60,12 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	@Override
 	public void save() {
 		WritableResource boardConfig = getBoardConfig();
-		try (Writer config = new OutputStreamWriter(boardConfig.getOutputStream())) {
+		try (Writer writer = new OutputStreamWriter(boardConfig.getOutputStream())) {
 			new GsonBuilder()
 					.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 					.setPrettyPrinting()
 					.create()
-					.toJson(boards, config);
+					.toJson(boards, writer);
 		} catch (Exception e) {
 			logger.error("Failed to save board configuration to " + boardConfig, e);
 		}
