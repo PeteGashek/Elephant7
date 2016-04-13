@@ -6,4 +6,10 @@ public interface KarakaConfiguration {
 
 	Path getWorkingDir();
 
+	void setWorkingDir(Path workingDir);
+
+	void reload();
+
+	void save();
+
 }
