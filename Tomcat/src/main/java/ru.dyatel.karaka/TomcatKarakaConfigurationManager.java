@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Paths;
 
 @Component
-public class TomcatKarakaConfiguration extends AbstractFileKarakaConfiguration {
+public class TomcatKarakaConfigurationManager extends AbstractFileKarakaConfigurationManager {
 
 	private static final String filename = "config.json";
 
-	public TomcatKarakaConfiguration() {
-		super(LogFactoryImpl.getLog(TomcatKarakaConfiguration.class));
+	public TomcatKarakaConfigurationManager() {
+		super(LogFactoryImpl.getLog(TomcatKarakaConfigurationManager.class));
 	}
 
 	@Override

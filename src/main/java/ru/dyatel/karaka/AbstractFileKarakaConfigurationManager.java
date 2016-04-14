@@ -13,13 +13,13 @@ import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public abstract class AbstractFileKarakaConfiguration implements KarakaConfiguration {
+public abstract class AbstractFileKarakaConfigurationManager implements KarakaConfigurationManager {
 
 	protected Log logger;
 
 	protected Path workingDir;
 
-	public AbstractFileKarakaConfiguration(Log logger) {
+	public AbstractFileKarakaConfigurationManager(Log logger) {
 		this.logger = logger;
 		reload();
 	}

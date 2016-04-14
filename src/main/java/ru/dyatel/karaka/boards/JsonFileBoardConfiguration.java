@@ -10,7 +10,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.stereotype.Component;
-import ru.dyatel.karaka.KarakaConfiguration;
+import ru.dyatel.karaka.KarakaConfigurationManager;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -24,12 +24,12 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 
 	private Log logger = LogFactoryImpl.getLog(JsonFileBoardConfiguration.class);
 
-	private KarakaConfiguration config;
+	private KarakaConfigurationManager config;
 
 	private List<Board> boards = null;
 
 	@Autowired
-	public JsonFileBoardConfiguration(KarakaConfiguration config) {
+	public JsonFileBoardConfiguration(KarakaConfigurationManager config) {
 		this.config = config;
 		reload();
 	}

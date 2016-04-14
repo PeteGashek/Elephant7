@@ -2,7 +2,7 @@ package ru.dyatel.karaka;
 
 import java.nio.file.Path;
 
-public interface KarakaConfiguration {
+public interface KarakaConfigurationManager {
 
 	Path getWorkingDir();
 
