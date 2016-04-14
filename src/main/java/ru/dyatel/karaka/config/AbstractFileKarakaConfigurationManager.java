@@ -3,7 +3,6 @@ package ru.dyatel.karaka.config;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.logging.Log;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
@@ -23,8 +22,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 	protected Gson gson = new GsonBuilder()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.setPrettyPrinting()
-			.registerTypeAdapter(new TypeToken<Path>() {
-			}.getType(), new GsonPathAdapter())
+			.registerTypeHierarchyAdapter(Path.class, new GsonPathAdapter())
 			.create();
 
 	protected KarakaConfiguration config = null;
