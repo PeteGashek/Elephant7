@@ -1,6 +1,7 @@
 package ru.dyatel.karaka.boards;
 
 import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.logging.Log;
@@ -26,6 +27,10 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 
 	private KarakaConfigurationManager config;
 
+	private Gson gson = new GsonBuilder()
+			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+			.create();
+
 	private List<Board> boards = null;
 
 	@Autowired
@@ -47,11 +52,8 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	public void reload() {
 		Resource boardConfig = getBoardConfig();
 		try (Reader reader = new InputStreamReader(boardConfig.getInputStream())) {
-			boards = new GsonBuilder()
-					.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-					.create()
-					.fromJson(reader, new TypeToken<ArrayList<Board>>() {
-					}.getType());
+			boards = gson.fromJson(reader, new TypeToken<ArrayList<Board>>() {
+			}.getType());
 		} catch (Exception e) {
 			logger.error("Failed to read board configuration from " + boardConfig, e);
 		}
@@ -61,11 +63,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	public void save() {
 		WritableResource boardConfig = getBoardConfig();
 		try (Writer writer = new OutputStreamWriter(boardConfig.getOutputStream())) {
-			new GsonBuilder()
-					.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-					.setPrettyPrinting()
-					.create()
-					.toJson(boards, writer);
+			gson.toJson(boards, writer);
 		} catch (Exception e) {
 			logger.error("Failed to save board configuration to " + boardConfig, e);
 		}
