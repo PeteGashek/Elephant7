@@ -1,4 +1,4 @@
-package ru.dyatel.karaka;
+package ru.dyatel.karaka.config;
 
 public interface KarakaConfigurationManager {
 

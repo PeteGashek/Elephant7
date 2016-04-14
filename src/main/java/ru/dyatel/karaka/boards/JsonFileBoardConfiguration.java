@@ -10,7 +10,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.stereotype.Component;
-import ru.dyatel.karaka.KarakaConfigurationManager;
+import ru.dyatel.karaka.config.KarakaConfigurationManager;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;

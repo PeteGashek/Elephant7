@@ -1,4 +1,4 @@
-package ru.dyatel.karaka;
+package ru.dyatel.karaka.config;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

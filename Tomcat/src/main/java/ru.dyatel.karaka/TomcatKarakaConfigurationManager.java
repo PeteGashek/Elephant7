@@ -4,6 +4,7 @@ import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.stereotype.Component;
+import ru.dyatel.karaka.config.AbstractFileKarakaConfigurationManager;
 
 import java.nio.file.Paths;
 
