@@ -48,6 +48,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 		} catch (Exception e) {
 			config = new KarakaConfiguration();
 			logger.info("Failed to read Karaka config from " + configFile + ", using default", e);
+			save();
 		}
 	}
 
