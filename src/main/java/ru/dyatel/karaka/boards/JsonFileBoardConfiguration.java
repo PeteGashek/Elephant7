@@ -29,6 +29,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 
 	private Gson gson = new GsonBuilder()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+			.setPrettyPrinting()
 			.create();
 
 	private List<Board> boards = null;
