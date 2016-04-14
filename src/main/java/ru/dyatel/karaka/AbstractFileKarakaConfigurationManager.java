@@ -34,11 +34,11 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 		this.workingDir = workingDir;
 	}
 
-	protected abstract WritableResource getConfig();
+	protected abstract WritableResource getFileResource();
 
 	@Override
 	public void reload() {
-		Resource config = getConfig();
+		Resource config = getFileResource();
 		try (Reader reader = new InputStreamReader(config.getInputStream())) {
 			workingDir = Paths.get(
 					new JsonParser().parse(reader)
@@ -51,7 +51,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 
 	@Override
 	public void save() {
-		WritableResource config = getConfig();
+		WritableResource config = getFileResource();
 		try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(config.getOutputStream()))) {
 			writer.beginObject()
 					.name("working_dir").value(workingDir.toString())

@@ -17,7 +17,7 @@ public class TomcatKarakaConfigurationManager extends AbstractFileKarakaConfigur
 	}
 
 	@Override
-	protected WritableResource getConfig() {
+	protected WritableResource getFileResource() {
 		String catalinaBase = System.getProperty("catalina.base");
 		if (catalinaBase == null) catalinaBase = System.getenv("CATALINA_BASE");
 
