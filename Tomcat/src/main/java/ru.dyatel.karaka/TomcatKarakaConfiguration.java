@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 @Component
 public class TomcatKarakaConfiguration extends AbstractFileKarakaConfiguration {
 
-	private static String filename = "config.json";
+	private static final String filename = "config.json";
 
 	public TomcatKarakaConfiguration() {
 		super(LogFactoryImpl.getLog(TomcatKarakaConfiguration.class));
