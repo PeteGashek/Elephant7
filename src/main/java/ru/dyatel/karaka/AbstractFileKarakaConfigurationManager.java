@@ -1,23 +1,25 @@
 package ru.dyatel.karaka;
 
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonWriter;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.logging.Log;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
+import ru.dyatel.karaka.util.GsonPathAdapter;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public abstract class AbstractFileKarakaConfigurationManager implements KarakaConfigurationManager {
 
 	protected Log logger;
 
-	protected Path workingDir;
+	protected KarakaConfiguration config = null;
 
 	public AbstractFileKarakaConfigurationManager(Log logger) {
 		this.logger = logger;
@@ -25,39 +27,42 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 	}
 
 	@Override
-	public Path getWorkingDir() {
-		return workingDir;
-	}
-
-	@Override
-	public void setWorkingDir(Path workingDir) {
-		this.workingDir = workingDir;
+	public KarakaConfiguration getConfig() {
+		return config;
 	}
 
 	protected abstract WritableResource getFileResource();
 
 	@Override
 	public void reload() {
-		Resource config = getFileResource();
-		try (Reader reader = new InputStreamReader(config.getInputStream())) {
-			workingDir = Paths.get(
-					new JsonParser().parse(reader)
-							.getAsJsonObject().get("working_dir").getAsString());
+		Resource configFile = getFileResource();
+		try (Reader reader = new InputStreamReader(configFile.getInputStream())) {
+			config = new GsonBuilder()
+					.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+					.registerTypeAdapter(new TypeToken<Path>() {
+					}.getType(), new GsonPathAdapter())
+					.create()
+					.fromJson(reader, KarakaConfiguration.class);
+			logger.info("Successfully loaded Karaka config from " + configFile);
 		} catch (Exception e) {
-			workingDir = Paths.get("Karaka");
+			config = new KarakaConfiguration();
+			logger.info("Failed to read Karaka config from " + configFile + ", using default", e);
 		}
-		logger.info("Setting working dir to " + workingDir);
 	}
 
 	@Override
 	public void save() {
-		WritableResource config = getFileResource();
-		try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(config.getOutputStream()))) {
-			writer.beginObject()
-					.name("working_dir").value(workingDir.toString())
-					.endObject();
+		WritableResource configFile = getFileResource();
+		try (Writer writer = new OutputStreamWriter(configFile.getOutputStream())) {
+			new GsonBuilder()
+					.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+					.setPrettyPrinting()
+					.registerTypeAdapter(new TypeToken<Path>() {
+					}.getType(), new GsonPathAdapter())
+					.create()
+					.toJson(config, writer);
 		} catch (IOException e) {
-			logger.error("Failed to save Karaka config to " + config, e);
+			logger.error("Failed to save Karaka config to " + configFile, e);
 		}
 	}
 
