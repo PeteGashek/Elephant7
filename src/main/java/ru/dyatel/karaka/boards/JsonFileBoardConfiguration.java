@@ -48,7 +48,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	}
 
 	private WritableResource getBoardConfig() {
-		return new FileSystemResource(config.getConfig().getWorkingDir().resolve(filename).toString());
+		return new FileSystemResource(config.getConfig().getWorkingDir().resolve(filename).toFile());
 	}
 
 	@Override
