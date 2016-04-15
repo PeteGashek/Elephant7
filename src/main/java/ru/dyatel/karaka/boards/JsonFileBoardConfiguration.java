@@ -23,6 +23,8 @@ import java.util.List;
 @Component
 public class JsonFileBoardConfiguration implements BoardConfiguration {
 
+	private static final String filename = "boards.json";
+
 	private Log logger = LogFactoryImpl.getLog(JsonFileBoardConfiguration.class);
 
 	private KarakaConfigurationManager config;
@@ -46,7 +48,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	}
 
 	private WritableResource getBoardConfig() {
-		return new FileSystemResource(config.getConfig().getWorkingDir().resolve("boards.json").toString());
+		return new FileSystemResource(config.getConfig().getWorkingDir().resolve(filename).toString());
 	}
 
 	@Override
