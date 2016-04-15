@@ -5,7 +5,9 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.stereotype.Component;
 import ru.dyatel.karaka.config.AbstractFileKarakaConfigurationManager;
+import ru.dyatel.karaka.config.KarakaConfiguration;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Component
@@ -17,15 +19,26 @@ public class TomcatKarakaConfigurationManager extends AbstractFileKarakaConfigur
 		super(LogFactoryImpl.getLog(TomcatKarakaConfigurationManager.class));
 	}
 
-	@Override
-	protected WritableResource getFileResource() {
+	private Path resolveWorkingDir() {
 		String catalinaBase = System.getProperty("catalina.base");
 		if (catalinaBase == null) catalinaBase = System.getenv("CATALINA_BASE");
 
 		if (catalinaBase != null)
-			return new FileSystemResource(Paths.get(catalinaBase, "work/Karaka/" + filename).toFile());
+			return Paths.get(catalinaBase, "work/Karaka/");
 
-		return new FileSystemResource("Karaka/" + filename);
+		return Paths.get("Karaka/");
+	}
+
+	@Override
+	public KarakaConfiguration getDefaultConfig() {
+		KarakaConfiguration config = new KarakaConfiguration();
+		config.setWorkingDir(resolveWorkingDir());
+		return null;
+	}
+
+	@Override
+	protected WritableResource getFileResource() {
+		return new FileSystemResource(resolveWorkingDir().resolve(filename).toFile());
 	}
 
 }

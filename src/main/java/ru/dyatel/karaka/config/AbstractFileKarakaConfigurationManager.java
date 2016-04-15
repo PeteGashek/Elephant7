@@ -46,8 +46,8 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 			config = gson.fromJson(reader, KarakaConfiguration.class);
 			logger.info("Successfully loaded Karaka config from " + configFile);
 		} catch (Exception e) {
-			config = new KarakaConfiguration();
 			logger.info("Failed to read Karaka config from " + configFile + ", using default", e);
+			config = getDefaultConfig();
 			save();
 		}
 	}
