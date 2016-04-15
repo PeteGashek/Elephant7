@@ -12,6 +12,7 @@ project.ext.gsonVersion = "2.6.2"
 project.ext.h2Version = "1.4.191"
 project.ext.servletApiVersion = "3.1.0"
 project.ext.springVersion = "4.2.5.RELEASE"
+project.ext.commonsLoggingVersion = "1.2"
 
 dependencies {
     compile "com.google.code.gson:gson:$gsonVersion"
