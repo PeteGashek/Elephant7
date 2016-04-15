@@ -3,7 +3,7 @@ def webAppDir = "$tomcatBase/webapps"
 
 def explodedWarDir = buildDir.path + "/exploded-war/" + rootProject.name
 
-task buildExplodedWar(dependsOn: [compileJava, rootProject.generateConfig]) {
+task buildExplodedWar(dependsOn: compileJava) {
     group = buildAndDeployTaskGroup
 
     doLast {
@@ -19,7 +19,6 @@ task buildExplodedWar(dependsOn: [compileJava, rootProject.generateConfig]) {
         }
         copy {
             from "src/main/webapp"
-            from generatedDir
             into explodedWarDir
         }
     }

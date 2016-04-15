@@ -8,21 +8,6 @@ allprojects {
 
 project.ext.buildAndDeployTaskGroup = "build and deploy"
 
-project.ext.generatedDir = buildDir.path + "/generated"
-
-// default values for config.json
-def defaultWorkingDir = "$tomcatBase/work/" + project.name
-
-task generateConfig(type: Copy) {
-    from project.projectDir
-    include "base_config.json"
-
-    into generatedDir
-    rename("base_config.json", "config.json")
-
-    expand(workingDir: defaultWorkingDir.replace("\\", "\\\\"))
-}
-
 project.ext.gsonVersion = "2.6.2"
 project.ext.h2Version = "1.4.191"
 project.ext.servletApiVersion = "3.1.0"
