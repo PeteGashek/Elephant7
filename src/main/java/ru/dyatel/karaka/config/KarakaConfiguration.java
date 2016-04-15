@@ -1,11 +1,10 @@
 package ru.dyatel.karaka.config;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class KarakaConfiguration {
 
-	private Path workingDir = Paths.get("Karaka");
+	private Path workingDir = null;
 
 	public Path getWorkingDir() {
 		return workingDir;
