@@ -57,6 +57,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 		try (Reader reader = new InputStreamReader(boardConfig.getInputStream())) {
 			boards = gson.fromJson(reader, new TypeToken<ArrayList<Board>>() {
 			}.getType());
+			logger.info("Successfully loaded board configuration from " + boardConfig);
 		} catch (Exception e) {
 			logger.error("Failed to read board configuration from " + boardConfig, e);
 		}
