@@ -8,7 +8,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import ru.dyatel.karaka.util.GsonPathAdapter;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
@@ -55,6 +54,10 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 	@Override
 	public void save() {
 		WritableResource configFile = getFileResource();
+		try {
+			configFile.getFile().getParentFile().mkdirs();
+		} catch (Exception e) {
+		}
 		try (Writer writer = new OutputStreamWriter(configFile.getOutputStream())) {
 			gson.toJson(config, writer);
 		} catch (Exception e) {
