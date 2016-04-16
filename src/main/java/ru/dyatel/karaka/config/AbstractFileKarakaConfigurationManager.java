@@ -21,7 +21,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 	protected Gson gson = new GsonBuilder()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.setPrettyPrinting()
-			.registerTypeHierarchyAdapter(Path.class, new GsonPathAdapter())
+			.registerTypeHierarchyAdapter(Path.class, new GsonPathAdapter().nullSafe())
 			.create();
 
 	protected KarakaConfiguration config = null;
