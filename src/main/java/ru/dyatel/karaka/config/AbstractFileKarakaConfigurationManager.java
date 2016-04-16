@@ -25,7 +25,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 			.serializeNulls()
 			.create();
 
-	protected KarakaConfiguration config = null;
+	protected KarakaConfiguration config;
 
 	public AbstractFileKarakaConfigurationManager(Log logger) {
 		this.logger = logger;

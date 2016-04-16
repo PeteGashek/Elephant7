@@ -34,7 +34,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 			.setPrettyPrinting()
 			.create();
 
-	private List<Board> boards = null;
+	private List<Board> boards;
 
 	@Autowired
 	public JsonFileBoardConfiguration(KarakaConfigurationManager config) {
@@ -60,6 +60,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 			logger.info("Successfully loaded board configuration from " + boardConfig);
 		} catch (Exception e) {
 			logger.error("Failed to read board configuration from " + boardConfig, e);
+			boards = new ArrayList<>();
 		}
 	}
 
