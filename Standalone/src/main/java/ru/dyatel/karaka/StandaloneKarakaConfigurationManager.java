@@ -23,7 +23,7 @@ public class StandaloneKarakaConfigurationManager extends AbstractFileKarakaConf
 
 	@Override
 	public KarakaConfiguration getDefaultConfig() {
-		KarakaConfiguration config = new KarakaConfiguration();
+		KarakaConfiguration config = KarakaConfiguration.getDefault();
 		config.setWorkingDir(Paths.get("work"));
 		return config;
 	}

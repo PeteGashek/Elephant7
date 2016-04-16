@@ -31,7 +31,7 @@ public class TomcatKarakaConfigurationManager extends AbstractFileKarakaConfigur
 
 	@Override
 	public KarakaConfiguration getDefaultConfig() {
-		KarakaConfiguration config = new KarakaConfiguration();
+		KarakaConfiguration config = KarakaConfiguration.getDefault();
 		config.setWorkingDir(resolveWorkingDir());
 		return config;
 	}
