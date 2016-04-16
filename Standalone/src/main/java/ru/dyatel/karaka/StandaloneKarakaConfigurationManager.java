@@ -18,13 +18,13 @@ public class StandaloneKarakaConfigurationManager extends AbstractFileKarakaConf
 
 	@Override
 	protected WritableResource getFileResource() {
-		return new FileSystemResource("config.json");
+		return new FileSystemResource("work/config.json");
 	}
 
 	@Override
 	public KarakaConfiguration getDefaultConfig() {
 		KarakaConfiguration config = new KarakaConfiguration();
-		config.setWorkingDir(Paths.get(""));
+		config.setWorkingDir(Paths.get("work"));
 		return config;
 	}
 
