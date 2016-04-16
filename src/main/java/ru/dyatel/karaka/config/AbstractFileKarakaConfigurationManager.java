@@ -22,6 +22,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.setPrettyPrinting()
 			.registerTypeHierarchyAdapter(Path.class, new GsonPathAdapter().nullSafe())
+			.serializeNulls()
 			.create();
 
 	protected KarakaConfiguration config = null;

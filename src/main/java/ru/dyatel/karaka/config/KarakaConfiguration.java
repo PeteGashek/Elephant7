@@ -10,6 +10,7 @@ public class KarakaConfiguration {
 	}
 
 	private Path workingDir = null;
+	private DbConnectionConfig dbConfig = new DbConnectionConfig();
 
 	public Path getWorkingDir() {
 		return workingDir;
@@ -17,6 +18,14 @@ public class KarakaConfiguration {
 
 	public void setWorkingDir(Path workingDir) {
 		this.workingDir = workingDir;
+	}
+
+	public DbConnectionConfig getDbConfig() {
+		return dbConfig;
+	}
+
+	public void setDbConfig(DbConnectionConfig dbConfig) {
+		this.dbConfig = dbConfig;
 	}
 
 }
