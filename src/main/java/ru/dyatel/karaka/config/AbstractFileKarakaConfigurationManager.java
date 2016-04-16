@@ -57,7 +57,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 		WritableResource configFile = getFileResource();
 		try (Writer writer = new OutputStreamWriter(configFile.getOutputStream())) {
 			gson.toJson(config, writer);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("Failed to save Karaka config to " + configFile, e);
 		}
 	}
