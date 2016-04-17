@@ -1,21 +1,8 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    project.ext.springBootVersion = "1.3.3.RELEASE"
-
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-    }
-}
-
-apply plugin: "spring-boot"
+project.ext.springBootVersion = "1.3.3.RELEASE"
 
 dependencies {
     compile rootProject
 
     compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
-    compile "commons-logging:commons-logging:$commonsLoggingVersion"
 }
