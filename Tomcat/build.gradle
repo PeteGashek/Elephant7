@@ -10,7 +10,6 @@ task buildExplodedWar(dependsOn: compileJava) {
         delete explodedWarDir
         copy {
             from compileJava
-            from sourceSets.main.resources
             into explodedWarDir + "/WEB-INF/classes"
         }
         copy {
@@ -18,8 +17,9 @@ task buildExplodedWar(dependsOn: compileJava) {
             into explodedWarDir + "/WEB-INF/lib"
         }
         copy {
-            from "src/main/webapp"
-            into explodedWarDir
+            from rootProject.sourceSets.main.resources
+            from sourceSets.main.resources
+            into explodedWarDir + "/resources"
         }
     }
 }
