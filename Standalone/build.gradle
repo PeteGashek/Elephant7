@@ -15,6 +15,7 @@ apply plugin: "spring-boot"
 dependencies {
     compile rootProject
 
-    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
     compile "commons-logging:commons-logging:$commonsLoggingVersion"
 }
