@@ -18,7 +18,7 @@ public class StandaloneKarakaConfigurationManager extends AbstractFileKarakaConf
 
 	@Override
 	protected WritableResource getFileResource() {
-		return new FileSystemResource("work/config.json");
+		return new FileSystemResource("config.json");
 	}
 
 	@Override
