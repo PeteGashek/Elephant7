@@ -3,6 +3,7 @@
 *.iml
 
 build/
+Core/build/
 Standalone/build/
 Tomcat/build/
 

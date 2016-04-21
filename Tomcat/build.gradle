@@ -17,7 +17,7 @@ task buildExplodedWar(dependsOn: compileJava) {
             into explodedWarDir + "/WEB-INF/lib"
         }
         copy {
-            from rootProject.sourceSets.main.resources
+            from coreResources
             from sourceSets.main.resources
             into explodedWarDir + "/resources"
         }
@@ -63,7 +63,7 @@ task deployWar(dependsOn: buildWar, type: Copy) {
 }
 
 dependencies {
-    compile rootProject
+    compile project(":Core")
 
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
 }

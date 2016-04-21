@@ -1,1 +1,1 @@
-include ':Standalone', ':Tomcat'
+include ":Standalone", ":Tomcat", ":Core"

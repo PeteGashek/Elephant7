@@ -1,0 +1,15 @@
+jar.baseName = "karaka-core"
+
+rootProject.ext.coreResources = sourceSets.main.resources
+
+dependencies {
+    compile "com.google.code.gson:gson:$gsonVersion"
+
+    compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
+
+    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+}

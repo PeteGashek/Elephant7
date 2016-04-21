@@ -1,4 +1,4 @@
-allprojects {
+subprojects {
     apply plugin: "java"
 
     repositories {
@@ -6,24 +6,11 @@ allprojects {
     }
 }
 
-project.ext.buildAndDeployTaskGroup = "build and deploy"
+ext.buildAndDeployTaskGroup = "build and deploy"
 
-jar.baseName = "karaka-core"
-
-project.ext.gsonVersion = "2.6.2"
-project.ext.mysqlConnectorVersion = "5.1.38"
-project.ext.servletApiVersion = "3.1.0"
-project.ext.springVersion = "4.2.5.RELEASE"
-project.ext.commonsLoggingVersion = "1.2"
-
-dependencies {
-    compile "com.google.code.gson:gson:$gsonVersion"
-
-    compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
-
-    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
-
-    compile "org.springframework:spring-context:$springVersion"
-    compile "org.springframework:spring-webmvc:$springVersion"
-    compile "org.springframework:spring-jdbc:$springVersion"
-}
+ext.gsonVersion = "2.6.2"
+ext.mysqlConnectorVersion = "5.1.38"
+ext.servletApiVersion = "3.1.0"
+ext.springVersion = "4.2.5.RELEASE"
+ext.springBootVersion = "1.3.3.RELEASE"
+ext.commonsLoggingVersion = "1.2"
