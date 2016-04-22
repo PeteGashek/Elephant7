@@ -16,6 +16,7 @@ subprojects {
 
         destinationDir file(buildDir.path + "/libs")
     }
+    buildJar.baseName = rootProject.name.toLowerCase()
 
     configurations.runtime.artifacts.removeAll { it.archiveTask.is jar }
     artifacts {

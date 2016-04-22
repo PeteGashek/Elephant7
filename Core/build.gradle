@@ -1,5 +1,7 @@
 rootProject.ext.coreResources = sourceSets.main.resources
 
+buildJar.appendix = "core"
+
 dependencies {
     compile "com.google.code.gson:gson:$gsonVersion"
 
