@@ -6,8 +6,8 @@ public class Board {
 	private String code;
 	private boolean readOnly;
 
-	private String postTable;
-	private String attachmentTable;
+	private String postTable = null;
+	private String attachmentTable = null;
 
 	private int maxAttachmentsSize;
 	private int bumpLimit;
@@ -40,7 +40,7 @@ public class Board {
 	}
 
 	public String getPostTable() {
-		return postTable;
+		return postTable != null ? postTable : "posts_" + code;
 	}
 
 	public void setPostTable(String postTable) {
@@ -48,7 +48,7 @@ public class Board {
 	}
 
 	public String getAttachmentTable() {
-		return attachmentTable;
+		return attachmentTable != null ? attachmentTable : "attachments_" + code;
 	}
 
 	public void setAttachmentTable(String attachmentTable) {
