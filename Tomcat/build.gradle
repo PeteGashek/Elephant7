@@ -24,12 +24,16 @@ task buildExplodedWar(dependsOn: compileJava) {
     }
 }
 
-task buildWar(dependsOn: buildExplodedWar, type: Jar) {
+task buildWar(dependsOn: buildExplodedWar, type: Zip) {
     group = buildAndDeployTaskGroup
 
     baseName = rootProject.name
     extension = "war"
     from explodedWarDir
+
+    into("META-INF") {
+        from "MANIFEST.MF"
+    }
 }
 
 def deployedExplodedWarPath = webAppDir + "/" + rootProject.name
@@ -61,6 +65,8 @@ task deployWar(dependsOn: buildWar, type: Copy) {
     from buildWar
     into webAppDir
 }
+
+jar.enabled = false
 
 dependencies {
     compile project(":Core")
