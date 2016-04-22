@@ -3,6 +3,8 @@ task run(type: JavaExec) {
     main = "ru.dyatel.karaka.KarakaRunner"
 }
 
+sourceSets.main.resources.srcDirs += coreResources.srcDirs
+
 dependencies {
     compile project(":Core")
 

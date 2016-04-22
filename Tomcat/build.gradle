@@ -19,7 +19,6 @@ task buildExplodedWar(dependsOn: compileJava, type: Copy) {
         from configurations.runtime
     }
     into("resources") {
-        from coreResources
         from sourceSets.main.resources
     }
     into("META-INF") {
@@ -66,6 +65,8 @@ task deployWar(dependsOn: buildWar, type: Copy) {
 }
 
 buildJar.enabled = false
+
+sourceSets.main.resources.srcDirs += coreResources.srcDirs
 
 dependencies {
     compile project(":Core")
