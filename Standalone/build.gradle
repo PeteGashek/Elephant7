@@ -1,6 +1,18 @@
-task run(type: JavaExec) {
+def runnerDirectory = "working_dir"
+
+task prepareResourcesForRunning(type: Copy) {
+    doFirst {
+        remove "$runnerDirectory/resources"
+    }
+
+    from sourceSets.main.resources
+    into "$runnerDirectory/resources"
+}
+
+task run(dependsOn: prepareResourcesForRunning, type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "ru.dyatel.karaka.KarakaRunner"
+    workingDir = runnerDirectory
 }
 
 sourceSets.main.resources.srcDirs += coreResources.srcDirs

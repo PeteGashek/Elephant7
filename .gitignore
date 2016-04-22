@@ -7,7 +7,6 @@ Core/build/
 Standalone/build/
 Tomcat/build/
 
-Standalone/work/
-Standalone/config.json
+Standalone/working_dir/
 
 gradle.properties
