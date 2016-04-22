@@ -3,28 +3,27 @@ def webAppDir = "$tomcatBase/webapps"
 
 def explodedWarDir = buildDir.path + "/exploded-war/" + rootProject.name
 
-task buildExplodedWar(dependsOn: compileJava) {
+task buildExplodedWar(dependsOn: compileJava, type: Copy) {
     group = buildAndDeployTaskGroup
 
-    doLast {
+    into explodedWarDir
+
+    doFirst {
         delete explodedWarDir
-        copy {
-            from compileJava
-            into explodedWarDir + "/WEB-INF/classes"
-        }
-        copy {
-            from configurations.runtime
-            into explodedWarDir + "/WEB-INF/lib"
-        }
-        copy {
-            from coreResources
-            from sourceSets.main.resources
-            into explodedWarDir + "/resources"
-        }
-        copy {
-            from "MANIFEST.MF"
-            into explodedWarDir + "/META-INF"
-        }
+    }
+
+    into("WEB-INF/classes") {
+        from compileJava
+    }
+    into("WEB-INF/lib") {
+        from configurations.runtime
+    }
+    into("resources") {
+        from coreResources
+        from sourceSets.main.resources
+    }
+    into("META-INF") {
+        from "MANIFEST.MF"
     }
 }
 
