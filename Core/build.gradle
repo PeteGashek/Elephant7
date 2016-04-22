@@ -1,5 +1,3 @@
-jar.baseName = "karaka-core"
-
 rootProject.ext.coreResources = sourceSets.main.resources
 
 dependencies {

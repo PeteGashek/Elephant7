@@ -1,12 +1,31 @@
+ext.buildAndDeployTaskGroup = "build and deploy"
+
 subprojects {
     apply plugin: "java"
+
+    jar.enabled = false
+    task buildJar(dependsOn: compileJava, type: Zip) {
+        group = buildAndDeployTaskGroup
+
+        extension = "jar"
+        from compileJava
+
+        into("META-INF") {
+            from "MANIFEST.MF"
+        }
+
+        destinationDir file(buildDir.path + "/libs")
+    }
+
+    configurations.runtime.artifacts.removeAll { it.archiveTask.is jar }
+    artifacts {
+        runtime buildJar
+    }
 
     repositories {
         mavenCentral()
     }
 }
-
-ext.buildAndDeployTaskGroup = "build and deploy"
 
 ext.gsonVersion = "2.6.2"
 ext.mysqlConnectorVersion = "5.1.38"
