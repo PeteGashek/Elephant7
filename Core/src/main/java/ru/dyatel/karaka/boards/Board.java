@@ -78,4 +78,34 @@ public class Board {
 		this.defaultUsername = defaultUsername;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Board board = (Board) o;
+
+		if (readOnly != board.readOnly) return false;
+		if (maxAttachmentsSize != board.maxAttachmentsSize) return false;
+		if (bumpLimit != board.bumpLimit) return false;
+		if (maxPages != board.maxPages) return false;
+		if (!name.equals(board.name)) return false;
+		if (postTable != null ? !postTable.equals(board.postTable) : board.postTable != null) return false;
+		if (attachmentTable != null ? !attachmentTable.equals(board.attachmentTable) : board.attachmentTable != null)
+			return false;
+		return defaultUsername.equals(board.defaultUsername);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = name.hashCode();
+		result = 31 * result + (readOnly ? 1 : 0);
+		result = 31 * result + (postTable != null ? postTable.hashCode() : 0);
+		result = 31 * result + (attachmentTable != null ? attachmentTable.hashCode() : 0);
+		result = 31 * result + maxAttachmentsSize;
+		result = 31 * result + bumpLimit;
+		result = 31 * result + maxPages;
+		result = 31 * result + defaultUsername.hashCode();
+		return result;
+	}
 }
