@@ -3,7 +3,6 @@ package ru.dyatel.karaka.boards;
 public class Board {
 
 	private String name;
-	private String code;
 	private boolean readOnly;
 
 	private String postTable = null;
@@ -23,14 +22,6 @@ public class Board {
 		this.name = name;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public boolean isReadOnly() {
 		return readOnly;
 	}
@@ -40,7 +31,7 @@ public class Board {
 	}
 
 	public String getPostTable() {
-		return postTable != null ? postTable : "posts_" + code;
+		return postTable;
 	}
 
 	public void setPostTable(String postTable) {
@@ -48,7 +39,7 @@ public class Board {
 	}
 
 	public String getAttachmentTable() {
-		return attachmentTable != null ? attachmentTable : "attachments_" + code;
+		return attachmentTable;
 	}
 
 	public void setAttachmentTable(String attachmentTable) {

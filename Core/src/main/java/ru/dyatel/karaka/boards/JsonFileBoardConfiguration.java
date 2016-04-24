@@ -17,8 +17,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JsonFileBoardConfiguration implements BoardConfiguration {
@@ -34,7 +34,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 			.setPrettyPrinting()
 			.create();
 
-	private List<Board> boards;
+	private Map<String, Board> boards;
 
 	@Autowired
 	public JsonFileBoardConfiguration(KarakaConfigurationManager config) {
@@ -43,7 +43,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	}
 
 	@Override
-	public List<Board> getBoardList() {
+	public Map<String, Board> getBoards() {
 		return boards;
 	}
 
@@ -55,12 +55,12 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	public void reload() {
 		Resource boardConfig = getBoardConfig();
 		try (Reader reader = new InputStreamReader(boardConfig.getInputStream())) {
-			boards = gson.fromJson(reader, new TypeToken<ArrayList<Board>>() {
+			boards = gson.fromJson(reader, new TypeToken<HashMap<String, Board>>() {
 			}.getType());
 			logger.info("Successfully loaded board configuration from " + boardConfig);
 		} catch (Exception e) {
 			logger.error("Failed to read board configuration from " + boardConfig, e);
-			boards = new ArrayList<>();
+			boards = new HashMap<>();
 		}
 	}
 
