@@ -2,17 +2,17 @@ package ru.dyatel.karaka.boards;
 
 public class Board {
 
-	private String name;
-	private boolean readOnly;
+	private String name = "Nameless Board";
+	private boolean readOnly = false;
 
 	private String postTable = null;
 	private String attachmentTable = null;
 
-	private int maxAttachmentsSize;
-	private int bumpLimit;
-	private int maxPages;
+	private int maxAttachmentsSize = 20480;
+	private int bumpLimit = 500;
+	private int maxPages = 10;
 
-	private String defaultUsername;
+	private String defaultUsername = "";
 
 	public String getName() {
 		return name;
