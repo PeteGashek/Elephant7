@@ -5,6 +5,8 @@ public class Post {
 	private Long postId = 0L;
 	private Long threadId = 0L;
 
+	private Long timestamp = 0L;
+
 	private PostType type = PostType.NORMAL;
 
 	private String name = "";
@@ -24,6 +26,14 @@ public class Post {
 
 	public void setThreadId(Long threadId) {
 		this.threadId = threadId;
+	}
+
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public PostType getType() {
@@ -59,6 +69,7 @@ public class Post {
 
 		if (!postId.equals(post.postId)) return false;
 		if (!threadId.equals(post.threadId)) return false;
+		if (!timestamp.equals(post.timestamp)) return false;
 		if (type != post.type) return false;
 		if (!name.equals(post.name)) return false;
 		return message != null ? message.equals(post.message) : post.message == null;
@@ -69,6 +80,7 @@ public class Post {
 	public int hashCode() {
 		int result = postId.hashCode();
 		result = 31 * result + threadId.hashCode();
+		result = 31 * result + timestamp.hashCode();
 		result = 31 * result + type.hashCode();
 		result = 31 * result + name.hashCode();
 		result = 31 * result + (message != null ? message.hashCode() : 0);
