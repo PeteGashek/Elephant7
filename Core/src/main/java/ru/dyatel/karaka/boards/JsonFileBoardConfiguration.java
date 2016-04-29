@@ -28,6 +28,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	private Log logger = LogFactoryImpl.getLog(JsonFileBoardConfiguration.class);
 
 	private KarakaConfigurationManager config;
+	private BoardTableManager tableManager;
 
 	private Gson gson = new GsonBuilder()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -37,8 +38,9 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	private Map<String, Board> boards;
 
 	@Autowired
-	public JsonFileBoardConfiguration(KarakaConfigurationManager config) {
+	public JsonFileBoardConfiguration(KarakaConfigurationManager config, BoardTableManager tableManager) {
 		this.config = config;
+		this.tableManager = tableManager;
 		reload();
 	}
 
@@ -62,6 +64,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 			logger.error("Failed to read board configuration from " + boardConfig, e);
 			boards = new HashMap<>();
 		}
+		tableManager.prepareTables(boards);
 	}
 
 	@Override
