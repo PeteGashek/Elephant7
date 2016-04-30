@@ -2,7 +2,7 @@ def runnerDirectory = "working_dir"
 
 task prepareResourcesForRunning(type: Copy) {
     doFirst {
-        remove "$runnerDirectory/resources"
+        delete "$runnerDirectory/resources"
     }
 
     from sourceSets.main.resources
