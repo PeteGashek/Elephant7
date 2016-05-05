@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 public abstract class AbstractFileKarakaConfigurationManager implements KarakaConfigurationManager {
@@ -42,7 +43,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 	@Override
 	public void reload() {
 		Resource configFile = getFileResource();
-		try (Reader reader = new InputStreamReader(configFile.getInputStream())) {
+		try (Reader reader = new InputStreamReader(configFile.getInputStream(), StandardCharsets.UTF_8)) {
 			config = gson.fromJson(reader, KarakaConfiguration.class);
 			logger.info("Successfully loaded Karaka config from " + configFile);
 		} catch (Exception e) {
@@ -59,7 +60,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 			configFile.getFile().getParentFile().mkdirs();
 		} catch (Exception e) {
 		}
-		try (Writer writer = new OutputStreamWriter(configFile.getOutputStream())) {
+		try (Writer writer = new OutputStreamWriter(configFile.getOutputStream(), StandardCharsets.UTF_8)) {
 			gson.toJson(config, writer);
 		} catch (Exception e) {
 			logger.error("Failed to save Karaka config to " + configFile, e);

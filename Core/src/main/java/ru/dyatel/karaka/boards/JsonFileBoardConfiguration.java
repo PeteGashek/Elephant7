@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	@Override
 	public void reload() {
 		Resource boardConfig = getBoardConfig();
-		try (Reader reader = new InputStreamReader(boardConfig.getInputStream())) {
+		try (Reader reader = new InputStreamReader(boardConfig.getInputStream(), StandardCharsets.UTF_8)) {
 			boards = gson.fromJson(reader, new TypeToken<HashMap<String, Board>>() {
 			}.getType());
 			logger.info("Successfully loaded board configuration from " + boardConfig);
@@ -70,7 +71,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	@Override
 	public void save() {
 		WritableResource boardConfig = getBoardConfig();
-		try (Writer writer = new OutputStreamWriter(boardConfig.getOutputStream())) {
+		try (Writer writer = new OutputStreamWriter(boardConfig.getOutputStream(), StandardCharsets.UTF_8)) {
 			gson.toJson(boards, writer);
 		} catch (Exception e) {
 			logger.error("Failed to save board configuration to " + boardConfig, e);
