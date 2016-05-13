@@ -2,15 +2,16 @@ package ru.dyatel.karaka;
 
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.dyatel.karaka.boards.BoardCodeWrapper;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.threads.Post;
 import ru.dyatel.karaka.threads.PostDao;
 import ru.dyatel.karaka.util.ResponseCode;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -28,14 +29,9 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/{boardName}/post", method = RequestMethod.POST)
-	public ApiResponse createThread(@PathVariable String boardName, Post post) {
-		if (!boardConfig.getBoards().containsKey(boardName))
-			return new ApiResponse(ResponseCode.NO_SUCH_BOARD, "Board \"" + boardName + "\" doesn't exist");
-		if (StringUtils.isEmpty(post.getMessage()))
-			return new ApiResponse(ResponseCode.EMPTY_MESSAGE, "Message is empty");
-
+	public ApiResponse createThread(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		try {
-			postDb.createThread(boardName, post);
+			postDb.createThread(boardCode.getBoardName(), post);
 		} catch (Exception e) {
 			LogFactoryImpl.getLog(this.getClass()).error("Got exception while handling new thread request", e);
 			return new ApiResponse(ResponseCode.INTERNAL_ERROR, "Failed to create a thread, try later");
@@ -45,14 +41,9 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/{boardName}/{threadId}/post", method = RequestMethod.POST)
-	public ApiResponse post(@PathVariable String boardName, Post post) {
-		if (!boardConfig.getBoards().containsKey(boardName))
-			return new ApiResponse(ResponseCode.NO_SUCH_BOARD, "Board \"" + boardName + "\" doesn't exist");
-		if (StringUtils.isEmpty(post.getMessage()))
-			return new ApiResponse(ResponseCode.EMPTY_MESSAGE, "Message is empty");
-
+	public ApiResponse post(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		try {
-			postDb.post(boardName, post);
+			postDb.post(boardCode.getBoardName(), post);
 		} catch (Exception e) {
 			LogFactoryImpl.getLog(this.getClass()).error("Got exception while handling post request", e);
 			return new ApiResponse(ResponseCode.INTERNAL_ERROR, "Failed to post a message, try later");
