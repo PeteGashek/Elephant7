@@ -31,7 +31,7 @@ public class ApiController {
 	@RequestMapping(value = "/{boardName}/post", method = RequestMethod.POST)
 	public ApiResponse createThread(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		try {
-			postDb.createThread(boardCode.getBoardName(), post);
+			postDb.createThread(boardCode.getBoardCode(), post);
 		} catch (Exception e) {
 			LogFactoryImpl.getLog(this.getClass()).error("Got exception while handling new thread request", e);
 			return new ApiResponse(ResponseCode.INTERNAL_ERROR, "Failed to create a thread, try later");
@@ -43,7 +43,7 @@ public class ApiController {
 	@RequestMapping(value = "/{boardName}/{threadId}/post", method = RequestMethod.POST)
 	public ApiResponse post(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		try {
-			postDb.post(boardCode.getBoardName(), post);
+			postDb.post(boardCode.getBoardCode(), post);
 		} catch (Exception e) {
 			LogFactoryImpl.getLog(this.getClass()).error("Got exception while handling post request", e);
 			return new ApiResponse(ResponseCode.INTERNAL_ERROR, "Failed to post a message, try later");

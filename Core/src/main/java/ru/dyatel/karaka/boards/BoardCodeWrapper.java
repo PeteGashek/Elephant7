@@ -3,14 +3,14 @@ package ru.dyatel.karaka.boards;
 public class BoardCodeWrapper {
 
 	@BoardCode
-	private String boardName = null;
+	private String boardCode = null;
 
-	public String getBoardName() {
-		return boardName;
+	public String getBoardCode() {
+		return boardCode;
 	}
 
-	public void setBoardName(String boardName) {
-		this.boardName = boardName;
+	public void setBoardCode(String boardCode) {
+		this.boardCode = boardCode;
 	}
 
 	@Override
@@ -20,13 +20,13 @@ public class BoardCodeWrapper {
 
 		BoardCodeWrapper that = (BoardCodeWrapper) o;
 
-		return boardName != null ? boardName.equals(that.boardName) : that.boardName == null;
+		return boardCode != null ? boardCode.equals(that.boardCode) : that.boardCode == null;
 
 	}
 
 	@Override
 	public int hashCode() {
-		return boardName != null ? boardName.hashCode() : 0;
+		return boardCode != null ? boardCode.hashCode() : 0;
 	}
 
 }
