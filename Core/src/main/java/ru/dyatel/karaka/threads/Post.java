@@ -1,5 +1,7 @@
 package ru.dyatel.karaka.threads;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class Post {
 
 	private Long postId = 0L;
@@ -10,6 +12,7 @@ public class Post {
 	private PostType type = PostType.NORMAL;
 
 	private String name = "";
+	@NotBlank
 	private String message = null;
 
 	public Long getPostId() {
