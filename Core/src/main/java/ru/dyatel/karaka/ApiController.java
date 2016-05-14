@@ -1,6 +1,5 @@
 package ru.dyatel.karaka;
 
-import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,7 +8,6 @@ import ru.dyatel.karaka.boards.BoardCodeWrapper;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.threads.Post;
 import ru.dyatel.karaka.threads.PostDao;
-import ru.dyatel.karaka.util.ResponseCode;
 
 import javax.validation.Valid;
 
@@ -31,13 +29,13 @@ public class ApiController {
 	@RequestMapping(value = "/{boardName}/post", method = RequestMethod.POST)
 	public ApiResponse createThread(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		postDb.createThread(boardCode.getBoardCode(), post);
-		return new ApiResponse(ResponseCode.OK);
+		return ApiResponse.OK;
 	}
 
 	@RequestMapping(value = "/{boardName}/{threadId}/post", method = RequestMethod.POST)
 	public ApiResponse post(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		postDb.post(boardCode.getBoardCode(), post);
-		return new ApiResponse(ResponseCode.OK);
+		return ApiResponse.OK;
 	}
 
 }
