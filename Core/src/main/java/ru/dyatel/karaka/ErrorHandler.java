@@ -31,7 +31,7 @@ public class ErrorHandler {
 			ApiResponse response = ApiResponse.getByMessage(error.getDefaultMessage());
 			if (response != null) return response;
 		}
-		throw new RuntimeException(e);
+		return ApiResponse.UNKNOWN_VALIDATION_ERROR;
 	}
 
 }
