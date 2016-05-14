@@ -1,5 +1,7 @@
 package ru.dyatel.karaka.boards;
 
+import ru.dyatel.karaka.ApiResponse;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
@@ -12,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = BoardCodeValidator.class)
 public @interface BoardCode {
 
-	String message() default "{BoardCode}";
+	String message() default ApiResponse.Message.NO_SUCH_BOARD;
 
 	Class<?>[] groups() default {};
 
