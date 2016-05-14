@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ru.dyatel.karaka.util.ResponseCode;
 
 @ControllerAdvice
 public class ErrorHandler {
@@ -19,7 +18,7 @@ public class ErrorHandler {
 	@ResponseBody
 	public ApiResponse fallback(Exception e) {
 		log.error("Caught an unhandled exception", e);
-		return new ApiResponse(ResponseCode.INTERNAL_ERROR, "Internal server error");
+		return ApiResponse.INTERNAL_ERROR;
 	}
 
 }
