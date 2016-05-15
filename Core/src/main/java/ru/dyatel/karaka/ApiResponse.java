@@ -16,14 +16,14 @@ public class ApiResponse {
 
 	}
 
+	private static Map<String, ApiResponse> responses = new HashMap<>();
+
 	public static final ApiResponse OK = create(0, Message.OK);
 
 	public static final ApiResponse INTERNAL_ERROR = create(1, Message.INTERNAL_ERROR);
 	public static final ApiResponse UNKNOWN_VALIDATION_ERROR = create(2, Message.UNKNOWN_VALIDATION_ERROR);
 	public static final ApiResponse NO_SUCH_BOARD = create(3, Message.NO_SUCH_BOARD);
 	public static final ApiResponse EMPTY_MESSAGE = create(4, Message.EMPTY_MESSAGE);
-
-	private static Map<String, ApiResponse> responses = new HashMap<>();
 
 	private static ApiResponse create(int code, String message) {
 		ApiResponse response = new ApiResponse(code, message);
