@@ -1,5 +1,7 @@
 package ru.dyatel.karaka.boards;
 
+import java.nio.file.Path;
+
 public class BoardUtil {
 
 	private static final String POST_TABLE_PREFIX = "posts_";
@@ -15,6 +17,12 @@ public class BoardUtil {
 		String table = board.getAttachmentTable();
 		if (table != null) return table;
 		return ATTACHMENT_TABLE_PREFIX + boardName;
+	}
+
+	public static Path getAttachmentDir(String boardName, Board board, Path workingDir) {
+		String dir = board.getAttachmentDir();
+		if (dir == null) dir = boardName;
+		return workingDir.resolve(dir + "/");
 	}
 
 }

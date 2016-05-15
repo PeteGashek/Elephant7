@@ -8,6 +8,8 @@ public class Board {
 	private String postTable = null;
 	private String attachmentTable = null;
 
+	private String attachmentDir = null;
+
 	private int maxAttachmentsSize = 20480;
 	private int bumpLimit = 500;
 	private int maxPages = 10;
@@ -44,6 +46,14 @@ public class Board {
 
 	public void setAttachmentTable(String attachmentTable) {
 		this.attachmentTable = attachmentTable;
+	}
+
+	public String getAttachmentDir() {
+		return attachmentDir;
+	}
+
+	public void setAttachmentDir(String attachmentDir) {
+		this.attachmentDir = attachmentDir;
 	}
 
 	public int getMaxAttachmentsSize() {
