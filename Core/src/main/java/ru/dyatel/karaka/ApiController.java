@@ -26,13 +26,13 @@ public class ApiController {
 		return "Hello, World!";
 	}
 
-	@RequestMapping(value = "/{boardName}/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
 	public ApiResponse createThread(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		postDb.createThread(boardCode.getBoardCode(), post);
 		return ApiResponse.OK;
 	}
 
-	@RequestMapping(value = "/{boardName}/{threadId}/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/{boardCode}/{threadId}/post", method = RequestMethod.POST)
 	public ApiResponse post(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		postDb.post(boardCode.getBoardCode(), post);
 		return ApiResponse.OK;
