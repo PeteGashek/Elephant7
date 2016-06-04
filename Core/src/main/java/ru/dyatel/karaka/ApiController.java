@@ -28,8 +28,8 @@ public class ApiController {
 
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
 	public ApiResponse createThread(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
-		postDb.createThread(boardCode.getBoardCode(), post);
-		return ApiResponse.OK;
+		post.setThreadId(0L);
+		return post(boardCode, post);
 	}
 
 	@RequestMapping(value = "/{boardCode}/{threadId}/post", method = RequestMethod.POST)

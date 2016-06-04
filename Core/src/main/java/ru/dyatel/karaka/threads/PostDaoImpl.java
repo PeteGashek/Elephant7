@@ -24,13 +24,6 @@ public class PostDaoImpl implements PostDao {
 			THREAD_ID_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN);
 
 	@Override
-	public void createThread(String boardName, Post post) {
-		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
-		db.update(String.format(INSERT_QUERY, table),
-				0, post.getType().toString(), post.getName(), post.getMessage());
-	}
-
-	@Override
 	public void post(String boardName, Post post) {
 		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
 		db.update(String.format(INSERT_QUERY, table),
