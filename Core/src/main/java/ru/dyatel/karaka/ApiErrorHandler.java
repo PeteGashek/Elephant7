@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-@ControllerAdvice
-public class ErrorHandler {
+@ControllerAdvice(annotations = RestController.class)
+public class ApiErrorHandler {
 
-	private Log log = LogFactoryImpl.getLog(ErrorHandler.class);
+	private Log log = LogFactoryImpl.getLog(ApiErrorHandler.class);
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
