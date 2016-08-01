@@ -29,4 +29,9 @@ public class BoardCodeWrapper {
 		return boardCode != null ? boardCode.hashCode() : 0;
 	}
 
+	@Override
+	public String toString() {
+		return boardCode;
+	}
+
 }
