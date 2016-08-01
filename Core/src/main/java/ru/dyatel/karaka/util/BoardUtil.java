@@ -1,4 +1,6 @@
-package ru.dyatel.karaka.boards;
+package ru.dyatel.karaka.util;
+
+import ru.dyatel.karaka.boards.Board;
 
 import java.nio.file.Path;
 

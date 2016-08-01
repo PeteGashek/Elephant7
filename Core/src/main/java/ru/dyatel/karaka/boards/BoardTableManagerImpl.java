@@ -3,6 +3,7 @@ package ru.dyatel.karaka.boards;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.dyatel.karaka.util.BoardUtil;
 
 import java.util.Map;
 
