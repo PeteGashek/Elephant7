@@ -14,4 +14,6 @@ dependencies {
     compile "org.springframework:spring-context:$springVersion"
     compile "org.springframework:spring-webmvc:$springVersion"
     compile "org.springframework:spring-jdbc:$springVersion"
+
+    compile "org.thymeleaf:thymeleaf-spring4:$thymeleafVersion"
 }
