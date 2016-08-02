@@ -1,7 +1,11 @@
 package ru.dyatel.karaka;
 
+import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,9 +17,14 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.util.List;
+
 @Configuration
 @EnableWebMvc
 public class WebConfiguration extends WebMvcConfigurerAdapter {
+
+	@Autowired
+	private Gson gson;
 
 	@Bean
 	public ViewResolver viewResolver(TemplateEngine templateEngine) {
@@ -47,4 +56,12 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/static/js/**").addResourceLocations("file:resources/js/");
 		registry.addResourceHandler("/static/css/**").addResourceLocations("file:resources/css/");
 	}
+
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
+		gsonHttpMessageConverter.setGson(gson);
+		converters.add(gsonHttpMessageConverter);
+	}
+
 }

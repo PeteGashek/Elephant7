@@ -1,5 +1,6 @@
 package ru.dyatel.karaka;
 
+import com.google.gson.Gson;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,11 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan(basePackages = {"ru.dyatel.karaka"})
 public class SpringConfiguration {
+
+	@Bean
+	public Gson gson() {
+		return new Gson();
+	}
 
 	@Bean
 	public DataSource dataSource(KarakaConfigurationManager configManager) {
