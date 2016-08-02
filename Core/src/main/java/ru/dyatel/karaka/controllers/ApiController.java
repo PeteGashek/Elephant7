@@ -27,6 +27,11 @@ public class ApiController {
 		return "Hello, World!";
 	}
 
+	@RequestMapping(value = "/boards", method = RequestMethod.GET)
+	public ApiResponse boardList() {
+		return new ApiResponse(boardConfig.getBoards().keySet());
+	}
+
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
 	public ApiResponse createThread(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
 		post.setThreadId(0L);
