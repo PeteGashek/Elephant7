@@ -28,11 +28,11 @@ subprojects {
     }
 }
 
-ext.gsonVersion = "2.6.2"
-ext.mysqlConnectorVersion = "5.1.38"
+ext.gsonVersion = "2.7"
+ext.mysqlConnectorVersion = "5.1.39"
 ext.servletApiVersion = "3.1.0"
 ext.validationApiVersion = "1.1.0.Final"
 ext.hibernateValidatorVersion = "5.2.4.Final"
-ext.springVersion = "4.2.5.RELEASE"
-ext.springBootVersion = "1.3.3.RELEASE"
+ext.springVersion = "4.3.2.RELEASE"
+ext.springBootVersion = "1.4.0.RELEASE"
 ext.commonsLoggingVersion = "1.2"
