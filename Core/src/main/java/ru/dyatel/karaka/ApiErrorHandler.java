@@ -21,7 +21,7 @@ public class ApiErrorHandler {
 	@ResponseBody
 	public ApiResponse fallback(Exception e) {
 		log.error("Caught an unhandled exception", e);
-		return ApiResponse.INTERNAL_ERROR;
+		return ApiError.INTERNAL_ERROR;
 	}
 
 	@ExceptionHandler(BindException.class)
@@ -29,10 +29,10 @@ public class ApiErrorHandler {
 	@ResponseBody
 	public ApiResponse bindingFailure(BindException e) {
 		for (ObjectError error : e.getAllErrors()) {
-			ApiResponse response = ApiResponse.getByMessage(error.getDefaultMessage());
+			ApiResponse response = ApiError.getByMessage(error.getDefaultMessage());
 			if (response != null) return response;
 		}
-		return ApiResponse.UNKNOWN_VALIDATION_ERROR;
+		return ApiError.UNKNOWN_VALIDATION_ERROR;
 	}
 
 }

@@ -1,7 +1,7 @@
 package ru.dyatel.karaka.threads;
 
 import org.hibernate.validator.constraints.NotBlank;
-import ru.dyatel.karaka.ApiResponse;
+import ru.dyatel.karaka.ApiError;
 
 public class Post {
 
@@ -13,7 +13,7 @@ public class Post {
 	private PostType type = PostType.NORMAL;
 
 	private String name = "";
-	@NotBlank(message = ApiResponse.Message.EMPTY_MESSAGE)
+	@NotBlank(message = ApiError.Message.EMPTY_MESSAGE)
 	private String message = null;
 
 	public Long getPostId() {
