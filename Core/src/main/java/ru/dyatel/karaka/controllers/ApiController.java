@@ -1,8 +1,10 @@
 package ru.dyatel.karaka.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dyatel.karaka.ApiResponse;
 import ru.dyatel.karaka.boards.BoardCodeWrapper;
@@ -11,6 +13,7 @@ import ru.dyatel.karaka.threads.Post;
 import ru.dyatel.karaka.threads.PostDao;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +33,24 @@ public class ApiController {
 	@RequestMapping(value = "/boards", method = RequestMethod.GET)
 	public ApiResponse boardList() {
 		return new ApiResponse(boardConfig.getBoards().keySet());
+	}
+
+	@RequestMapping(value = "/{boardCode}", method = RequestMethod.GET)
+	public ApiResponse threadList(@Valid BoardCodeWrapper boardCode,
+								  @RequestParam(required = false, defaultValue = "20") int count,
+								  @RequestParam(required = false, defaultValue = "true") boolean id_only) {
+		List<Long> ids = postDb.getLatestThreads(boardCode.toString(), count);
+		if (id_only) return new ApiResponse(ApiResponse.OK_CODE, ids);
+		else {
+			return ApiResponse.OK; // TODO
+		}
+	}
+
+	@RequestMapping(value = "/{boardCode}/{threadId}", method = RequestMethod.GET)
+	public ApiResponse postList(@Valid BoardCodeWrapper boardCode, @PathVariable long threadId,
+								@RequestParam(required = false, defaultValue = "0") int count,
+								@RequestParam(required = false, defaultValue = "0") int offset) {
+		return new ApiResponse(ApiResponse.OK_CODE, postDb.getPosts(boardCode.toString(), threadId, count, offset));
 	}
 
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
