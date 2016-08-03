@@ -40,7 +40,7 @@ public class PostDaoImpl implements PostDao {
 	private static final String SELECT_LATEST_THREADS_QUERY = String.format("SELECT DISTINCT " +
 					"CASE WHEN %1$s = 0 THEN %2$s ELSE %1$s END %1$s " +
 					"FROM %%s " +
-					"ORDER BY %2$s DESC" +
+					"ORDER BY %2$s DESC " +
 					"LIMIT ?",
 			THREAD_ID_COLUMN, POST_ID_COLUMN);
 
