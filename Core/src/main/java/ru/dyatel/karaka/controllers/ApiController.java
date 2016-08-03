@@ -38,13 +38,8 @@ public class ApiController {
 
 	@RequestMapping(value = "/{boardCode}", method = RequestMethod.GET)
 	public ApiResponse threadList(@Valid BoardCodeWrapper boardCode,
-								  @RequestParam(required = false, defaultValue = "20") int count,
-								  @RequestParam(required = false, defaultValue = "true") boolean id_only) {
-		List<Long> ids = postDb.getLatestThreads(boardCode.toString(), count);
-		if (id_only) return new ApiResponse(ApiResponse.OK_CODE, ids);
-		else {
-			return ApiResponse.OK; // TODO
-		}
+								  @RequestParam(required = false, defaultValue = "20") int count) {
+		return new ApiResponse(ApiResponse.OK_CODE, postDb.getLatestThreads(boardCode.toString(), count));
 	}
 
 	@RequestMapping(value = "/{boardCode}/{threadId}", method = RequestMethod.GET)
