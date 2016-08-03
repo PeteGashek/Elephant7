@@ -13,6 +13,7 @@ import ru.dyatel.karaka.threads.Post;
 import ru.dyatel.karaka.threads.PostDao;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -51,6 +52,13 @@ public class ApiController {
 								@RequestParam(required = false, defaultValue = "0") int count,
 								@RequestParam(required = false, defaultValue = "0") int offset) {
 		return new ApiResponse(ApiResponse.OK_CODE, postDb.getPosts(boardCode.toString(), threadId, count, offset));
+	}
+
+	@RequestMapping(value = "/{boardCode}/posts", method = RequestMethod.GET)
+	public ApiResponse postListById(@Valid BoardCodeWrapper boardCode, String ids) {
+		List<Long> idList = new ArrayList<>();
+		for (String id : ids.split(",")) idList.add(Long.parseLong(id));
+		return new ApiResponse(ApiResponse.OK_CODE, postDb.getPostsById(boardCode.toString(), idList));
 	}
 
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)

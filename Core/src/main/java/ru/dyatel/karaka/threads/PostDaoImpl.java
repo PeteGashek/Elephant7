@@ -3,12 +3,15 @@ package ru.dyatel.karaka.threads;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.util.BoardUtil;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,6 +27,8 @@ public class PostDaoImpl implements PostDao {
 
 	@Autowired
 	private JdbcTemplate db;
+	@Autowired
+	private NamedParameterJdbcTemplate namedDb;
 
 	@Autowired
 	private BoardConfiguration boardConfig;
@@ -46,6 +51,12 @@ public class PostDaoImpl implements PostDao {
 			POST_ID_COLUMN, TIMESTAMP_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN, THREAD_ID_COLUMN);
 
 	private static final String SELECT_POSTS_LIMITED_QUERY = SELECT_POSTS_QUERY + " LIMIT ? OFFSET ?";
+
+	private static final String SELECT_POSTS_BY_ID_QUERY = String.format("SELECT %s, %s, %s, %s, %s, " +
+					"CASE WHEN %6$s = 0 THEN %1$s ELSE %6$s END %6s " +
+					"FROM %%s " +
+					"WHERE %1$s IN (:ids)",
+			POST_ID_COLUMN, TIMESTAMP_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN, THREAD_ID_COLUMN);
 
 	@Override
 	public void post(String boardName, Post post) {
@@ -74,6 +85,14 @@ public class PostDaoImpl implements PostDao {
 		return result;
 	}
 
+	@Override
+	public List<Post> getPostsById(String boardName, List<Long> ids) {
+		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
+		return namedDb.query(String.format(SELECT_POSTS_BY_ID_QUERY, table),
+				new MapSqlParameterSource("ids", ids),
+				new PostMapper(boardConfig.getBoards().get(boardName).getDefaultUsername()));
+	}
+
 	private static class PostMapper implements RowMapper<Post> {
 
 		private String defaultUsername;
@@ -84,11 +103,21 @@ public class PostDaoImpl implements PostDao {
 
 		@Override
 		public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Long threadId = null;
+			ResultSetMetaData metaData = rs.getMetaData();
+			for (int i = 1; i <= metaData.getColumnCount(); i++) {
+				if (metaData.getColumnName(i).equals(THREAD_ID_COLUMN)) {
+					threadId = rs.getLong(THREAD_ID_COLUMN);
+					break;
+				}
+			}
+
 			String name = rs.getString(NAME_COLUMN);
 			if (!StringUtils.hasText(name)) name = defaultUsername;
 
 			Post post = new Post();
 			post.setPostId(rs.getLong(POST_ID_COLUMN));
+			post.setThreadId(threadId);
 			post.setTimestamp(rs.getTimestamp(TIMESTAMP_COLUMN).getTime());
 			post.setType(PostType.valueOf(rs.getString(TYPE_COLUMN)));
 			post.setName(name);
