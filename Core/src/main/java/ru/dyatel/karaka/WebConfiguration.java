@@ -1,6 +1,5 @@
 package ru.dyatel.karaka;
 
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ import java.util.List;
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired
-	private Gson gson;
+	private GsonHttpMessageConverter gsonHttpMessageConverter;
 
 	@Bean
 	public ViewResolver viewResolver(TemplateEngine templateEngine) {
@@ -59,8 +58,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
-		gsonHttpMessageConverter.setGson(gson);
 		converters.add(gsonHttpMessageConverter);
 	}
 
