@@ -1,0 +1,17 @@
+<html>
+<head></head>
+<body>
+<div class="post_list" th:fragment="postList (posts, isThreadList)">
+    <div class="post" th:each="post,i: ${posts}" th:id="${post.postId}">
+        <div class="post_header" th:with="link=${isThreadList}? ${#httpServletRequest.requestURI +
+        (#strings.endsWith(#httpServletRequest.requestURI, '/')? '' : '/') + post.threadId} : ${'#' + post.postId}">
+            <a th:href="@{${link}}"><span class="post_id" th:text="${'#' + post.postId}"></span></a> |
+            <span class="post_number" th:if="${not isThreadList}" th:text="${i.count + ' |'}"></span>
+            <span class="post_timestamp" th:text="${#calendars.format(post.timestamp, 'dd.MM.YYYY, HH:mm:ss')}"></span> |
+            <span class="poster_name" th:text="${post.name}"></span>
+        </div>
+        <div class="post_content" th:text="${post.message}"></div>
+    </div>
+</div>
+</body>
+</html>
