@@ -1,6 +1,12 @@
 <html>
 <head></head>
 <body>
+<div th:fragment="header">
+    <div class="block">
+        <span class="greeting" th:text="#{karaka.greeting}"></span>
+        <span class="right_align" th:text="#{karaka.settings}"></span>
+    </div>
+</div>
 <div class="post_list" th:fragment="postList (posts, isThreadList)">
     <div class="post" th:each="post,i: ${posts}" th:id="${post.postId}">
         <div class="post_header" th:with="link=${isThreadList}? ${#httpServletRequest.requestURI +
