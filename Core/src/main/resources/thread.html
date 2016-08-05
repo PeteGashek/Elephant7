@@ -4,5 +4,8 @@
 <body>
 <div th:replace="templates :: header"></div>
 <div th:replace="templates :: postList (${posts}, false)"></div>
+<div>
+    <a th:href="@{${'/' + boardCode}}" th:text="#{thread.backtoboard}"></a>
+</div>
 </body>
 </html>

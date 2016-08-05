@@ -35,6 +35,7 @@ public class BoardController {
 	@RequestMapping("/{boardCode}/{threadId}")
 	public String thread(@Valid BoardCodeWrapper boardCode, @PathVariable long threadId, Model model) {
 		model.addAttribute("posts", postDb.getPosts(boardCode.toString(), threadId, 0, 0));
+		model.addAttribute("boardCode", boardCode.toString());
 		return "thread";
 	}
 
