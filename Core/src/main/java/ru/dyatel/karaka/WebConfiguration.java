@@ -47,6 +47,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		templateResolver.setPrefix("resources/");
 		templateResolver.setSuffix(".html");
 		templateResolver.setTemplateMode(TemplateMode.HTML);
+		templateResolver.setCacheable(false);
 		return templateResolver;
 	}
 
