@@ -11,6 +11,7 @@ import ru.dyatel.karaka.boards.BoardCodeWrapper;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.threads.Post;
 import ru.dyatel.karaka.threads.PostDao;
+import ru.dyatel.karaka.threads.ThreadManager;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class ApiController {
 	@Autowired
 	private PostDao postDb;
 
+	@Autowired
+	private ThreadManager threadManager;
+
 	@RequestMapping("/test")
 	public String test() {
 		return "Hello, World!";
@@ -39,7 +43,7 @@ public class ApiController {
 	@RequestMapping(value = "/{boardCode}", method = RequestMethod.GET)
 	public ApiResponse threadList(@Valid BoardCodeWrapper boardCode,
 								  @RequestParam(required = false, defaultValue = "20") int count) {
-		return new ApiResponse(ApiResponse.OK_CODE, postDb.getLatestThreads(boardCode.toString(), count));
+		return new ApiResponse(ApiResponse.OK_CODE, threadManager.getLatestThreads(boardCode.toString(), count, 0));
 	}
 
 	@RequestMapping(value = "/{boardCode}/{threadId}", method = RequestMethod.GET)

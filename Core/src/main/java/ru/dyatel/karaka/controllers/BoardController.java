@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.dyatel.karaka.boards.BoardCodeWrapper;
 import ru.dyatel.karaka.threads.Post;
 import ru.dyatel.karaka.threads.PostDao;
+import ru.dyatel.karaka.threads.ThreadManager;
 import ru.dyatel.karaka.util.PostUtil;
 
 import javax.validation.Valid;
@@ -20,13 +21,19 @@ public class BoardController {
 	@Autowired
 	private PostDao postDb;
 
+	@Autowired
+	private ThreadManager threadManager;
+
 	@RequestMapping("/{boardCode:(?!api|static).*$}")
 	public String threadList(@Valid BoardCodeWrapper boardCode,
 							 @RequestParam(required = false, defaultValue = "0") int page, Model model) {
+		List<Long> threadIds = threadManager.getLatestThreads(boardCode.toString(), 10, page * 10);
 		List<Post> threads = postDb.getPostsById(boardCode.toString(), threadIds);
 		PostUtil.sortByThreadIdList(threads, threadIds);
 		model.addAttribute("threads", threads);
 		model.addAttribute("boardCode", boardCode.toString());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("pages", Math.ceil(threadManager.getThreadCount(boardCode.toString()) / 10));
 		return "board";
 	}
 

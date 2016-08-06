@@ -4,5 +4,12 @@
 <body>
 <div th:replace="templates :: header"></div>
 <div th:replace="templates :: postList (${threads}, true)"></div>
+<div class="paginator" th:if="${pages > 1}">
+    <th:block th:each="page: ${#numbers.sequence(0, pages - 1)}">
+        <span th:if="${page == currentPage}" th:text="${'[' + page + ']'} "></span>
+        <a th:if="${page != currentPage}"
+           th:href="@{${'/' + boardCode + '?page=' + page}}" th:text="${'[' + page + ']'} "></a>
+    </th:block>
+</div>
 </body>
 </html>
