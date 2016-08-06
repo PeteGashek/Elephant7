@@ -1,20 +1,19 @@
-package ru.dyatel.karaka.boards;
+package ru.dyatel.karaka.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.dyatel.karaka.threads.PostTable;
-import ru.dyatel.karaka.threads.ThreadInfoTable;
+import ru.dyatel.karaka.boards.Board;
 import ru.dyatel.karaka.util.BoardUtil;
 
 import java.util.Map;
 
-import static ru.dyatel.karaka.threads.PostTable.MESSAGE_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.NAME_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.POST_ID_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.TIMESTAMP_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.TYPE_COLUMN;
-import static ru.dyatel.karaka.threads.ThreadInfoTable.LAST_POST_ID_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.MESSAGE_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.NAME_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.POST_ID_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.TIMESTAMP_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.TYPE_COLUMN;
+import static ru.dyatel.karaka.data.ThreadInfoTable.LAST_POST_ID_COLUMN;
 
 @Component
 public class BoardTableManagerImpl implements BoardTableManager {

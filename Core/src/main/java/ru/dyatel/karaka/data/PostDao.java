@@ -1,4 +1,6 @@
-package ru.dyatel.karaka.threads;
+package ru.dyatel.karaka.data;
+
+import ru.dyatel.karaka.threads.Post;
 
 import java.util.List;
 

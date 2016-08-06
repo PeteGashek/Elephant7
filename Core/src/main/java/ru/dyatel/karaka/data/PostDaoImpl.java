@@ -1,4 +1,4 @@
-package ru.dyatel.karaka.threads;
+package ru.dyatel.karaka.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.dyatel.karaka.boards.Board;
 import ru.dyatel.karaka.boards.BoardConfiguration;
+import ru.dyatel.karaka.threads.Post;
+import ru.dyatel.karaka.threads.PostType;
+import ru.dyatel.karaka.threads.ThreadManager;
 import ru.dyatel.karaka.util.BoardUtil;
 
 import java.sql.ResultSet;
@@ -21,12 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ru.dyatel.karaka.threads.PostTable.MESSAGE_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.NAME_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.POST_ID_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.TIMESTAMP_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.TYPE_COLUMN;
-import static ru.dyatel.karaka.threads.ThreadInfoTable.LAST_POST_ID_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.MESSAGE_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.NAME_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.POST_ID_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.TIMESTAMP_COLUMN;
+import static ru.dyatel.karaka.data.PostTable.TYPE_COLUMN;
+import static ru.dyatel.karaka.data.ThreadInfoTable.LAST_POST_ID_COLUMN;
 
 @Repository
 public class PostDaoImpl implements PostDao {

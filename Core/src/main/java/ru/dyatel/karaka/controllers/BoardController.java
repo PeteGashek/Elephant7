@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.dyatel.karaka.boards.BoardCodeWrapper;
 import ru.dyatel.karaka.threads.Post;
-import ru.dyatel.karaka.threads.PostDao;
+import ru.dyatel.karaka.data.PostDao;
 import ru.dyatel.karaka.threads.ThreadManager;
 import ru.dyatel.karaka.util.PostUtil;
 

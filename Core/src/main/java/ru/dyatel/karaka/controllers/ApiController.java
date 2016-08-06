@@ -10,7 +10,7 @@ import ru.dyatel.karaka.ApiResponse;
 import ru.dyatel.karaka.boards.BoardCodeWrapper;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.threads.Post;
-import ru.dyatel.karaka.threads.PostDao;
+import ru.dyatel.karaka.data.PostDao;
 import ru.dyatel.karaka.threads.ThreadManager;
 
 import javax.validation.Valid;

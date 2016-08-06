@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ru.dyatel.karaka.threads.ThreadInfoTable.LAST_POST_ID_COLUMN;
-import static ru.dyatel.karaka.threads.ThreadInfoTable.THREAD_ID_COLUMN;
+import static ru.dyatel.karaka.data.ThreadInfoTable.LAST_POST_ID_COLUMN;
+import static ru.dyatel.karaka.data.ThreadInfoTable.THREAD_ID_COLUMN;
 
 
 @Component
