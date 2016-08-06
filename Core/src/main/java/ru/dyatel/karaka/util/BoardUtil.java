@@ -7,12 +7,19 @@ import java.nio.file.Path;
 public class BoardUtil {
 
 	private static final String POST_TABLE_PREFIX = "posts_";
+	private static final String THREAD_TABLE_PREFIX = "threads_";
 	private static final String ATTACHMENT_TABLE_PREFIX = "attachments_";
 
 	public static String getPostTable(String boardName, Board board) {
 		String table = board.getPostTable();
 		if (table != null) return table;
 		return POST_TABLE_PREFIX + boardName;
+	}
+
+	public static String getThreadTable(String boardName, Board board) {
+		String table = board.getThreadTable();
+		if (table != null) return table;
+		return THREAD_TABLE_PREFIX + boardName;
 	}
 
 	public static String getAttachmentTable(String boardName, Board board) {

@@ -6,6 +6,7 @@ public class Board {
 	private boolean readOnly = false;
 
 	private String postTable = null;
+	private String threadTable = null;
 	private String attachmentTable = null;
 
 	private String attachmentDir = null;
@@ -38,6 +39,14 @@ public class Board {
 
 	public void setPostTable(String postTable) {
 		this.postTable = postTable;
+	}
+
+	public String getThreadTable() {
+		return threadTable;
+	}
+
+	public void setThreadTable(String threadTable) {
+		this.threadTable = threadTable;
 	}
 
 	public String getAttachmentTable() {
@@ -101,6 +110,7 @@ public class Board {
 		if (maxPages != board.maxPages) return false;
 		if (!name.equals(board.name)) return false;
 		if (postTable != null ? !postTable.equals(board.postTable) : board.postTable != null) return false;
+		if (threadTable != null ? !threadTable.equals(board.threadTable) : board.threadTable != null) return false;
 		if (attachmentTable != null ? !attachmentTable.equals(board.attachmentTable) : board.attachmentTable != null)
 			return false;
 		return defaultUsername.equals(board.defaultUsername);
@@ -111,6 +121,7 @@ public class Board {
 		int result = name.hashCode();
 		result = 31 * result + (readOnly ? 1 : 0);
 		result = 31 * result + (postTable != null ? postTable.hashCode() : 0);
+		result = 31 * result + (threadTable != null ? threadTable.hashCode() : 0);
 		result = 31 * result + (attachmentTable != null ? attachmentTable.hashCode() : 0);
 		result = 31 * result + maxAttachmentsSize;
 		result = 31 * result + bumpLimit;
@@ -118,4 +129,5 @@ public class Board {
 		result = 31 * result + defaultUsername.hashCode();
 		return result;
 	}
+
 }
