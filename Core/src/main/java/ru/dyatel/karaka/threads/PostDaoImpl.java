@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.dyatel.karaka.boards.Board;
 import ru.dyatel.karaka.boards.BoardConfiguration;
@@ -65,6 +66,7 @@ public class PostDaoImpl implements PostDao {
 			POST_ID_COLUMN, TIMESTAMP_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN, PostTable.THREAD_ID_COLUMN);
 
 	@Override
+	@Transactional
 	public void post(String boardName, Post post) {
 		boolean isThread = post.getThreadId() == 0;
 		Board board = boardConfig.getBoards().get(boardName);
