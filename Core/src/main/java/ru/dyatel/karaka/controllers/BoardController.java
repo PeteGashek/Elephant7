@@ -20,11 +20,9 @@ public class BoardController {
 	@Autowired
 	private PostDao postDb;
 
-	@RequestMapping("/{boardCode}")
+	@RequestMapping("/{boardCode:(?!api|static).*$}")
 	public String threadList(@Valid BoardCodeWrapper boardCode,
 							 @RequestParam(required = false, defaultValue = "0") int page, Model model) {
-		// TODO: pagination
-		List<Long> threadIds = postDb.getLatestThreads(boardCode.toString(), 10);
 		List<Post> threads = postDb.getPostsById(boardCode.toString(), threadIds);
 		PostUtil.sortByThreadIdList(threads, threadIds);
 		model.addAttribute("threads", threads);
@@ -32,7 +30,7 @@ public class BoardController {
 		return "board";
 	}
 
-	@RequestMapping("/{boardCode}/{threadId}")
+	@RequestMapping("/{boardCode:(?!api|static).*$}/{threadId}")
 	public String thread(@Valid BoardCodeWrapper boardCode, @PathVariable long threadId, Model model) {
 		model.addAttribute("posts", postDb.getPosts(boardCode.toString(), threadId, 0, 0));
 		model.addAttribute("boardCode", boardCode.toString());
