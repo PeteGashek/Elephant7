@@ -5,22 +5,26 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import ru.dyatel.karaka.boards.Board;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.util.BoardUtil;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static ru.dyatel.karaka.threads.PostTable.MESSAGE_COLUMN;
 import static ru.dyatel.karaka.threads.PostTable.NAME_COLUMN;
 import static ru.dyatel.karaka.threads.PostTable.POST_ID_COLUMN;
-import static ru.dyatel.karaka.threads.PostTable.THREAD_ID_COLUMN;
 import static ru.dyatel.karaka.threads.PostTable.TIMESTAMP_COLUMN;
 import static ru.dyatel.karaka.threads.PostTable.TYPE_COLUMN;
+import static ru.dyatel.karaka.threads.ThreadInfoTable.LAST_POST_ID_COLUMN;
 
 @Repository
 public class PostDaoImpl implements PostDao {
@@ -33,22 +37,23 @@ public class PostDaoImpl implements PostDao {
 	@Autowired
 	private BoardConfiguration boardConfig;
 
-	private static final String INSERT_QUERY = String.format("INSERT INTO %%s (%s, %s, %s, %s) " +
-					"VALUES (?, ?, ?, ?)",
-			THREAD_ID_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN);
+	@Autowired
+	private ThreadManager threadManager;
 
-	private static final String SELECT_LATEST_THREADS_QUERY = String.format("SELECT DISTINCT " +
-					"CASE WHEN %1$s = 0 THEN %2$s ELSE %1$s END %1$s " +
-					"FROM %%s " +
-					"ORDER BY %2$s DESC " +
-					"LIMIT ?",
-			THREAD_ID_COLUMN, POST_ID_COLUMN);
+	private static final String INSERT_THREAD_INFO_QUERY = String.format("INSERT INTO %%s(%s, %s)" +
+					"VALUES (?, ?)",
+			LAST_POST_ID_COLUMN, ThreadInfoTable.THREAD_ID_COLUMN);
+
+	private static final String UPDATE_LAST_POST_IN_THREAD_QUERY = String.format("UPDATE %%s " +
+					"SET %s = ? " +
+					"WHERE %s = ?",
+			LAST_POST_ID_COLUMN, ThreadInfoTable.THREAD_ID_COLUMN);
 
 	private static final String SELECT_POSTS_QUERY = String.format("SELECT %s, %s, %s, %s, %s " +
 					"FROM %%s " +
 					"WHERE %s = ? OR %1$s = ? " +
 					"ORDER BY %1$s",
-			POST_ID_COLUMN, TIMESTAMP_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN, THREAD_ID_COLUMN);
+			POST_ID_COLUMN, TIMESTAMP_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN, PostTable.THREAD_ID_COLUMN);
 
 	private static final String SELECT_POSTS_LIMITED_QUERY = SELECT_POSTS_QUERY + " LIMIT ? OFFSET ?";
 
@@ -56,19 +61,33 @@ public class PostDaoImpl implements PostDao {
 					"CASE WHEN %6$s = 0 THEN %1$s ELSE %6$s END %6s " +
 					"FROM %%s " +
 					"WHERE %1$s IN (:ids)",
-			POST_ID_COLUMN, TIMESTAMP_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN, THREAD_ID_COLUMN);
+			POST_ID_COLUMN, TIMESTAMP_COLUMN, TYPE_COLUMN, NAME_COLUMN, MESSAGE_COLUMN, PostTable.THREAD_ID_COLUMN);
 
 	@Override
 	public void post(String boardName, Post post) {
-		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
-		db.update(String.format(INSERT_QUERY, table),
-				post.getThreadId(), post.getType().toString(), post.getName(), post.getMessage());
-	}
+		boolean isThread = post.getThreadId() == 0;
+		Board board = boardConfig.getBoards().get(boardName);
 
-	@Override
-	public List<Long> getLatestThreads(String boardName, int count) {
-		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
-		return db.queryForList(String.format(SELECT_LATEST_THREADS_QUERY, table), Long.class, count);
+		SimpleJdbcInsert insert = new SimpleJdbcInsert(db)
+				.withTableName(BoardUtil.getPostTable(boardName, board))
+				.usingGeneratedKeyColumns(POST_ID_COLUMN);
+		Map<String, Object> fields = new HashMap<>();
+		fields.put(PostTable.THREAD_ID_COLUMN, post.getThreadId());
+		fields.put(TYPE_COLUMN, post.getType());
+		fields.put(NAME_COLUMN, post.getName());
+		fields.put(MESSAGE_COLUMN, post.getMessage());
+
+		post.setPostId(insert.executeAndReturnKey(fields).longValue());
+		if (isThread) post.setThreadId(post.getPostId());
+
+		String sql;
+		if (isThread) sql = INSERT_THREAD_INFO_QUERY;
+		else sql = UPDATE_LAST_POST_IN_THREAD_QUERY;
+
+		db.update(String.format(sql, BoardUtil.getThreadTable(boardName, boardConfig.getBoards().get(boardName))),
+				post.getPostId(), post.getThreadId());
+
+		threadManager.onNewPost(boardName, post.getThreadId());
 	}
 
 	@Override
@@ -106,8 +125,8 @@ public class PostDaoImpl implements PostDao {
 			Long threadId = null;
 			ResultSetMetaData metaData = rs.getMetaData();
 			for (int i = 1; i <= metaData.getColumnCount(); i++) {
-				if (metaData.getColumnName(i).equals(THREAD_ID_COLUMN)) {
-					threadId = rs.getLong(THREAD_ID_COLUMN);
+				if (metaData.getColumnName(i).equals(PostTable.THREAD_ID_COLUMN)) {
+					threadId = rs.getLong(PostTable.THREAD_ID_COLUMN);
 					break;
 				}
 			}
