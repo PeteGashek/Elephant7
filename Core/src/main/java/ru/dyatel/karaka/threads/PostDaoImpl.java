@@ -15,6 +15,7 @@ import ru.dyatel.karaka.util.BoardUtil;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +107,7 @@ public class PostDaoImpl implements PostDao {
 
 	@Override
 	public List<Post> getPostsById(String boardName, List<Long> ids) {
+		if (ids.size() == 0) return Collections.emptyList();
 		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
 		return namedDb.query(String.format(SELECT_POSTS_BY_ID_QUERY, table),
 				new MapSqlParameterSource("ids", ids),
