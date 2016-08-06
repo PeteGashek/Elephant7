@@ -42,6 +42,14 @@ public class PostDaoImpl implements PostDao {
 	@Autowired
 	private ThreadManager threadManager;
 
+	private static final String DELETE_THREAD_QUERY = String.format("DELETE FROM %%s " +
+					"WHERE %s = ? OR %s = ?",
+			POST_ID_COLUMN, PostTable.THREAD_ID_COLUMN);
+
+	private static final String DELETE_THREAD_INFO_QUERY = String.format("DELETE FROM %%s " +
+					"WHERE %s = ?",
+			ThreadInfoTable.THREAD_ID_COLUMN);
+
 	private static final String INSERT_THREAD_INFO_QUERY = String.format("INSERT INTO %%s(%s, %s)" +
 					"VALUES (?, ?)",
 			LAST_POST_ID_COLUMN, ThreadInfoTable.THREAD_ID_COLUMN);
@@ -91,6 +99,19 @@ public class PostDaoImpl implements PostDao {
 				post.getPostId(), post.getThreadId());
 
 		threadManager.onNewPost(boardName, post.getThreadId());
+	}
+
+	@Override
+	@Transactional
+	public void deleteThread(String boardName, long threadId) {
+		Board board = boardConfig.getBoards().get(boardName);
+
+		db.update(String.format(DELETE_THREAD_QUERY, BoardUtil.getPostTable(boardName, board)),
+				threadId, threadId);
+		db.update(String.format(DELETE_THREAD_INFO_QUERY, BoardUtil.getThreadTable(boardName, board)),
+				threadId);
+
+		threadManager.onDeleteThread(boardName, threadId);
 	}
 
 	@Override

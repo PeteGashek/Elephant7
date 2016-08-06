@@ -45,6 +45,12 @@ public class CachingThreadManager implements ThreadManager {
 	}
 
 	@Override
+	public void onDeleteThread(String boardName, Long threadId) {
+		ensureInitialized(boardName);
+		cache.get(boardName).remove(threadId);
+	}
+
+	@Override
 	public List<Long> getLatestThreads(String boardName, int count, int offset) {
 		ensureInitialized(boardName);
 
