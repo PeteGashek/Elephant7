@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.dyatel.karaka.ApiResponse;
 import ru.dyatel.karaka.boards.BoardCodeWrapper;
 import ru.dyatel.karaka.boards.BoardConfiguration;
-import ru.dyatel.karaka.threads.Post;
+import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.data.PostDao;
-import ru.dyatel.karaka.threads.ThreadManager;
+import ru.dyatel.karaka.posts.ThreadManager;
 
 import javax.validation.Valid;
 import java.util.ArrayList;

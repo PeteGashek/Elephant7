@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.dyatel.karaka.boards.Board;
 import ru.dyatel.karaka.boards.BoardConfiguration;
-import ru.dyatel.karaka.threads.Post;
-import ru.dyatel.karaka.threads.PostType;
-import ru.dyatel.karaka.threads.ThreadManager;
+import ru.dyatel.karaka.posts.Post;
+import ru.dyatel.karaka.posts.PostType;
+import ru.dyatel.karaka.posts.ThreadManager;
 import ru.dyatel.karaka.util.BoardUtil;
 
 import java.sql.ResultSet;

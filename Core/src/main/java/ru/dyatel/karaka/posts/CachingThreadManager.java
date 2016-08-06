@@ -1,4 +1,4 @@
-package ru.dyatel.karaka.threads;
+package ru.dyatel.karaka.posts;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

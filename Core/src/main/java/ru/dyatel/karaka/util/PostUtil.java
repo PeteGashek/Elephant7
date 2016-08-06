@@ -1,6 +1,6 @@
 package ru.dyatel.karaka.util;
 
-import ru.dyatel.karaka.threads.Post;
+import ru.dyatel.karaka.posts.Post;
 
 import java.util.List;
 

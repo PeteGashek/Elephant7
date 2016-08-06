@@ -1,4 +1,4 @@
-package ru.dyatel.karaka.threads;
+package ru.dyatel.karaka.posts;
 
 import org.hibernate.validator.constraints.NotBlank;
 import ru.dyatel.karaka.ApiError;

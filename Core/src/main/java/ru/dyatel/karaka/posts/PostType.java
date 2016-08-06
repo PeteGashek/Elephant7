@@ -1,4 +1,4 @@
-package ru.dyatel.karaka.threads;
+package ru.dyatel.karaka.posts;
 
 public enum PostType {
 
