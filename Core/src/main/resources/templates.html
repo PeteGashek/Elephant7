@@ -12,7 +12,7 @@
         <div class="post_header" th:with="link=${isThreadList}? ${#httpServletRequest.requestURI +
         (#strings.endsWith(#httpServletRequest.requestURI, '/')? '' : '/') + post.threadId} : ${'#' + post.postId}">
             <a th:href="@{${link}}"><span class="post_id" th:text="${'#' + post.postId}"></span></a> |
-            <span class="post_number" th:if="${not isThreadList}" th:text="${i.count + ' |'}"></span>
+            <th:block th:if="${not isThreadList}"><span class="post_number" th:text="${i.count}"></span> |</th:block>
             <span class="post_timestamp" th:text="${#calendars.format(post.timestamp, 'dd.MM.YYYY, HH:mm:ss')}"></span> |
             <span th:class="${#strings.equals(post.type, 'OP')}? 'post_op' :
             (${#strings.equals(post.type, 'SAGE')}? 'post_sage' : 'post_normal')" th:text="${post.name}"></span>
