@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ThreadManager {
 
-	void onNewPost(String boardName, Long threadId);
+	void onPostCreate(String boardName, Long threadId);
 
 	void onDeleteThread(String boardName, Long threadId);
 

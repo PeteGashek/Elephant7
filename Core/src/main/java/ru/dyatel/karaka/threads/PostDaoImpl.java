@@ -98,7 +98,7 @@ public class PostDaoImpl implements PostDao {
 		db.update(String.format(sql, BoardUtil.getThreadTable(boardName, boardConfig.getBoards().get(boardName))),
 				post.getPostId(), post.getThreadId());
 
-		threadManager.onNewPost(boardName, post.getThreadId());
+		threadManager.onPostCreate(boardName, post.getThreadId());
 	}
 
 	@Override

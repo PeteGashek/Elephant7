@@ -36,7 +36,7 @@ public class CachingThreadManager implements ThreadManager {
 	private Map<String, List<Long>> cache = new HashMap<>();
 
 	@Override
-	public void onNewPost(String boardName, Long threadId) {
+	public void onPostCreate(String boardName, Long threadId) {
 		ensureInitialized(boardName);
 
 		List<Long> threads = cache.get(boardName);
