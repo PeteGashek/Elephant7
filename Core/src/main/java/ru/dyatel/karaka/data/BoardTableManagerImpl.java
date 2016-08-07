@@ -27,7 +27,7 @@ public class BoardTableManagerImpl implements BoardTableManager {
 			db.execute("CREATE TABLE IF NOT EXISTS " + BoardUtil.getPostTable(name, board) + " (" +
 					POST_ID_COLUMN + " INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, " +
 					PostTable.THREAD_ID_COLUMN + " INT UNSIGNED, " +
-					TIMESTAMP_COLUMN + " TIMESTAMP, " +
+					TIMESTAMP_COLUMN + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
 					TYPE_COLUMN + " VARCHAR(8), " +
 					NAME_COLUMN + " VARCHAR(32), " +
 					MESSAGE_COLUMN + " TEXT" +
