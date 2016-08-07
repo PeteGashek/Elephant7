@@ -10,6 +10,7 @@ import ru.dyatel.karaka.ApiResponse;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.data.PostDao;
 import ru.dyatel.karaka.posts.Post;
+import ru.dyatel.karaka.posts.PostType;
 import ru.dyatel.karaka.posts.ThreadManager;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
 import ru.dyatel.karaka.validation.PostValidator;
@@ -75,6 +76,7 @@ public class ApiController {
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
 	public ApiResponse createThread(@PathVariable String boardCode, Post post) {
 		post.setThreadId(0L);
+		post.setType(PostType.OP);
 		return post(boardCode, post);
 	}
 
