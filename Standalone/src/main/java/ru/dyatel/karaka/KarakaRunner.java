@@ -5,8 +5,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 @EnableAutoConfiguration(exclude = {ThymeleafAutoConfiguration.class, ErrorMvcAutoConfiguration.class})
+@PropertySource("file:resources/application.properties")
 @Import(SpringConfiguration.class)
 public class KarakaRunner {
 

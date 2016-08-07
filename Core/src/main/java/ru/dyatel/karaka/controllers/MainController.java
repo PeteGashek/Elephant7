@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.dyatel.karaka.PageNotFoundException;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 
 @Controller
@@ -17,11 +16,6 @@ public class MainController {
 	public String index(Model model) {
 		model.addAttribute("boards", boardConfig.getBoards().keySet());
 		return "index";
-	}
-
-	@RequestMapping("/**")
-	public void noMapping() {
-		throw new PageNotFoundException();
 	}
 
 }

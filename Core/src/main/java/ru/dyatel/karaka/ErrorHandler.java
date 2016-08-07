@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.dyatel.karaka.validation.exceptions.NotValidBoardCodeException;
 import ru.dyatel.karaka.validation.exceptions.NotValidThreadException;
 
@@ -21,7 +22,7 @@ public class ErrorHandler {
 		return "error/500";
 	}
 
-	@ExceptionHandler({NotValidBoardCodeException.class, NotValidThreadException.class, PageNotFoundException.class})
+	@ExceptionHandler({NotValidBoardCodeException.class, NotValidThreadException.class, NoHandlerFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String notFound() {
 		return "error/404";
