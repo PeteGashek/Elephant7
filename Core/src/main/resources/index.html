@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<div th:replace="templates :: header"></div>
+<th:block th:each="board: ${boards}">
+    <a th:href="@{${'/' + board}}" th:text="${'/' + board + '/'} "></a>
+</th:block>
+</body>
+</html>
