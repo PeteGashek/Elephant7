@@ -1,6 +1,6 @@
 package ru.dyatel.karaka.validation;
 
-public class NotValidBoardCodeException extends IllegalArgumentException {
+public class NotValidBoardCodeException extends ValidationException {
 
 	public NotValidBoardCodeException() {
 	}
