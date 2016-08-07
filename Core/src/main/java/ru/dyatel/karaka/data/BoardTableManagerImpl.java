@@ -29,8 +29,8 @@ public class BoardTableManagerImpl implements BoardTableManager {
 					PostTable.THREAD_ID_COLUMN + " INT UNSIGNED, " +
 					TIMESTAMP_COLUMN + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
 					TYPE_COLUMN + " VARCHAR(8), " +
-					NAME_COLUMN + " VARCHAR(32), " +
-					MESSAGE_COLUMN + " TEXT" +
+					NAME_COLUMN + " VARCHAR(32) CHARACTER SET utf8, " +
+					MESSAGE_COLUMN + " TEXT CHARACTER SET utf8" +
 					")"
 			);
 			db.execute("CREATE TABLE IF NOT EXISTS " + BoardUtil.getThreadTable(name, board) + " (" +
