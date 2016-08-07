@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dyatel.karaka.ApiResponse;
 import ru.dyatel.karaka.boards.BoardConfiguration;
-import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.data.PostDao;
+import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.posts.ThreadManager;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
 import ru.dyatel.karaka.validation.PostValidator;
 import ru.dyatel.karaka.validation.ThreadIdValidator;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,14 +73,13 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
-	public ApiResponse createThread(@PathVariable String boardCode, @Valid Post post) {
-		boardValidator.validate(boardCode);
+	public ApiResponse createThread(@PathVariable String boardCode, Post post) {
 		post.setThreadId(0L);
 		return post(boardCode, post);
 	}
 
 	@RequestMapping(value = "/{boardCode}/{threadId}/post", method = RequestMethod.POST)
-	public ApiResponse post(@PathVariable String boardCode, @Valid Post post) {
+	public ApiResponse post(@PathVariable String boardCode, Post post) {
 		boardValidator.validate(boardCode);
 		threadIdValidator.validate(boardCode, post.getThreadId());
 		postValidator.validate(post);
