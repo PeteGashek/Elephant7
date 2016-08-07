@@ -1,7 +1,6 @@
 package ru.dyatel.karaka.posts;
 
 import org.hibernate.validator.constraints.NotBlank;
-import ru.dyatel.karaka.ApiError;
 
 public class Post {
 
@@ -13,7 +12,7 @@ public class Post {
 	private PostType type = PostType.NORMAL;
 
 	private String name = "";
-	@NotBlank(message = ApiError.Message.EMPTY_MESSAGE)
+	@NotBlank(message = "Message is empty")
 	private String message = null;
 
 	public Long getPostId() {
