@@ -5,14 +5,6 @@ public class BoardCodeWrapper {
 	@BoardCode
 	private String boardCode = null;
 
-	public String getBoardCode() {
-		return boardCode;
-	}
-
-	public void setBoardCode(String boardCode) {
-		this.boardCode = boardCode;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

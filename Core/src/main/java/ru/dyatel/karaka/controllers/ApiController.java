@@ -68,7 +68,7 @@ public class ApiController {
 
 	@RequestMapping(value = "/{boardCode}/{threadId}/post", method = RequestMethod.POST)
 	public ApiResponse post(@Valid BoardCodeWrapper boardCode, @Valid Post post) {
-		postDb.post(boardCode.getBoardCode(), post);
+		postDb.post(boardCode.toString(), post);
 		return ApiResponse.OK;
 	}
 
