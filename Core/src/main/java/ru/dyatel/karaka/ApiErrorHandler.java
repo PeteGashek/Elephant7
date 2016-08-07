@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.dyatel.karaka.validation.exceptions.EmptyPostException;
 import ru.dyatel.karaka.validation.exceptions.NotValidBoardCodeException;
 import ru.dyatel.karaka.validation.exceptions.NotValidThreadException;
+import ru.dyatel.karaka.validation.exceptions.ValidationException;
 
 @ControllerAdvice(annotations = RestController.class)
 @ResponseBody
@@ -44,7 +45,7 @@ public class ApiErrorHandler {
 		return ApiError.EMPTY_POST;
 	}
 
-	@ExceptionHandler(BindException.class)
+	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ApiResponse bindingFailure(BindException e) {
 		return ApiError.UNKNOWN_VALIDATION_ERROR;

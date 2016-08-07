@@ -1,0 +1,30 @@
+package ru.dyatel.karaka;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.dyatel.karaka.validation.exceptions.NotValidBoardCodeException;
+import ru.dyatel.karaka.validation.exceptions.NotValidThreadException;
+
+@ControllerAdvice
+public class ErrorHandler {
+
+	private Logger log = LoggerFactory.getLogger(ErrorHandler.class);
+
+	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public String fallback(Exception e) {
+		log.error("Caught an unhandled exception", e);
+		return "error/500";
+	}
+
+	@ExceptionHandler({NotValidBoardCodeException.class, NotValidThreadException.class, PageNotFoundException.class})
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public String notFound() {
+		return "error/404";
+	}
+
+}
