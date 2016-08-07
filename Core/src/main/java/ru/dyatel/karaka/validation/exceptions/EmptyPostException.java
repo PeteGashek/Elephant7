@@ -1,4 +1,4 @@
-package ru.dyatel.karaka.validation;
+package ru.dyatel.karaka.validation.exceptions;
 
 public class EmptyPostException extends ValidationException {
 

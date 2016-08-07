@@ -3,6 +3,7 @@ package ru.dyatel.karaka.validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.dyatel.karaka.posts.ThreadManager;
+import ru.dyatel.karaka.validation.exceptions.NotValidThreadException;
 
 @Component
 public class ThreadIdValidator {

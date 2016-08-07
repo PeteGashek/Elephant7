@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.dyatel.karaka.validation.EmptyPostException;
-import ru.dyatel.karaka.validation.NotValidBoardCodeException;
-import ru.dyatel.karaka.validation.NotValidThreadException;
+import ru.dyatel.karaka.validation.exceptions.EmptyPostException;
+import ru.dyatel.karaka.validation.exceptions.NotValidBoardCodeException;
+import ru.dyatel.karaka.validation.exceptions.NotValidThreadException;
 
 @ControllerAdvice(annotations = RestController.class)
 @ResponseBody
