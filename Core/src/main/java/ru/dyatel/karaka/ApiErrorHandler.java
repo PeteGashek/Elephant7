@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.dyatel.karaka.validation.NotValidBoardCodeException;
 
 @ControllerAdvice(annotations = RestController.class)
 @ResponseBody
@@ -22,6 +23,12 @@ public class ApiErrorHandler {
 	public ApiResponse fallback(Exception e) {
 		log.error("Caught an unhandled exception", e);
 		return ApiError.INTERNAL_ERROR;
+	}
+
+	@ExceptionHandler(NotValidBoardCodeException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ApiResponse notValidBoardCode() {
+		return ApiError.NO_SUCH_BOARD;
 	}
 
 	@ExceptionHandler(BindException.class)
