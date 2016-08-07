@@ -79,7 +79,6 @@ public class PostDaoImpl implements PostDao {
 	@Override
 	@Transactional
 	public void post(String boardName, Post post) {
-		boolean isThread = post.getThreadId() == 0;
 		Board board = boardConfig.getBoards().get(boardName);
 
 		SimpleJdbcInsert insert = new SimpleJdbcInsert(db)
@@ -90,12 +89,15 @@ public class PostDaoImpl implements PostDao {
 		fields.put(TYPE_COLUMN, post.getType());
 		fields.put(NAME_COLUMN, post.getName());
 		fields.put(MESSAGE_COLUMN, post.getMessage());
-
 		post.setPostId(insert.executeAndReturnKey(fields).longValue());
-		if (isThread) post.setThreadId(post.getPostId());
+
+		if (PostType.SAGE.equals(post.getType())) return;
 
 		String sql;
-		if (isThread) sql = INSERT_THREAD_INFO_QUERY;
+		if (post.getThreadId() == 0) {
+			post.setThreadId(post.getPostId());
+			sql = INSERT_THREAD_INFO_QUERY;
+		}
 		else sql = UPDATE_LAST_POST_IN_THREAD_QUERY;
 
 		db.update(String.format(sql, BoardUtil.getThreadTable(boardName, boardConfig.getBoards().get(boardName))),
