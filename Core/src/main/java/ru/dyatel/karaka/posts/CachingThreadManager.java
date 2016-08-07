@@ -51,6 +51,12 @@ public class CachingThreadManager implements ThreadManager {
 	}
 
 	@Override
+	public boolean threadExists(String boardName, Long threadId) {
+		ensureInitialized(boardName);
+		return cache.get(boardName).contains(threadId);
+	}
+
+	@Override
 	public List<Long> getLatestThreads(String boardName, int count, int offset) {
 		ensureInitialized(boardName);
 

@@ -8,6 +8,8 @@ public interface ThreadManager {
 
 	void onDeleteThread(String boardName, Long threadId);
 
+	boolean threadExists(String boardName, Long threadId);
+
 	List<Long> getLatestThreads(String boardName, int count, int offset);
 
 	int getThreadCount(String boardName);
