@@ -12,6 +12,7 @@ import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.data.PostDao;
 import ru.dyatel.karaka.posts.ThreadManager;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
+import ru.dyatel.karaka.validation.ThreadIdValidator;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -23,8 +24,11 @@ public class ApiController {
 
 	@Autowired
 	private BoardConfiguration boardConfig;
+
 	@Autowired
 	private BoardCodeValidator boardValidator;
+	@Autowired
+	private ThreadIdValidator threadIdValidator;
 
 	@Autowired
 	private PostDao postDb;
@@ -54,6 +58,7 @@ public class ApiController {
 								@RequestParam(required = false, defaultValue = "0") int count,
 								@RequestParam(required = false, defaultValue = "0") int offset) {
 		boardValidator.validate(boardCode);
+		threadIdValidator.validate(boardCode, threadId);
 		return new ApiResponse(ApiResponse.OK_CODE, postDb.getPosts(boardCode, threadId, count, offset));
 	}
 
@@ -75,6 +80,7 @@ public class ApiController {
 	@RequestMapping(value = "/{boardCode}/{threadId}/post", method = RequestMethod.POST)
 	public ApiResponse post(@PathVariable String boardCode, @Valid Post post) {
 		boardValidator.validate(boardCode);
+		threadIdValidator.validate(boardCode, post.getThreadId());
 		postDb.post(boardCode, post);
 		return ApiResponse.OK;
 	}

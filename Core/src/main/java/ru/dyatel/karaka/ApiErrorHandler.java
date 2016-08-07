@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dyatel.karaka.validation.NotValidBoardCodeException;
+import ru.dyatel.karaka.validation.NotValidThreadException;
 
 @ControllerAdvice(annotations = RestController.class)
 @ResponseBody
@@ -29,6 +30,12 @@ public class ApiErrorHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ApiResponse notValidBoardCode() {
 		return ApiError.NO_SUCH_BOARD;
+	}
+
+	@ExceptionHandler(NotValidThreadException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ApiResponse notValidThread() {
+		return ApiError.NO_SUCH_THREAD;
 	}
 
 	@ExceptionHandler(BindException.class)

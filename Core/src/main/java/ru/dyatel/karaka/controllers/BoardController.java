@@ -11,6 +11,7 @@ import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.posts.ThreadManager;
 import ru.dyatel.karaka.util.PostUtil;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
+import ru.dyatel.karaka.validation.ThreadIdValidator;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class BoardController {
 
 	@Autowired
 	private BoardCodeValidator boardValidator;
+	@Autowired
+	private ThreadIdValidator threadIdValidator;
 
 	@Autowired
 	private PostDao postDb;
@@ -44,6 +47,7 @@ public class BoardController {
 	public String thread(@PathVariable String boardCode,
 						 @PathVariable long threadId, Model model) {
 		boardValidator.validate(boardCode);
+		threadIdValidator.validate(boardCode, threadId);
 		model.addAttribute("posts", postDb.getPosts(boardCode, threadId, 0, 0));
 		model.addAttribute("boardCode", boardCode);
 		return "thread";
