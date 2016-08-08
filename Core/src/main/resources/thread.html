@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head></head>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="/static/js/karaka.js"></script>
+</head>
 <body>
 <div th:replace="templates :: header"></div>
 <div th:replace="templates :: postList (${posts}, false)"></div>
-<div>
-    <a th:href="@{${'/' + boardCode}}" th:text="#{thread.backtoboard}"></a>
-</div>
+<div><a th:href="@{${'/' + boardCode}}" th:text="#{karaka.back}"></a></div>
+<div th:replace="templates :: postForm (${'/api/' + boardCode + '/' + threadId + '/post'}, true)"></div>
 </body>
 </html>

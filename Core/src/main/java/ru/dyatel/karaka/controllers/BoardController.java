@@ -50,6 +50,7 @@ public class BoardController {
 		threadIdValidator.validate(boardCode, threadId);
 		model.addAttribute("posts", postDb.getPosts(boardCode, threadId, 0, 0));
 		model.addAttribute("boardCode", boardCode);
+		model.addAttribute("threadId", threadId);
 		return "thread";
 	}
 
