@@ -3,6 +3,10 @@ function updateMessages() {
 }
 
 $(function() {
+    $("#thread_update").click(function() {
+        updateMessages();
+        return false;
+    });
     $("#post_send").click(function() {
         var nameField = $("#post_name");
         var messageField = $("#post_message");
