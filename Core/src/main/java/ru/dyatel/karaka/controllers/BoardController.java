@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.dyatel.karaka.data.PostDao;
 import ru.dyatel.karaka.posts.Post;
@@ -12,11 +13,15 @@ import ru.dyatel.karaka.posts.ThreadManager;
 import ru.dyatel.karaka.util.PostUtil;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
 import ru.dyatel.karaka.validation.ThreadIdValidator;
+import ru.dyatel.karaka.validation.exceptions.EmptyPostException;
 
 import java.util.List;
 
 @Controller
 public class BoardController {
+
+	@Autowired
+	private ApiController api;
 
 	@Autowired
 	private BoardCodeValidator boardValidator;
@@ -29,7 +34,7 @@ public class BoardController {
 	@Autowired
 	private ThreadManager threadManager;
 
-	@RequestMapping("/{boardCode:(?!api|static).*$}")
+	@RequestMapping(value = "/{boardCode:(?!api|static).*$}", method = RequestMethod.GET)
 	public String threadList(@PathVariable String boardCode,
 							 @RequestParam(required = false, defaultValue = "0") int page, Model model) {
 		boardValidator.validate(boardCode);
@@ -43,7 +48,7 @@ public class BoardController {
 		return "board";
 	}
 
-	@RequestMapping("/{boardCode:(?!api|static).*$}/{threadId}")
+	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId}", method = RequestMethod.GET)
 	public String thread(@PathVariable String boardCode,
 						 @PathVariable long threadId, Model model) {
 		boardValidator.validate(boardCode);
@@ -52,6 +57,28 @@ public class BoardController {
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("threadId", threadId);
 		return "thread";
+	}
+
+	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/post", method = RequestMethod.POST)
+	public String createThread(@PathVariable String boardCode, Post post, Model model) {
+		try {
+			return "redirect:/" + boardCode + "/" + api.createThread(boardCode, post).getMessage();
+		} catch (EmptyPostException e) {
+			model.addAttribute("backLink", boardCode);
+			return "error/post_error";
+		}
+	}
+
+	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId}/post", method = RequestMethod.POST)
+	public String post(@PathVariable String boardCode,
+					   @PathVariable long threadId, Post post, Model model) {
+		try {
+			api.post(boardCode, post);
+			return "redirect:/" + boardCode + "/" + threadId;
+		} catch (EmptyPostException e) {
+			model.addAttribute("backLink", boardCode + "/" + threadId);
+			return "error/post_error";
+		}
 	}
 
 }

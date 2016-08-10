@@ -12,6 +12,6 @@
     <a th:href="@{${'/' + boardCode}}" th:text="#{karaka.back}"></a>
     <a th:href="@{${#httpServletRequest.requestURI}}" id="thread_update" th:text="#{karaka.update}"></a>
 </div>
-<div th:replace="templates :: postForm (${'/api/' + boardCode + '/' + threadId + '/post'}, true)"></div>
+<div th:replace="templates :: postForm (${'/' + boardCode + '/' + threadId + '/post'}, false)"></div>
 </body>
 </html>

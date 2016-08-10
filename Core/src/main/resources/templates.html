@@ -21,16 +21,17 @@
         <div class="post_content" th:text="${post.message}"></div>
     </div>
 </div>
-<th:block th:fragment="postForm (action, postTypeChooser)">
-    <form id="post_form" th:action="@{${action}}" accept-charset="utf-8" th:inline="text">
-        <th:block th:if="${postTypeChooser}">
-            <input type="radio" name="post_type" value="NORMAL" checked="checked"/>[[#{karaka.post.type.normal}]]
-            <input type="radio" name="post_type" value="OP"/>[[#{karaka.post.type.op}]]
-            <input type="radio" name="post_type" value="SAGE"/>[[#{karaka.post.type.sage}]]<br/>
+<th:block th:fragment="postForm (postLink, newThread)">
+    <form id="post_form" th:action="@{${postLink}}" method="post" accept-charset="utf-8" th:inline="text">
+        <input type="hidden" id="new_thread" th:if="${newThread}"/>
+        <th:block th:if="${not newThread}">
+            <input type="radio" name="type" value="NORMAL" checked="checked"/>[[#{karaka.post.type.normal}]]
+            <input type="radio" name="type" value="OP"/>[[#{karaka.post.type.op}]]
+            <input type="radio" name="type" value="SAGE"/>[[#{karaka.post.type.sage}]]<br/>
         </th:block>
-        <input type="text" id="post_name"/><br/>
-        <textarea id="post_message"></textarea><br/>
-        <input id="post_send" type="button" th:value="#{karaka.send}"/>
+        <input type="text" name="name"/><br/>
+        <textarea name="message"></textarea><br/>
+        <input type="submit" id="post_send" th:value="#{karaka.send}"/>
     </form>
 </th:block>
 </body>
