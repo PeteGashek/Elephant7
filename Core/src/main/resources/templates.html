@@ -8,11 +8,11 @@
         <span class="right_align" th:text="#{karaka.settings}"></span>
     </div>
 </div>
-<div class="post_list" th:fragment="postList (posts, isThreadList)">
+<div id="post_list" th:fragment="postList (posts, isThreadList)">
     <div class="post" th:each="post,i: ${posts}" th:id="${post.postId}">
         <div class="post_header" th:with="link=${isThreadList}? ${#httpServletRequest.requestURI +
         (#strings.endsWith(#httpServletRequest.requestURI, '/')? '' : '/') + post.threadId} : ${'#' + post.postId}">
-            <a th:href="@{${link}}"><span class="post_id" th:text="${'#' + post.postId}"></span></a> |
+            <a th:href="@{${link}}" class="post_id" th:text="${'#' + post.postId}"></a> |
             <th:block th:if="${not isThreadList}"><span class="post_number" th:text="${i.count}"></span> |</th:block>
             <span class="post_timestamp" th:text="${#calendars.format(post.timestamp, 'dd.MM.YYYY, HH:mm:ss')}"></span> |
             <span th:class="${#strings.equals(post.type, 'OP')}? 'post_op' :
