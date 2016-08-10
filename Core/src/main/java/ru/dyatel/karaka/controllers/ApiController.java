@@ -53,7 +53,7 @@ public class ApiController {
 	public ApiResponse threadList(@PathVariable String boardCode,
 								  @RequestParam(required = false, defaultValue = "20") int count) {
 		boardValidator.validate(boardCode);
-		return new ApiResponse(ApiResponse.OK_CODE, threadManager.getLatestThreads(boardCode, count, 0));
+		return new ApiResponse(threadManager.getLatestThreads(boardCode, count, 0));
 	}
 
 	@RequestMapping(value = "/{boardCode}/{threadId}", method = RequestMethod.GET)
@@ -62,7 +62,7 @@ public class ApiController {
 								@RequestParam(required = false, defaultValue = "0") int offset) {
 		boardValidator.validate(boardCode);
 		threadIdValidator.validate(boardCode, threadId);
-		return new ApiResponse(ApiResponse.OK_CODE, postDb.getPosts(boardCode, threadId, count, offset));
+		return new ApiResponse(postDb.getPosts(boardCode, threadId, count, offset));
 	}
 
 	@RequestMapping(value = "/{boardCode}/posts", method = RequestMethod.GET)
@@ -70,7 +70,7 @@ public class ApiController {
 		boardValidator.validate(boardCode);
 		List<Long> idList = new ArrayList<>();
 		for (String id : ids.split(",")) idList.add(Long.parseLong(id));
-		return new ApiResponse(ApiResponse.OK_CODE, postDb.getPostsById(boardCode, idList));
+		return new ApiResponse(postDb.getPostsById(boardCode, idList));
 	}
 
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
@@ -87,7 +87,7 @@ public class ApiController {
 		postValidator.validate(post);
 
 		postDb.post(boardCode, post);
-		return ApiResponse.OK;
+		return new ApiResponse(post.getPostId());
 	}
 
 }
