@@ -2,6 +2,7 @@ apply plugin: "java"
 
 def buildAndDeployTaskGroup = "build and deploy"
 
+classes.dependsOn.remove("processResources")
 jar.enabled = false
 task buildJar(dependsOn: compileJava, type: Zip) {
     group = buildAndDeployTaskGroup
@@ -22,18 +23,24 @@ artifacts {
     runtime buildJar
 }
 
-def runnerDirectory = "working_dir"
-
-task prepareResourcesForRunning(type: Copy) {
+def preparedResourcesDir = buildDir.path + "/resources"
+task prepareResources(type: Copy) {
     doFirst {
-        delete "$runnerDirectory/resources"
+        delete preparedResourcesDir
     }
 
     from sourceSets.main.resources
-    into "$runnerDirectory/resources"
+    into preparedResourcesDir
 }
 
-task run(dependsOn: prepareResourcesForRunning, type: JavaExec) {
+def runnerDirectory = "working_dir"
+task run(dependsOn: prepareResources, type: JavaExec) {
+    doFirst {
+        copy {
+            from preparedResourcesDir
+            into runnerDirectory + "/resources"
+        }
+    }
     classpath = sourceSets.main.runtimeClasspath
     main = "ru.dyatel.karaka.KarakaRunner"
     workingDir = runnerDirectory
