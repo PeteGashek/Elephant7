@@ -1,19 +1,17 @@
-package ru.dyatel.karaka;
+package ru.dyatel.karaka.config;
 
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.stereotype.Component;
-import ru.dyatel.karaka.config.AbstractFileKarakaConfigurationManager;
-import ru.dyatel.karaka.config.KarakaConfiguration;
 
 import java.nio.file.Paths;
 
 @Component
-public class StandaloneKarakaConfigurationManager extends AbstractFileKarakaConfigurationManager {
+public class KarakaConfigurationManagerImpl extends AbstractFileKarakaConfigurationManager {
 
-	public StandaloneKarakaConfigurationManager() {
-		super(LogFactoryImpl.getLog(StandaloneKarakaConfigurationManager.class));
+	public KarakaConfigurationManagerImpl() {
+		super(LogFactoryImpl.getLog(KarakaConfigurationManagerImpl.class));
 	}
 
 	@Override

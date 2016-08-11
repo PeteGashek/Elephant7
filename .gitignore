@@ -1,12 +1,5 @@
-.gradle/
-.idea/
-*.iml
+/.gradle/
+/.idea/
+/build/
 
-build/
-Core/build/
-Standalone/build/
-Tomcat/build/
-
-Standalone/working_dir/
-
-gradle.properties
+/working_dir/

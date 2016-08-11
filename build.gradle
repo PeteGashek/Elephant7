@@ -1,36 +1,68 @@
-ext.buildAndDeployTaskGroup = "build and deploy"
+apply plugin: "java"
 
-subprojects {
-    apply plugin: "java"
+def buildAndDeployTaskGroup = "build and deploy"
 
-    jar.enabled = false
-    task buildJar(dependsOn: compileJava, type: Zip) {
-        group = buildAndDeployTaskGroup
+jar.enabled = false
+task buildJar(dependsOn: compileJava, type: Zip) {
+    group = buildAndDeployTaskGroup
 
-        extension = "jar"
-        from compileJava
+    extension = "jar"
+    from compileJava
 
-        into("META-INF") {
-            from "MANIFEST.MF"
-        }
-
-        destinationDir file(buildDir.path + "/libs")
-    }
-    buildJar.baseName = rootProject.name.toLowerCase()
-
-    configurations.runtime.artifacts.removeAll { it.archiveTask.is jar }
-    artifacts {
-        runtime buildJar
+    into("META-INF") {
+        from "MANIFEST.MF"
     }
 
-    repositories {
-        mavenCentral()
-    }
+    destinationDir file(buildDir.path + "/libs")
+}
+buildJar.baseName = rootProject.name.toLowerCase()
+
+configurations.runtime.artifacts.removeAll { it.archiveTask.is jar }
+artifacts {
+    runtime buildJar
 }
 
-ext.gsonVersion = "2.7"
-ext.mysqlConnectorVersion = "5.1.39"
-ext.servletApiVersion = "3.1.0"
-ext.springVersion = "4.3.2.RELEASE"
-ext.springBootVersion = "1.4.0.RELEASE"
-ext.thymeleafVersion = "3.0.1.RELEASE"
+def runnerDirectory = "working_dir"
+
+task prepareResourcesForRunning(type: Copy) {
+    doFirst {
+        delete "$runnerDirectory/resources"
+    }
+
+    from sourceSets.main.resources
+    into "$runnerDirectory/resources"
+}
+
+task run(dependsOn: prepareResourcesForRunning, type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "ru.dyatel.karaka.KarakaRunner"
+    workingDir = runnerDirectory
+}
+
+repositories {
+    mavenCentral()
+}
+
+def gsonVersion = "2.7"
+def mysqlConnectorVersion = "5.1.39"
+def servletApiVersion = "3.1.0"
+def springVersion = "4.3.2.RELEASE"
+def springBootVersion = "1.4.0.RELEASE"
+def thymeleafVersion = "3.0.1.RELEASE"
+
+dependencies {
+    compile "com.google.code.gson:gson:$gsonVersion"
+
+    compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
+
+    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+
+    compile "org.thymeleaf:thymeleaf-spring4:$thymeleafVersion"
+
+    compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
+}
