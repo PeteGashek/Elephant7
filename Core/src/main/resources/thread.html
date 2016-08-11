@@ -12,6 +12,11 @@
 <div>
     <a th:href="@{${'/' + boardCode}}" th:text="#{karaka.back}"></a>
     <a th:href="@{${#httpServletRequest.requestURI}}" id="thread_update" th:text="#{karaka.update}"></a>
+    <span id="thread_autoupdate" hidden="true" th:inline="text">
+        <input type="checkbox" id="thread_autoupdate_checkbox"/>
+        [[#{karaka.autoupdate}]]
+        <span id="thread_autoupdate_notifier"></span>
+    </span>
 </div>
 <div th:replace="templates :: postForm (${'/' + boardCode + '/' + threadId + '/post'}, false)"></div>
 </body>
