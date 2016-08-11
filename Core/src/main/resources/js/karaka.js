@@ -1,3 +1,33 @@
+function constructPost(json) {
+    var post = $("<div></div>").addClass("post").attr("id", json.post_id);
+
+    var postHeader = $("<div></div>").addClass("post_header");
+    postHeader.append($("<a></a>").addClass("post_id")
+        .attr("href", "#" + json.post_id)
+        .text("#" + json.post_id)).append(" | ");
+    postHeader.append($("<span></span>").addClass("post_number")
+        .text(i + 1)).append(" | ");
+    postHeader.append($("<span></span>").addClass("post_timestamp")
+        .text(dateFormat(new Date(json.timestamp), "dd.mm.yyyy, HH:MM:ss"))).append(" | ");
+    var posterName = $("<span></span>").text(json.name);
+    switch(json.type) {
+        case "OP":
+            posterName.addClass("post_op");
+            break;
+        case "SAGE":
+            posterName.addClass("post_sage");
+            break;
+        default:
+            posterName.addClass("post_normal");
+    }
+    postHeader.append(posterName);
+    post.append(postHeader);
+
+    post.append($("<div></div>").addClass("post_content").text(json.message));
+
+    return post;
+}
+
 function updateMessages() {
     var request = $.ajax({
         url: "/api" + window.location.pathname,
@@ -8,33 +38,7 @@ function updateMessages() {
         postList.empty();
         var posts = response.message;
         for (var i = 0; i < posts.length; i++) {
-            var post = $("<div></div>").addClass("post").attr("id", posts[i].post_id);
-
-            var postHeader = $("<div></div>").addClass("post_header");
-            postHeader.append($("<a></a>").addClass("post_id")
-                .attr("href", "#" + posts[i].post_id)
-                .text("#" + posts[i].post_id)).append(" | ");
-            postHeader.append($("<span></span>").addClass("post_number")
-                .text(i + 1)).append(" | ");
-            postHeader.append($("<span></span>").addClass("post_timestamp")
-                .text(dateFormat(new Date(posts[i].timestamp), "dd.mm.yyyy, HH:MM:ss"))).append(" | ");
-            var posterName = $("<span></span>").text(posts[i].name);
-            switch(posts[i].type) {
-                case "OP":
-                    posterName.addClass("post_op");
-                    break;
-                case "SAGE":
-                    posterName.addClass("post_sage");
-                    break;
-                default:
-                    posterName.addClass("post_normal");
-            }
-            postHeader.append(posterName);
-            post.append(postHeader);
-
-            post.append($("<div></div>").addClass("post_content").text(posts[i].message));
-
-            postList.append(post);
+            postList.append(constructPost(posts[i]));
         }
     });
 }
