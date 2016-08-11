@@ -1,17 +1,19 @@
 package ru.dyatel.karaka.posts;
 
+import ru.dyatel.karaka.boards.Board;
+
 import java.util.List;
 
 public interface ThreadManager {
 
-	void onPostCreate(String boardName, Long threadId);
+	void onPostCreate(Board board, Long threadId);
 
-	void onDeleteThread(String boardName, Long threadId);
+	void onDeleteThread(Board board, Long threadId);
 
-	boolean threadExists(String boardName, Long threadId);
+	boolean threadExists(Board board, Long threadId);
 
-	List<Long> getLatestThreads(String boardName, int count, int offset);
+	List<Long> getLatestThreads(Board board, int count, int offset);
 
-	int getThreadCount(String boardName);
+	int getThreadCount(Board board);
 
 }

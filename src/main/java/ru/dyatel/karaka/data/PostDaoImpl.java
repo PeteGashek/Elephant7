@@ -10,11 +10,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.dyatel.karaka.boards.Board;
-import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.posts.PostType;
 import ru.dyatel.karaka.posts.ThreadManager;
-import ru.dyatel.karaka.util.BoardUtil;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -38,9 +36,6 @@ public class PostDaoImpl implements PostDao {
 	private JdbcTemplate db;
 	@Autowired
 	private NamedParameterJdbcTemplate namedDb;
-
-	@Autowired
-	private BoardConfiguration boardConfig;
 
 	@Autowired
 	private ThreadManager threadManager;
@@ -78,11 +73,9 @@ public class PostDaoImpl implements PostDao {
 
 	@Override
 	@Transactional
-	public void post(String boardName, Post post) {
-		Board board = boardConfig.getBoards().get(boardName);
-
+	public void post(Board board, Post post) {
 		SimpleJdbcInsert insert = new SimpleJdbcInsert(db)
-				.withTableName(BoardUtil.getPostTable(boardName, board))
+				.withTableName(board.getPostTable())
 				.usingGeneratedKeyColumns(POST_ID_COLUMN);
 		Map<String, Object> fields = new HashMap<>();
 		fields.put(PostTable.THREAD_ID_COLUMN, post.getThreadId());
@@ -100,46 +93,41 @@ public class PostDaoImpl implements PostDao {
 		}
 		else sql = UPDATE_LAST_POST_IN_THREAD_QUERY;
 
-		db.update(String.format(sql, BoardUtil.getThreadTable(boardName, boardConfig.getBoards().get(boardName))),
+		db.update(String.format(sql, board.getThreadTable()),
 				post.getPostId(), post.getThreadId());
 
-		threadManager.onPostCreate(boardName, post.getThreadId());
+		threadManager.onPostCreate(board, post.getThreadId());
 	}
 
 	@Override
 	@Transactional
-	public void deleteThread(String boardName, long threadId) {
-		Board board = boardConfig.getBoards().get(boardName);
-
-		db.update(String.format(DELETE_THREAD_QUERY, BoardUtil.getPostTable(boardName, board)),
+	public void deleteThread(Board board, long threadId) {
+		db.update(String.format(DELETE_THREAD_QUERY, board.getPostTable()),
 				threadId, threadId);
-		db.update(String.format(DELETE_THREAD_INFO_QUERY, BoardUtil.getThreadTable(boardName, board)),
+		db.update(String.format(DELETE_THREAD_INFO_QUERY, board.getThreadTable()),
 				threadId);
 
-		threadManager.onDeleteThread(boardName, threadId);
+		threadManager.onDeleteThread(board, threadId);
 	}
 
 	@Override
-	public List<Post> getPosts(String boardName, long threadId, int count, int offset) {
-		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
-		String defaultUsername = boardConfig.getBoards().get(boardName).getDefaultUsername();
+	public List<Post> getPosts(Board board, long threadId, int count, int offset) {
 		List<Post> result;
 		if (count == 0)
-			result = db.query(String.format(SELECT_POSTS_QUERY, table),
-					new PostMapper(defaultUsername), threadId, threadId);
+			result = db.query(String.format(SELECT_POSTS_QUERY, board.getPostTable()),
+					new PostMapper(board.getDefaultUsername()), threadId, threadId);
 		else
-			result = db.query(String.format(SELECT_POSTS_LIMITED_QUERY, table),
-					new PostMapper(defaultUsername), threadId, threadId, count, offset);
+			result = db.query(String.format(SELECT_POSTS_LIMITED_QUERY, board.getPostTable()),
+					new PostMapper(board.getDefaultUsername()), threadId, threadId, count, offset);
 		return result;
 	}
 
 	@Override
-	public List<Post> getPostsById(String boardName, List<Long> ids) {
+	public List<Post> getPostsById(Board board, List<Long> ids) {
 		if (ids.size() == 0) return Collections.emptyList();
-		String table = BoardUtil.getPostTable(boardName, boardConfig.getBoards().get(boardName));
-		return namedDb.query(String.format(SELECT_POSTS_BY_ID_QUERY, table),
+		return namedDb.query(String.format(SELECT_POSTS_BY_ID_QUERY, board.getPostTable()),
 				new MapSqlParameterSource("ids", ids),
-				new PostMapper(boardConfig.getBoards().get(boardName).getDefaultUsername()));
+				new PostMapper(board.getDefaultUsername()));
 	}
 
 	private static class PostMapper implements RowMapper<Post> {

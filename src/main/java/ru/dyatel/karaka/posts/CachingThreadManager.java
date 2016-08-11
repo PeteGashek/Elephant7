@@ -1,12 +1,9 @@
 package ru.dyatel.karaka.posts;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.dyatel.karaka.boards.BoardConfiguration;
-import ru.dyatel.karaka.util.BoardUtil;
+import ru.dyatel.karaka.boards.Board;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,11 +13,8 @@ import java.util.Map;
 import static ru.dyatel.karaka.data.ThreadInfoTable.LAST_POST_ID_COLUMN;
 import static ru.dyatel.karaka.data.ThreadInfoTable.THREAD_ID_COLUMN;
 
-
 @Component
 public class CachingThreadManager implements ThreadManager {
-
-	Logger logger = LoggerFactory.getLogger(getClass());
 
 	private static final String SELECT_LATEST_THREADS_QUERY = String.format("SELECT %s " +
 					"FROM %%s " +
@@ -30,37 +24,34 @@ public class CachingThreadManager implements ThreadManager {
 	@Autowired
 	private JdbcTemplate db;
 
-	@Autowired
-	private BoardConfiguration boardConfig;
-
-	private Map<String, List<Long>> cache = new HashMap<>();
+	private Map<Board, List<Long>> cache = new HashMap<>();
 
 	@Override
-	public void onPostCreate(String boardName, Long threadId) {
-		ensureInitialized(boardName);
+	public void onPostCreate(Board board, Long threadId) {
+		ensureInitialized(board);
 
-		List<Long> threads = cache.get(boardName);
+		List<Long> threads = cache.get(board);
 		threads.remove(threadId);
 		threads.add(threadId);
 	}
 
 	@Override
-	public void onDeleteThread(String boardName, Long threadId) {
-		ensureInitialized(boardName);
-		cache.get(boardName).remove(threadId);
+	public void onDeleteThread(Board board, Long threadId) {
+		ensureInitialized(board);
+		cache.get(board).remove(threadId);
 	}
 
 	@Override
-	public boolean threadExists(String boardName, Long threadId) {
-		ensureInitialized(boardName);
-		return cache.get(boardName).contains(threadId);
+	public boolean threadExists(Board board, Long threadId) {
+		ensureInitialized(board);
+		return cache.get(board).contains(threadId);
 	}
 
 	@Override
-	public List<Long> getLatestThreads(String boardName, int count, int offset) {
-		ensureInitialized(boardName);
+	public List<Long> getLatestThreads(Board board, int count, int offset) {
+		ensureInitialized(board);
 
-		List<Long> threads = cache.get(boardName);
+		List<Long> threads = cache.get(board);
 		List<Long> latestThreads = new ArrayList<>(count);
 		for (int i = 0; i < count; i++) {
 			int index = threads.size() - 1 - offset - i;
@@ -71,15 +62,14 @@ public class CachingThreadManager implements ThreadManager {
 	}
 
 	@Override
-	public int getThreadCount(String boardName) {
-		ensureInitialized(boardName);
-		return cache.get(boardName).size();
+	public int getThreadCount(Board board) {
+		ensureInitialized(board);
+		return cache.get(board).size();
 	}
 
-	private void ensureInitialized(String boardName) {
-		if (!cache.containsKey(boardName)) {
-			String table = BoardUtil.getThreadTable(boardName, boardConfig.getBoards().get(boardName));
-			cache.put(boardName, db.queryForList(String.format(SELECT_LATEST_THREADS_QUERY, table),
+	private void ensureInitialized(Board board) {
+		if (!cache.containsKey(board)) {
+			cache.put(board, db.queryForList(String.format(SELECT_LATEST_THREADS_QUERY, board.getThreadTable()),
 					Long.class));
 		}
 	}

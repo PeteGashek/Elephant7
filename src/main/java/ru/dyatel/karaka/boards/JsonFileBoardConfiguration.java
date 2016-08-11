@@ -3,7 +3,6 @@ package ru.dyatel.karaka.boards;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,31 +18,49 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class JsonFileBoardConfiguration implements BoardConfiguration {
 
+	private static class Config {
+
+		public List<Section> sections = new ArrayList<>();
+
+		public Board.DefaultConfig defaultBoard = new Board.DefaultConfig();
+		public List<Board> boardList = new ArrayList<>();
+
+	}
+
 	private static final String filename = "boards.json";
 
 	private Log logger = LogFactoryImpl.getLog(JsonFileBoardConfiguration.class);
-
-	private KarakaConfigurationManager config;
-	private BoardTableManager tableManager;
 
 	private Gson gson = new GsonBuilder()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.setPrettyPrinting()
 			.create();
 
-	private Map<String, Board> boards;
+	private KarakaConfigurationManager karakaConfig;
+	private BoardTableManager tableManager;
+
+	private Config config;
+	private Map<String, Board> boards = new HashMap<>();
 
 	@Autowired
-	public JsonFileBoardConfiguration(KarakaConfigurationManager config, BoardTableManager tableManager) {
-		this.config = config;
+	public JsonFileBoardConfiguration(KarakaConfigurationManager karakaConfig, BoardTableManager tableManager) {
+		this.karakaConfig = karakaConfig;
 		this.tableManager = tableManager;
 		reload();
+	}
+
+	@Override
+	public List<Section> getSections() {
+		return config.sections;
 	}
 
 	@Override
@@ -51,31 +68,41 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 		return boards;
 	}
 
-	private WritableResource getBoardConfig() {
-		return new FileSystemResource(config.getConfig().getWorkingDir().resolve(filename).toFile());
+	private WritableResource getFileResource() {
+		return new FileSystemResource(karakaConfig.getConfig().getWorkingDir().resolve(filename).toFile());
 	}
 
 	@Override
 	public void reload() {
-		Resource boardConfig = getBoardConfig();
-		try (Reader reader = new InputStreamReader(boardConfig.getInputStream(), StandardCharsets.UTF_8)) {
-			boards = gson.fromJson(reader, new TypeToken<HashMap<String, Board>>() {
-			}.getType());
-			logger.info("Successfully loaded board configuration from " + boardConfig);
+		Resource file = getFileResource();
+		try (Reader reader = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8)) {
+			config = gson.fromJson(reader, Config.class);
+			config.boardList.forEach(board -> {
+				board.setDefaultConfig(config.defaultBoard);
+				boards.put(board.getCode(), board);
+			});
+			config.boardList = null;
+
+			logger.info("Successfully loaded board configuration from " + file);
 		} catch (Exception e) {
-			logger.error("Failed to read board configuration from " + boardConfig, e);
-			boards = new HashMap<>();
+			config = new Config();
+
+			logger.error("Failed to read board configuration from " + file, e);
 		}
-		tableManager.prepareTables(boards);
+		tableManager.prepareTables(boards.values());
 	}
 
 	@Override
 	public void save() {
-		WritableResource boardConfig = getBoardConfig();
-		try (Writer writer = new OutputStreamWriter(boardConfig.getOutputStream(), StandardCharsets.UTF_8)) {
-			gson.toJson(boards, writer);
+		WritableResource file = getFileResource();
+		try (Writer writer = new OutputStreamWriter(file.getOutputStream(), StandardCharsets.UTF_8)) {
+			config.boardList = boards.values().stream()
+					.sorted((b1, b2) -> b1.getCode().compareTo(b2.getCode()))
+					.collect(Collectors.toList());
+			gson.toJson(config, writer);
+			config.boardList = null;
 		} catch (Exception e) {
-			logger.error("Failed to save board configuration to " + boardConfig, e);
+			logger.error("Failed to save board configuration to " + file, e);
 		}
 	}
 

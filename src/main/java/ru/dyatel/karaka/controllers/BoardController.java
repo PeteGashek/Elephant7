@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.dyatel.karaka.boards.Board;
+import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.data.PostDao;
 import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.posts.ThreadManager;
+import ru.dyatel.karaka.util.BoardUtil;
 import ru.dyatel.karaka.util.PostUtil;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
 import ru.dyatel.karaka.validation.ThreadIdValidator;
@@ -22,6 +25,9 @@ public class BoardController {
 
 	@Autowired
 	private ApiController api;
+
+	@Autowired
+	private BoardConfiguration boardConfig;
 
 	@Autowired
 	private BoardCodeValidator boardValidator;
@@ -37,23 +43,23 @@ public class BoardController {
 	@RequestMapping(value = "/{boardCode:(?!api|static).*$}", method = RequestMethod.GET)
 	public String threadList(@PathVariable String boardCode,
 							 @RequestParam(required = false, defaultValue = "0") int page, Model model) {
-		boardValidator.validate(boardCode);
-		List<Long> threadIds = threadManager.getLatestThreads(boardCode, 10, page * 10);
-		List<Post> threads = postDb.getPostsById(boardCode, threadIds);
+		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
+		List<Long> threadIds = threadManager.getLatestThreads(board, 10, page * 10);
+		List<Post> threads = postDb.getPostsById(board, threadIds);
 		PostUtil.sortByThreadIdList(threads, threadIds);
 		model.addAttribute("threads", threads);
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("currentPage", page);
-		model.addAttribute("pages", Math.ceil(threadManager.getThreadCount(boardCode) / 10));
+		model.addAttribute("pages", Math.ceil(threadManager.getThreadCount(board) / 10));
 		return "board";
 	}
 
 	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId}", method = RequestMethod.GET)
 	public String thread(@PathVariable String boardCode,
 						 @PathVariable long threadId, Model model) {
-		boardValidator.validate(boardCode);
-		threadIdValidator.validate(boardCode, threadId);
-		model.addAttribute("posts", postDb.getPosts(boardCode, threadId, 0, 0));
+		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
+		threadIdValidator.validate(board, threadId);
+		model.addAttribute("posts", postDb.getPosts(board, threadId, 0, 0));
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("threadId", threadId);
 		return "thread";

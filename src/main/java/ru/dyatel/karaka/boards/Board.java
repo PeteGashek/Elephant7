@@ -2,31 +2,60 @@ package ru.dyatel.karaka.boards;
 
 public class Board {
 
-	private String name = "Nameless Board";
-	private boolean readOnly = false;
+	public static class DefaultConfig {
+
+		public boolean readOnly = false;
+
+		public int bumpLimit = 500;
+		public int maxPages = 10;
+
+		public String defaultUsername = "";
+
+	}
+
+	private static final String POST_TABLE_PREFIX = "posts_";
+	private static final String THREAD_TABLE_PREFIX = "threads_";
+
+	private transient DefaultConfig defaultConfig;
+
+	private String code;
+	private String description = null;
+	private Boolean readOnly = null;
 
 	private String postTable = null;
 	private String threadTable = null;
-	private String attachmentTable = null;
 
-	private String attachmentDir = null;
+	private Integer bumpLimit = null;
+	private Integer maxPages = null;
 
-	private int maxAttachmentsSize = 20480;
-	private int bumpLimit = 500;
-	private int maxPages = 10;
+	private String defaultUsername = null;
 
-	private String defaultUsername = "";
-
-	public String getName() {
-		return name;
+	public DefaultConfig getDefaultConfig() {
+		return defaultConfig;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDefaultConfig(DefaultConfig defaultConfig) {
+		this.defaultConfig = defaultConfig;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getDescription() {
+		return description == null ? "/" + code + "/" : description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public boolean isReadOnly() {
-		return readOnly;
+		return readOnly == null ? defaultConfig.readOnly : readOnly;
 	}
 
 	public void setReadOnly(boolean readOnly) {
@@ -34,7 +63,7 @@ public class Board {
 	}
 
 	public String getPostTable() {
-		return postTable;
+		return postTable == null ? POST_TABLE_PREFIX + code : postTable;
 	}
 
 	public void setPostTable(String postTable) {
@@ -42,39 +71,15 @@ public class Board {
 	}
 
 	public String getThreadTable() {
-		return threadTable;
+		return threadTable == null ? THREAD_TABLE_PREFIX + code : threadTable;
 	}
 
 	public void setThreadTable(String threadTable) {
 		this.threadTable = threadTable;
 	}
 
-	public String getAttachmentTable() {
-		return attachmentTable;
-	}
-
-	public void setAttachmentTable(String attachmentTable) {
-		this.attachmentTable = attachmentTable;
-	}
-
-	public String getAttachmentDir() {
-		return attachmentDir;
-	}
-
-	public void setAttachmentDir(String attachmentDir) {
-		this.attachmentDir = attachmentDir;
-	}
-
-	public int getMaxAttachmentsSize() {
-		return maxAttachmentsSize;
-	}
-
-	public void setMaxAttachmentsSize(int maxAttachmentsSize) {
-		this.maxAttachmentsSize = maxAttachmentsSize;
-	}
-
 	public int getBumpLimit() {
-		return bumpLimit;
+		return bumpLimit == null ? defaultConfig.bumpLimit : bumpLimit;
 	}
 
 	public void setBumpLimit(int bumpLimit) {
@@ -82,7 +87,7 @@ public class Board {
 	}
 
 	public int getMaxPages() {
-		return maxPages;
+		return maxPages == null ? defaultConfig.maxPages : maxPages;
 	}
 
 	public void setMaxPages(int maxPages) {
@@ -90,7 +95,7 @@ public class Board {
 	}
 
 	public String getDefaultUsername() {
-		return defaultUsername;
+		return defaultUsername == null || defaultUsername.equals("") ? defaultConfig.defaultUsername : defaultUsername;
 	}
 
 	public void setDefaultUsername(String defaultUsername) {
@@ -104,29 +109,27 @@ public class Board {
 
 		Board board = (Board) o;
 
-		if (readOnly != board.readOnly) return false;
-		if (maxAttachmentsSize != board.maxAttachmentsSize) return false;
-		if (bumpLimit != board.bumpLimit) return false;
-		if (maxPages != board.maxPages) return false;
-		if (!name.equals(board.name)) return false;
+		if (!code.equals(board.code)) return false;
+		if (description != null ? !description.equals(board.description) : board.description != null) return false;
+		if (readOnly != null ? !readOnly.equals(board.readOnly) : board.readOnly != null) return false;
 		if (postTable != null ? !postTable.equals(board.postTable) : board.postTable != null) return false;
 		if (threadTable != null ? !threadTable.equals(board.threadTable) : board.threadTable != null) return false;
-		if (attachmentTable != null ? !attachmentTable.equals(board.attachmentTable) : board.attachmentTable != null)
-			return false;
-		return defaultUsername.equals(board.defaultUsername);
+		if (bumpLimit != null ? !bumpLimit.equals(board.bumpLimit) : board.bumpLimit != null) return false;
+		if (maxPages != null ? !maxPages.equals(board.maxPages) : board.maxPages != null) return false;
+		return defaultUsername != null ? defaultUsername.equals(board.defaultUsername) : board.defaultUsername == null;
+
 	}
 
 	@Override
 	public int hashCode() {
-		int result = name.hashCode();
-		result = 31 * result + (readOnly ? 1 : 0);
+		int result = code.hashCode();
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (readOnly != null ? readOnly.hashCode() : 0);
 		result = 31 * result + (postTable != null ? postTable.hashCode() : 0);
 		result = 31 * result + (threadTable != null ? threadTable.hashCode() : 0);
-		result = 31 * result + (attachmentTable != null ? attachmentTable.hashCode() : 0);
-		result = 31 * result + maxAttachmentsSize;
-		result = 31 * result + bumpLimit;
-		result = 31 * result + maxPages;
-		result = 31 * result + defaultUsername.hashCode();
+		result = 31 * result + (bumpLimit != null ? bumpLimit.hashCode() : 0);
+		result = 31 * result + (maxPages != null ? maxPages.hashCode() : 0);
+		result = 31 * result + (defaultUsername != null ? defaultUsername.hashCode() : 0);
 		return result;
 	}
 

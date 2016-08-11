@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dyatel.karaka.ApiResponse;
+import ru.dyatel.karaka.boards.Board;
 import ru.dyatel.karaka.boards.BoardConfiguration;
 import ru.dyatel.karaka.data.PostDao;
 import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.posts.PostType;
 import ru.dyatel.karaka.posts.ThreadManager;
+import ru.dyatel.karaka.util.BoardUtil;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
 import ru.dyatel.karaka.validation.PostValidator;
 import ru.dyatel.karaka.validation.ThreadIdValidator;
@@ -46,31 +48,31 @@ public class ApiController {
 
 	@RequestMapping(value = "/boards", method = RequestMethod.GET)
 	public ApiResponse boardList() {
-		return new ApiResponse(boardConfig.getBoards().keySet());
+		return new ApiResponse(boardConfig.getSections());
 	}
 
 	@RequestMapping(value = "/{boardCode}", method = RequestMethod.GET)
 	public ApiResponse threadList(@PathVariable String boardCode,
 								  @RequestParam(required = false, defaultValue = "20") int count) {
-		boardValidator.validate(boardCode);
-		return new ApiResponse(threadManager.getLatestThreads(boardCode, count, 0));
+		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
+		return new ApiResponse(threadManager.getLatestThreads(board, count, 0));
 	}
 
 	@RequestMapping(value = "/{boardCode}/{threadId}", method = RequestMethod.GET)
 	public ApiResponse postList(@PathVariable String boardCode, @PathVariable long threadId,
 								@RequestParam(required = false, defaultValue = "0") int count,
 								@RequestParam(required = false, defaultValue = "0") int offset) {
-		boardValidator.validate(boardCode);
-		threadIdValidator.validate(boardCode, threadId);
-		return new ApiResponse(postDb.getPosts(boardCode, threadId, count, offset));
+		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
+		threadIdValidator.validate(board, threadId);
+		return new ApiResponse(postDb.getPosts(board, threadId, count, offset));
 	}
 
 	@RequestMapping(value = "/{boardCode}/posts", method = RequestMethod.GET)
 	public ApiResponse postListById(@PathVariable String boardCode, String ids) {
-		boardValidator.validate(boardCode);
+		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
 		List<Long> idList = new ArrayList<>();
 		for (String id : ids.split(",")) idList.add(Long.parseLong(id));
-		return new ApiResponse(postDb.getPostsById(boardCode, idList));
+		return new ApiResponse(postDb.getPostsById(board, idList));
 	}
 
 	@RequestMapping(value = "/{boardCode}/post", method = RequestMethod.POST)
@@ -82,11 +84,11 @@ public class ApiController {
 
 	@RequestMapping(value = "/{boardCode}/{threadId}/post", method = RequestMethod.POST)
 	public ApiResponse post(@PathVariable String boardCode, Post post) {
-		boardValidator.validate(boardCode);
-		threadIdValidator.validate(boardCode, post.getThreadId());
+		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
+		threadIdValidator.validate(board, post.getThreadId());
 		postValidator.validate(post);
 
-		postDb.post(boardCode, post);
+		postDb.post(board, post);
 		return new ApiResponse(post.getPostId());
 	}
 

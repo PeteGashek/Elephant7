@@ -2,10 +2,10 @@ package ru.dyatel.karaka.data;
 
 import ru.dyatel.karaka.boards.Board;
 
-import java.util.Map;
+import java.util.Collection;
 
 public interface BoardTableManager {
 
-	void prepareTables(Map<String, Board> boards);
+	void prepareTables(Collection<Board> boards);
 
 }
