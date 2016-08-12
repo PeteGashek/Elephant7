@@ -50,7 +50,7 @@ public class BoardController {
 		model.addAttribute("threads", threads);
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("currentPage", page);
-		model.addAttribute("pages", Math.ceil(threadManager.getThreadCount(board) / 10));
+		model.addAttribute("pages", Math.ceil(threadManager.getThreadCount(board) / 10f));
 		return "board";
 	}
 
