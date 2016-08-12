@@ -18,7 +18,11 @@
             <span th:class="${#strings.equals(post.type, 'OP')}? 'post_op' :
             (${#strings.equals(post.type, 'SAGE')}? 'post_sage' : 'post_normal')" th:text="${post.name}"></span>
         </div>
-        <div class="post_content" th:text="${post.message}"></div>
+        <div class="post_content">
+            <th:block th:each="line,i: ${#strings.arraySplit(post.message, T(java.lang.System).getProperty('line.separator'))}">
+                <th:block th:text="${line}"></th:block><br th:if="${not i.last}"/>
+            </th:block>
+        </div>
     </div>
 </div>
 <th:block th:fragment="postForm (postLink, newThread)">

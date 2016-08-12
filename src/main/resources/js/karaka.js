@@ -52,7 +52,13 @@ function constructPost(json, id) {
     postHeader.append(posterName);
     post.append(postHeader);
 
-    post.append($("<div></div>").addClass("post_content").text(json.message));
+    var postContent = $("<div></div>").addClass("post_content");
+    var lines = json.message.split("\n");
+    for (var i = 0; i < lines.length; i++) {
+        postContent.append(document.createTextNode(lines[i]));
+        if (i < lines.length - 1) postContent.append($("<br/>"));
+    }
+    post.append(postContent);
 
     return post;
 }
