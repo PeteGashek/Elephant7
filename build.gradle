@@ -34,7 +34,12 @@ task prepareResources(type: Copy) {
 }
 
 def runnerDirectory = "working_dir"
-task run(dependsOn: prepareResources, type: JavaExec) {
+task prepareResourcesForRunning(dependsOn: prepareResources, type: Copy) {
+    from preparedResourcesDir
+    into runnerDirectory + "/resources"
+}
+
+task run(dependsOn: prepareResourcesForRunning, type: JavaExec) {
     doFirst {
         copy {
             from preparedResourcesDir
