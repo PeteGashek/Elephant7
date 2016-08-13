@@ -21,6 +21,7 @@ import ru.dyatel.karaka.validation.ThreadIdValidator;
 import java.util.ArrayList;
 import java.util.List;
 
+@Api
 @RestController
 @RequestMapping("/api")
 public class ApiController {
@@ -58,7 +59,7 @@ public class ApiController {
 		return new ApiResponse(threadManager.getLatestThreads(board, count, 0));
 	}
 
-	@RequestMapping(value = "/{boardCode}/{threadId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{boardCode}/{threadId:\\d+$}", method = RequestMethod.GET)
 	public ApiResponse postList(@PathVariable String boardCode, @PathVariable long threadId,
 								@RequestParam(required = false, defaultValue = "0") int count,
 								@RequestParam(required = false, defaultValue = "0") int offset) {
@@ -82,7 +83,7 @@ public class ApiController {
 		return post(boardCode, post);
 	}
 
-	@RequestMapping(value = "/{boardCode}/{threadId}/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/{boardCode}/{threadId:\\d+$}/post", method = RequestMethod.POST)
 	public ApiResponse post(@PathVariable String boardCode, Post post) {
 		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
 		threadIdValidator.validate(board, post.getThreadId());
@@ -90,6 +91,11 @@ public class ApiController {
 
 		postDb.post(board, post);
 		return new ApiResponse(post.getPostId());
+	}
+
+	@RequestMapping(value = "/**")
+	public void notFound() {
+		throw new ApiRouteNotFoundException();
 	}
 
 }

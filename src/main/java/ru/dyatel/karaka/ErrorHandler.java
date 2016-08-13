@@ -3,6 +3,7 @@ package ru.dyatel.karaka;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,6 +27,12 @@ public class ErrorHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String notFound() {
 		return "error/404";
+	}
+
+	@ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+	public String methodNotAllowed() {
+		return "error/405";
 	}
 
 }

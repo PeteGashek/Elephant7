@@ -3,18 +3,18 @@ package ru.dyatel.karaka;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import ru.dyatel.karaka.controllers.Api;
+import ru.dyatel.karaka.controllers.ApiRouteNotFoundException;
 import ru.dyatel.karaka.validation.exceptions.EmptyPostException;
 import ru.dyatel.karaka.validation.exceptions.NotValidBoardCodeException;
 import ru.dyatel.karaka.validation.exceptions.NotValidThreadException;
 import ru.dyatel.karaka.validation.exceptions.ValidationException;
 
-@ControllerAdvice(annotations = RestController.class)
+@ControllerAdvice(annotations = Api.class)
 @ResponseBody
 public class ApiErrorHandler {
 
@@ -25,6 +25,12 @@ public class ApiErrorHandler {
 	public ApiResponse fallback(Exception e) {
 		log.error("Caught an unhandled exception", e);
 		return ApiError.INTERNAL_ERROR;
+	}
+
+	@ExceptionHandler(ApiRouteNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ApiResponse notFound() {
+		return ApiError.NOT_FOUND;
 	}
 
 	@ExceptionHandler(NotValidBoardCodeException.class)
@@ -47,7 +53,7 @@ public class ApiErrorHandler {
 
 	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse bindingFailure(BindException e) {
+	public ApiResponse bindingFailure() {
 		return ApiError.UNKNOWN_VALIDATION_ERROR;
 	}
 

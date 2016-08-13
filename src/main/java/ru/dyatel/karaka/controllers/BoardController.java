@@ -54,7 +54,7 @@ public class BoardController {
 		return "board";
 	}
 
-	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId:\\d+$}", method = RequestMethod.GET)
 	public String thread(@PathVariable String boardCode,
 						 @PathVariable long threadId, Model model) {
 		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
@@ -75,7 +75,7 @@ public class BoardController {
 		}
 	}
 
-	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId}/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId:\\d+$}/post", method = RequestMethod.POST)
 	public String post(@PathVariable String boardCode,
 					   @PathVariable long threadId, Post post, Model model) {
 		try {
