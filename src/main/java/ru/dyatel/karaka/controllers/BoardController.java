@@ -1,6 +1,7 @@
 package ru.dyatel.karaka.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +15,20 @@ import ru.dyatel.karaka.posts.Post;
 import ru.dyatel.karaka.posts.ThreadManager;
 import ru.dyatel.karaka.util.BoardUtil;
 import ru.dyatel.karaka.util.PostUtil;
+import ru.dyatel.karaka.util.Reference;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
 import ru.dyatel.karaka.validation.ThreadIdValidator;
 import ru.dyatel.karaka.validation.exceptions.EmptyPostException;
+import ru.dyatel.karaka.validation.exceptions.TooLongNameException;
 
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class BoardController {
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@Autowired
 	private ApiController api;
@@ -66,10 +73,11 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/post", method = RequestMethod.POST)
-	public String createThread(@PathVariable String boardCode, Post post, Model model) {
+	public String createThread(@PathVariable String boardCode, Post post, Model model, Locale locale) {
 		try {
 			return "redirect:/" + boardCode + "/" + api.createThread(boardCode, post).getMessage();
-		} catch (EmptyPostException e) {
+		} catch (TooLongNameException | EmptyPostException e) {
+			model.addAttribute("error", getError(e, locale));
 			model.addAttribute("backLink", boardCode);
 			return "error/post_error";
 		}
@@ -77,14 +85,24 @@ public class BoardController {
 
 	@RequestMapping(value = "/{boardCode:(?!api|static).*$}/{threadId:\\d+$}/post", method = RequestMethod.POST)
 	public String post(@PathVariable String boardCode,
-					   @PathVariable long threadId, Post post, Model model) {
+					   @PathVariable long threadId, Post post, Model model, Locale locale) {
 		try {
 			api.post(boardCode, post);
 			return "redirect:/" + boardCode + "/" + threadId;
-		} catch (EmptyPostException e) {
+		} catch (TooLongNameException | EmptyPostException e) {
+			model.addAttribute("error", getError(e, locale));
 			model.addAttribute("backLink", boardCode + "/" + threadId);
 			return "error/post_error";
 		}
+	}
+
+	private String getError(Exception e, Locale locale) {
+		if (e instanceof TooLongNameException)
+			return messageSource.getMessage("karaka.send.failure.longname",
+					new Object[]{Reference.MAX_NAME_LENGTH}, locale);
+		if (e instanceof EmptyPostException)
+			return messageSource.getMessage("karaka.send.failure.empty", null, locale);
+		return messageSource.getMessage("karaka.send.failure.unknown", null, locale);
 	}
 
 }

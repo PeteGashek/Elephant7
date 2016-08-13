@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body>
-    <th:block th:text="#{karaka.send.failure.empty}"></th:block><br/>
+    <th:block th:text="${error}"></th:block><br/>
     <a th:href="@{${'/' + backLink}}" th:text="#{karaka.back}"></a>
 </body>
 </html>

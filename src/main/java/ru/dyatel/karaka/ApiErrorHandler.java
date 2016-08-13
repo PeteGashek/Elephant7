@@ -12,6 +12,7 @@ import ru.dyatel.karaka.controllers.ApiRouteNotFoundException;
 import ru.dyatel.karaka.validation.exceptions.EmptyPostException;
 import ru.dyatel.karaka.validation.exceptions.NotValidBoardCodeException;
 import ru.dyatel.karaka.validation.exceptions.NotValidThreadException;
+import ru.dyatel.karaka.validation.exceptions.TooLongNameException;
 import ru.dyatel.karaka.validation.exceptions.ValidationException;
 
 @ControllerAdvice(annotations = Api.class)
@@ -43,6 +44,12 @@ public class ApiErrorHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ApiResponse notValidThread() {
 		return ApiError.NO_SUCH_THREAD;
+	}
+
+	@ExceptionHandler(TooLongNameException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ApiResponse tooLongName() {
+		return ApiError.TOO_LONG_NAME;
 	}
 
 	@ExceptionHandler(EmptyPostException.class)

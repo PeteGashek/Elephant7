@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.dyatel.karaka.boards.Board;
+import ru.dyatel.karaka.util.Reference;
 
 import java.util.Collection;
 
@@ -28,7 +29,7 @@ public class BoardTableManagerImpl implements BoardTableManager {
 					PostTable.THREAD_ID_COLUMN + " INT UNSIGNED, " +
 					TIMESTAMP_COLUMN + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
 					TYPE_COLUMN + " VARCHAR(8), " +
-					NAME_COLUMN + " VARCHAR(32) CHARACTER SET utf8, " +
+					NAME_COLUMN + " VARCHAR(" + Reference.MAX_NAME_LENGTH + ") CHARACTER SET utf8, " +
 					MESSAGE_COLUMN + " TEXT CHARACTER SET utf8" +
 					")"
 			);
