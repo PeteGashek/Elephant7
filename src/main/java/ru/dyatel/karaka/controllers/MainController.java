@@ -14,7 +14,8 @@ public class MainController {
 
 	@RequestMapping("/")
 	public String index(Model model) {
-		model.addAttribute("boards", boardConfig.getBoards().keySet());
+		model.addAttribute("sections", boardConfig.getSections());
+		model.addAttribute("boards", boardConfig.getBoards());
 		return "index";
 	}
 
