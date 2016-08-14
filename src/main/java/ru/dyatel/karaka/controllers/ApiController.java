@@ -43,8 +43,8 @@ public class ApiController {
 	private ThreadManager threadManager;
 
 	@RequestMapping("/test")
-	public String test() {
-		return "Hello, World!";
+	public ApiResponse test() {
+		return new ApiResponse("Hello, World!");
 	}
 
 	@RequestMapping(value = "/boards", method = RequestMethod.GET)
