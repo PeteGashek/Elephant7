@@ -1,4 +1,6 @@
 var autoupdateInterval = 5000;
+var maxMessageBytes = 65535;
+
 var autoupdateEnabled = false;
 var autoupdateTimer;
 var autoupdateTimerValue;
@@ -37,7 +39,7 @@ function constructPost(json, id) {
     postHeader.append($("<span></span>").addClass("post_number")
         .text(id)).append(" | ");
     postHeader.append($("<span></span>").addClass("post_timestamp")
-        .text(dateFormat(new Date(json.timestamp), "dd.mm.yyyy, HH:MM:ss"))).append(" | ");
+        .text(new Date(json.timestamp).format("dd.mm.yyyy, HH:MM:ss"))).append(" | ");
     var posterName = $("<span></span>").text(json.name);
     switch(json.type) {
         case "OP":
@@ -80,13 +82,36 @@ function updateMessages() {
             postList.append(constructPost(posts[i], i + 1));
         }
     });
+    request.fail(function() {
+        showError("Failed to receive messages!")
+    });
     request.always(function() {
         if (autoupdateEnabled) startAutoupdateTimer();
     });
 }
 
+function utf8ByteLength(text) {
+    var count = 0;
+	var length = text.length;
+	for (var i = 0; i < length; i++) {
+		var c = text.charCodeAt(i);
+
+		if (c <= 0x7F) count++;
+		else if (c <= 0x7FF) count += 2;
+		else if (c >= 0xD800 && c <= 0xDC00) {
+			count += 4;
+			++i;
+		} else count += 3;
+	}
+	return count;
+}
+
+function showError(text) {
+    console.log(text);
+}
+
 $(function() {
-    $("#thread_autoupdate").show(); // Will show only if JS works
+    $("#thread_autoupdate").show(); // We will show it only if JS works
     $("#thread_autoupdate_checkbox").change(function() {
         autoupdateEnabled = $(this).prop("checked");
         if (autoupdateEnabled) startAutoupdateTimer();
@@ -98,8 +123,25 @@ $(function() {
         return false;
     });
 
+    var message = $("#post_message");
+    var byteCounter = $("#post_message_byte_counter");
+    var oldMessageText = "";
+    message.removeAttr("maxlength"); // We will handle it manually by counting bytes
+    message.on("textchange", function() {
+        var newMessageText = $(this).val();
+        var newByteCount = utf8ByteLength(newMessageText);
+        if (newByteCount > maxMessageBytes) {
+            $(this).val(oldMessageText);
+            showError("Message is too long!");
+        } else {
+            oldMessageText = newMessageText;
+            byteCounter.text(maxMessageBytes - newByteCount);
+        }
+    });
+    byteCounter.text(maxMessageBytes);
+
     $("#post_send").click(function() {
-        if ($("#new_thread").length) return true;
+        if ($("#new_thread").length) return true; // Thread creation is handled by backend
 
         var form = $("#post_form");
         var request = $.ajax({
@@ -111,7 +153,7 @@ $(function() {
 
         request.done(updateMessages);
         request.fail(function(response) {
-            console.log("Error: " + $.parseJSON(response.responseText).message);
+            showError($.parseJSON(response.responseText).message);
         });
 
         return false;

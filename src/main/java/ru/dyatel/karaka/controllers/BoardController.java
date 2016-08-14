@@ -19,6 +19,7 @@ import ru.dyatel.karaka.util.Reference;
 import ru.dyatel.karaka.validation.BoardCodeValidator;
 import ru.dyatel.karaka.validation.ThreadIdValidator;
 import ru.dyatel.karaka.validation.exceptions.EmptyPostException;
+import ru.dyatel.karaka.validation.exceptions.TooLongMessageException;
 import ru.dyatel.karaka.validation.exceptions.TooLongNameException;
 
 import java.util.List;
@@ -102,6 +103,9 @@ public class BoardController {
 					new Object[]{Reference.MAX_NAME_LENGTH}, locale);
 		if (e instanceof EmptyPostException)
 			return messageSource.getMessage("karaka.send.failure.empty", null, locale);
+		if (e instanceof TooLongMessageException)
+			return messageSource.getMessage("karaka.send.failure.longmessage",
+					new Object[]{Reference.MAX_MESSAGE_BYTE_LENGTH}, locale);
 		return messageSource.getMessage("karaka.send.failure.unknown", null, locale);
 	}
 

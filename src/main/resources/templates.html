@@ -33,8 +33,9 @@
             <input type="radio" name="type" value="OP"/>[[#{karaka.post.type.op}]]
             <input type="radio" name="type" value="SAGE"/>[[#{karaka.post.type.sage}]]<br/>
         </th:block>
-        <input type="text" name="name"/><br/>
-        <textarea name="message"></textarea><br/>
+        <input type="text" name="name" maxlength="32"/><br/>
+        <textarea id="post_message" name="message" maxlength="16384"></textarea><br/>
+        <span id="post_message_byte_counter"></span>
         <input type="submit" id="post_send" th:value="#{karaka.send}"/>
     </form>
 </th:block>
