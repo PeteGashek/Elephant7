@@ -1,4 +1,5 @@
 var autoupdateInterval = 5000;
+var maxNameLength = 32;
 var maxMessageBytes = 65535;
 
 var autoupdateEnabled = false;
@@ -123,22 +124,32 @@ $(function() {
         return false;
     });
 
-    var message = $("#post_message");
-    var byteCounter = $("#post_message_byte_counter");
-    var oldMessageText = "";
-    message.removeAttr("maxlength"); // We will handle it manually by counting bytes
-    message.on("textchange", function() {
-        var newMessageText = $(this).val();
-        var newByteCount = utf8ByteLength(newMessageText);
-        if (newByteCount > maxMessageBytes) {
-            $(this).val(oldMessageText);
+    // In case "maxlength" doesn't work, but JS does
+    var postName = $("#post_name");
+    var oldPostNameText = "";
+    postName.on("textchange", function() {
+        var name = $(this).val();
+        if (name.length > maxNameLength) {
+            $(this).val(oldPostNameText);
+            showError("Name is too long!");
+        } else oldPostNameText = name;
+    });
+
+    var postMessageByteCounter = $("#post_message_byte_counter").text(maxMessageBytes);
+    var postMessage = $("#post_message");
+    var oldPostMessageText = "";
+    postMessage.removeAttr("maxlength"); // We will handle it manually by counting bytes
+    postMessage.on("textchange", function() {
+        var message = $(this).val();
+        var byteCount = utf8ByteLength(message);
+        if (byteCount > maxMessageBytes) {
+            $(this).val(oldPostMessageText);
             showError("Message is too long!");
         } else {
-            oldMessageText = newMessageText;
-            byteCounter.text(maxMessageBytes - newByteCount);
+            oldPostMessageText = message;
+            postMessageByteCounter.text(maxMessageBytes - byteCount);
         }
     });
-    byteCounter.text(maxMessageBytes);
 
     $("#post_send").click(function() {
         if ($("#new_thread").length) return true; // Thread creation is handled by backend
