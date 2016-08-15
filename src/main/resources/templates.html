@@ -35,7 +35,7 @@
         </th:block>
         <input type="text" id="post_name" name="name" th:maxlength="${T(ru.dyatel.karaka.util.Reference).MAX_NAME_LENGTH}"/><br/>
         <textarea id="post_message" name="message" th:maxlength="${T(ru.dyatel.karaka.util.Reference).MAX_MESSAGE_BYTE_LENGTH / 4}"></textarea><br/>
-        <span id="post_message_byte_counter"></span><br/>
+        <span id="post_message_byte_counter" class="message_bytes_good" hidden="true"></span><br/>
         <input type="submit" id="post_send" th:value="#{karaka.send}"/>
     </form>
 </th:block>

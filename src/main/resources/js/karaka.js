@@ -125,9 +125,8 @@ $(function() {
     });
 
     // In case "maxlength" doesn't work, but JS does
-    var postName = $("#post_name");
     var oldPostNameText = "";
-    postName.on("textchange", function() {
+    $("#post_name").on("textchange", function() {
         var name = $(this).val();
         if (name.length > maxNameLength) {
             $(this).val(oldPostNameText);
@@ -135,24 +134,23 @@ $(function() {
         } else oldPostNameText = name;
     });
 
-    var postMessageByteCounter = $("#post_message_byte_counter").text(maxMessageBytes);
-    var postMessage = $("#post_message");
-    var oldPostMessageText = "";
-    postMessage.removeAttr("maxlength"); // We will handle it manually by counting bytes
-    postMessage.on("textchange", function() {
-        var message = $(this).val();
-        var byteCount = utf8ByteLength(message);
-        if (byteCount > maxMessageBytes) {
-            $(this).val(oldPostMessageText);
-            showError("Message is too long!");
-        } else {
-            oldPostMessageText = message;
-            postMessageByteCounter.text(maxMessageBytes - byteCount);
-        }
+    // We will handle it manually by counting bytes so the user can post bigger messages
+    var postMessageByteCounter = $("#post_message_byte_counter").text(maxMessageBytes).show();
+    var postMessageBytes = 0;
+    $("#post_message").removeAttr("maxlength").on("textchange", function() {
+        postMessageBytes = utf8ByteLength($(this).val());
+        postMessageByteCounter.text(maxMessageBytes - postMessageBytes)
+            .removeClass()
+            .addClass(postMessageBytes <= maxMessageBytes ? "message_bytes_good" : "message_bytes_bad");
     });
 
     $("#post_send").click(function() {
         if ($("#new_thread").length) return true; // Thread creation is handled by backend
+
+        if (postMessageBytes > maxMessageBytes) {
+            showError("Message is too long!");
+            return false;
+        }
 
         var form = $("#post_form");
         var request = $.ajax({
