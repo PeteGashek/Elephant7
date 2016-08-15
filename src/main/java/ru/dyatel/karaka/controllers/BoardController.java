@@ -55,6 +55,8 @@ public class BoardController {
 		List<Long> threadIds = threadManager.getLatestThreads(board, 10, page * 10);
 		List<Post> threads = postDb.getPostsById(board, threadIds);
 		PostUtil.sortByThreadIdList(threads, threadIds);
+		model.addAttribute("sections", boardConfig.getSections());
+		model.addAttribute("boards", boardConfig.getBoards());
 		model.addAttribute("threads", threads);
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("currentPage", page);
@@ -67,6 +69,8 @@ public class BoardController {
 						 @PathVariable long threadId, Model model) {
 		Board board = BoardUtil.validateAndGet(boardCode, boardConfig, boardValidator);
 		threadIdValidator.validate(board, threadId);
+		model.addAttribute("sections", boardConfig.getSections());
+		model.addAttribute("boards", boardConfig.getBoards());
 		model.addAttribute("posts", postDb.getPosts(board, threadId, 0, 0));
 		model.addAttribute("boardCode", boardCode);
 		model.addAttribute("threadId", threadId);

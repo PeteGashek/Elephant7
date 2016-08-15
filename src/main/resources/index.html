@@ -3,14 +3,5 @@
 <head></head>
 <body>
 <div th:replace="templates :: header"></div>
-<span class="board_section" th:each="section: ${sections}">
-    <span class="board_section_title" th:text="${section.title}"></span>
-    [
-    <th:block th:each="board,status: ${section.boards}" th:if="${#maps.containsKey(boards, board)}">
-        <th:block th:if="${not status.first}">, </th:block>
-        <a th:href="${'/' + board}" th:title="${boards[__${board}__].description}" th:text="${'/' + board + '/'}"></a>
-    </th:block>
-    ]
-</span>
 </body>
 </html>

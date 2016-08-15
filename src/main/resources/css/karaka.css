@@ -1,0 +1,45 @@
+body {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 0.9em;
+}
+
+.right_align {
+    float: right;
+}
+
+.post {
+    border: 1px solid #000;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 2px 4px 2px 4px;
+}
+
+.post_header {
+    border-bottom: 1px solid #000;
+    padding-bottom: 2px;
+}
+
+.post_op {
+    color: #09DB09;
+}
+
+.post_sage {
+    color: #DB0909;
+}
+
+.post_content {
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.message_bytes_good {
+    color: #09DB09;
+}
+
+.message_bytes_bad {
+    color: #DB0909;
+}

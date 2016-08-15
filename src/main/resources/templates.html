@@ -7,6 +7,15 @@
         <span class="greeting" th:text="#{karaka.greeting}"></span>
         <span class="right_align" th:text="#{karaka.settings}"></span>
     </div>
+    <div class="block" th:each="section: ${sections}">
+        <span class="board_section_title" th:text="${section.title}"></span>
+        [
+        <th:block th:each="board,status: ${section.boards}" th:if="${#maps.containsKey(boards, board)}">
+            <th:block th:if="${not status.first}">, </th:block>
+            <a th:href="${'/' + board}" th:title="${boards[__${board}__].description}" th:text="${'/' + board + '/'}"></a>
+        </th:block>
+        ]
+    </div>
 </div>
 <div id="post_list" th:fragment="postList (posts, isThreadList)">
     <div class="post" th:each="post,i: ${posts}" th:id="${post.postId}">
