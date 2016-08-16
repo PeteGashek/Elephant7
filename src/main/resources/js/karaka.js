@@ -117,16 +117,25 @@ function showNotification(text) {
 }
 
 $(function() {
-    $("#thread_autoupdate").show(); // We will show it only if JS works
-    $("#thread_autoupdate_checkbox").change(function() {
-        autoupdateEnabled = $(this).prop("checked");
-        if (autoupdateEnabled) startAutoupdateTimer();
-        else stopAutoupdateTimer();
+    $("#page_top_button").click(function() {
+        $("html,body").scrollTop($("a[name='page_top']").offset().top);
+        return false;
+    });
+    $("#page_bottom_button").click(function() {
+        $("html,body").scrollTop($("a[name='page_bottom']").offset().top);
+        return false;
     });
 
     $("#thread_update").click(function() {
         updateMessages();
         return false;
+    });
+
+    $("#thread_autoupdate").show(); // We will show it only if JS works
+    $("#thread_autoupdate_checkbox").change(function() {
+        autoupdateEnabled = $(this).prop("checked");
+        if (autoupdateEnabled) startAutoupdateTimer();
+        else stopAutoupdateTimer();
     });
 
     // In case "maxlength" doesn't work, but JS does
@@ -164,6 +173,7 @@ $(function() {
             data: form.serialize()
         });
         form[0].reset();
+        postMessageBytes = 0;
 
         request.done(function() {
             showNotification("Posted!");

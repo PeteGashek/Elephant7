@@ -2,12 +2,29 @@ body {
     font-family: Verdana, Arial, sans-serif;
     font-size: 0.9em;
 
+    margin: 8px 8px 8px 40px;
     background-color: #1c2936;
     color: #bbb;
 }
 
+#page_top, #page_bottom {
+    display: none;
+}
+
 .right_align {
     float: right;
+}
+
+#menu {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 32px;
+    height: 100%;
+
+    border-right: 1px solid #324b63;
+
+    background-color: #192530;
 }
 
 #notification_list {

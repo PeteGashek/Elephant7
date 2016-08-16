@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/karaka.css"/>
 </head>
 <body>
+<a name="page_top"></a>
 <div th:replace="templates :: header"></div>
 <div th:replace="templates :: postForm (${'/' + boardCode + '/post'}, true)"></div>
 <div th:replace="templates :: postList (${threads}, true)"></div>
@@ -19,7 +20,8 @@
            th:href="@{${'/' + boardCode + '?page=' + page}}" th:text="${'[' + page + ']'} "></a>
     </th:block>
 </div>
-<div><a th:href="@{/}" th:text="#{karaka.back}"></a></div>
+<div th:replace="templates :: menu(true)"></div>
 <div id="notification_list"></div>
+<a name="page_bottom"></a>
 </body>
 </html>

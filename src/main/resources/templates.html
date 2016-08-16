@@ -2,6 +2,15 @@
 <html>
 <head></head>
 <body>
+<div id="menu" th:fragment="menu (isThreadList)">
+    <a href="/"><img src="/static/img/home.png" width="32" height="32"></a><br/>
+    <th:block th:if="${not isThreadList}">
+        <a th:href="${'/' + boardCode}"><img src="/static/img/arrow-left.png" width="32" height="32"></a>
+        <a th:href="${#httpServletRequest.requestURI}" id="thread_update"><img src="/static/img/sync.png" width="32" height="32"></a>
+    </th:block>
+    <a href="#page_top" id="page_top_button"><img src="/static/img/arrow-up.png" width="32" height="32"></a><br/>
+    <a href="#page_bottom" id="page_bottom_button"><img src="/static/img/arrow-down.png" width="32" height="32"></a>
+</div>
 <div th:fragment="header">
     <div class="block">
         <span class="greeting" th:text="#{karaka.greeting}"></span>
