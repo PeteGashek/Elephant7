@@ -1,4 +1,5 @@
 var autoupdateInterval = 5000;
+var notificationTimeout = 5000;
 var maxNameLength = 32;
 var maxMessageBytes = 65535;
 
@@ -84,7 +85,7 @@ function updateMessages() {
         }
     });
     request.fail(function() {
-        showError("Failed to receive messages!")
+        showNotification("Failed to receive messages!")
     });
     request.always(function() {
         if (autoupdateEnabled) startAutoupdateTimer();
@@ -107,8 +108,12 @@ function utf8ByteLength(text) {
 	return count;
 }
 
-function showError(text) {
-    console.log(text);
+function showNotification(text) {
+    var notification = $("<div></div>").addClass("notification").text(text);
+    $("#notification_list").prepend(notification);
+    setTimeout(function() {
+        notification.remove();
+    }, notificationTimeout);
 }
 
 $(function() {
@@ -130,7 +135,7 @@ $(function() {
         var name = $(this).val();
         if (name.length > maxNameLength) {
             $(this).val(oldPostNameText);
-            showError("Name is too long!");
+            showNotification("Name is too long!");
         } else oldPostNameText = name;
     });
 
@@ -148,7 +153,7 @@ $(function() {
         if ($("#new_thread").length) return true; // Thread creation is handled by backend
 
         if (postMessageBytes > maxMessageBytes) {
-            showError("Message is too long!");
+            showNotification("Message is too long!");
             return false;
         }
 
@@ -160,9 +165,12 @@ $(function() {
         });
         form[0].reset();
 
-        request.done(updateMessages);
+        request.done(function() {
+            showNotification("Posted!");
+            updateMessages();
+        });
         request.fail(function(response) {
-            showError($.parseJSON(response.responseText).message);
+            showNotification($.parseJSON(response.responseText).message);
         });
 
         return false;
