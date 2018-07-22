@@ -1,7 +1,7 @@
 {
 	"sections": [{
-		"title": "testTitle",
-		"boards": ["Bord1"]
+		"title": "Elephant.seven",
+		"boards": ["rand0m"]
 	}],
 	"defaultBoard": {
 		"readOnly": false,
@@ -10,13 +10,13 @@
 		"defaultUsername": ""
 	},
 	"boardList": [{
-		"code": "Bord1",
-		"description": "SomeDescr",
+		"code": "rand0m",
+		"description": "off-topic rand0m board",
 		"readOnly": false,
-		"postTable": "PostTable1",
-		"threadTable": "ThreadTable1",
+		"postTable": "rand0m_posts_table",
+		"threadTable": "rand0m_threads_table",
 		"bumpLimit": 1000,
 		"maxPages": 1,
-		"defaultUsername": "SomeUserName"
+		"defaultUsername": "anonymous"
 	}]
 }
