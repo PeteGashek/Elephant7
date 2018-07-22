@@ -22,7 +22,7 @@ public class BoardTableManagerImpl implements BoardTableManager {
 			db.execute("CREATE TABLE IF NOT EXISTS " + board.getPostTable() + " (" +
 					PostTable.POST_ID_COLUMN + " INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, " +
 					PostTable.THREAD_ID_COLUMN + " INT UNSIGNED, " +
-					PostTable.TIMESTAMP_COLUMN + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+					PostTable.TIMESTAMP_COLUMN + " DATETIME DEFAULT CURRENT_TIMESTAMP NOT NUll, " +
 					PostTable.TYPE_COLUMN + " VARCHAR(8), " +
 					PostTable.NAME_COLUMN + " VARCHAR(" + Reference.MAX_NAME_LENGTH + ") CHARACTER SET utf8, " +
 					PostTable.MESSAGE_COLUMN + " TEXT CHARACTER SET utf8" +

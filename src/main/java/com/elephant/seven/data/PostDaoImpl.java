@@ -17,6 +17,7 @@ import com.elephant.seven.posts.PostType;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +78,7 @@ public class PostDaoImpl implements PostDao {
 		fields.put(PostTable.TYPE_COLUMN, post.getType());
 		fields.put(PostTable.NAME_COLUMN, post.getName());
 		fields.put(PostTable.MESSAGE_COLUMN, post.getMessage());
+		fields.put(PostTable.TIMESTAMP_COLUMN,new java.util.Date());
 		post.setPostId(insert.executeAndReturnKey(fields).longValue());
 
 		if (PostType.SAGE.equals(post.getType())) return;
