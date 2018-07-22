@@ -10,6 +10,7 @@
 </head>
 <body>
 <a name="page_top"></a>
+<div id="central_content" style="margin-left: 10%">
 <div th:replace="templates :: header"></div>
 <div th:replace="templates :: postForm (${'/' + boardCode + '/post'}, true)"></div>
 <div th:replace="templates :: threadList (${threads}, true)"></div>
@@ -19,6 +20,7 @@
         <a th:if="${page != currentPage}"
            th:href="@{${'/' + boardCode + '?page=' + page}}" th:text="${'[' + page + ']'} "></a>
     </th:block>
+</div>
 </div>
 <div th:replace="templates :: menu(true)"></div>
 <div id="notification_list"></div>
