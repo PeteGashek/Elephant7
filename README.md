@@ -1,3 +1,5 @@
 # Elephant7
 
-WIP Fork of Karaka , plan to move to postgreSql and FlyWay . Reworked carcasus to maven . 
+WIP Fork of Karaka image-board , plan to move to postgreSql and FlyWay . Reworked carcass to maven. 
+
+   -    to run phat jar config.json with persistence should be in the root folder. 
