@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
-@PropertySource("file:resources/application.properties")
+@PropertySource("application.properties")
 @Import(SpringConfiguration.class)
 public class KarakaRunner {
 

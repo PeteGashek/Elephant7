@@ -1,5 +1,7 @@
 package ru.dyatel.karaka.boards;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Board {
 
 	public static class DefaultConfig {
@@ -18,16 +20,28 @@ public class Board {
 
 	private transient DefaultConfig defaultConfig;
 
+	@SerializedName("code")
 	private String code;
+
+	@SerializedName("description")
 	private String description = null;
+
+	@SerializedName("readOnly")
 	private Boolean readOnly = null;
 
+	@SerializedName("postTable")
 	private String postTable = null;
+
+	@SerializedName("threadTable")
 	private String threadTable = null;
 
+	@SerializedName("bumpLimit")
 	private Integer bumpLimit = null;
+
+	@SerializedName("maxPages")
 	private Integer maxPages = null;
 
+	@SerializedName("defaultUsername")
 	private String defaultUsername = null;
 
 	public DefaultConfig getDefaultConfig() {

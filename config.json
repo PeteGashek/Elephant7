@@ -1,0 +1,9 @@
+{
+  "working_dir": "/Users/ghost/Desktop/aws/codeSandbox/junk/",
+  "db_config": {
+    "driver": "com.mysql.jdbc.Driver",
+    "url": "jdbc:mysql://localhost:32768/board_1",
+    "username": "root",
+    "password": "elephant7"
+  }
+}

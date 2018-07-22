@@ -20,12 +20,12 @@ public class SpringConfiguration {
 				.create();
 	}
 
-	@Bean
-	public MessageSource messageSource() {
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("file:resources/i18n/text");
-		messageSource.setDefaultEncoding("Windows-1251");
-		return messageSource;
-	}
+//	@Bean
+//	public MessageSource messageSource() {
+//		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+//		messageSource.setBasename("messages.properties");
+//		messageSource.setDefaultEncoding("UTF-8");
+//		return messageSource;
+//	}
 
 }
