@@ -1,7 +1,7 @@
 package com.elephant.seven.data;
 
 import com.elephant.seven.config.DbConnectionConfig;
-import com.elephant.seven.config.KarakaConfigurationManager;
+import com.elephant.seven.config.ElephantSevenConfigurationManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -15,7 +15,7 @@ import java.util.Properties;
 public class DbConfiguration {
 
 	@Bean
-	public DataSource dataSource(KarakaConfigurationManager configManager) {
+	public DataSource dataSource(ElephantSevenConfigurationManager configManager) {
 		DbConnectionConfig config = configManager.getConfig().getDbConfig();
 
 		Properties properties = new Properties();

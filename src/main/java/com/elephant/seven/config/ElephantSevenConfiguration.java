@@ -2,10 +2,10 @@ package com.elephant.seven.config;
 
 import java.nio.file.Path;
 
-public class KarakaConfiguration {
+public class ElephantSevenConfiguration {
 
-	public static KarakaConfiguration getDefault() {
-		KarakaConfiguration config = new KarakaConfiguration();
+	public static ElephantSevenConfiguration getDefault() {
+		ElephantSevenConfiguration config = new ElephantSevenConfiguration();
 		return config;
 	}
 

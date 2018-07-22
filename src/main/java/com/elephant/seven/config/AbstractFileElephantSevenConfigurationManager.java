@@ -15,7 +15,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-public abstract class AbstractFileKarakaConfigurationManager implements KarakaConfigurationManager {
+public abstract class AbstractFileElephantSevenConfigurationManager implements ElephantSevenConfigurationManager {
 
 	protected Log logger;
 
@@ -26,15 +26,15 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 			.serializeNulls()
 			.create();
 
-	protected KarakaConfiguration config;
+	protected ElephantSevenConfiguration config;
 
-	public AbstractFileKarakaConfigurationManager(Log logger) {
+	public AbstractFileElephantSevenConfigurationManager(Log logger) {
 		this.logger = logger;
 		reload();
 	}
 
 	@Override
-	public KarakaConfiguration getConfig() {
+	public ElephantSevenConfiguration getConfig() {
 		return config;
 	}
 
@@ -44,7 +44,7 @@ public abstract class AbstractFileKarakaConfigurationManager implements KarakaCo
 	public void reload() {
 		Resource configFile = getFileResource();
 		try (Reader reader = new InputStreamReader(configFile.getInputStream(), StandardCharsets.UTF_8)) {
-			config = gson.fromJson(reader, KarakaConfiguration.class);
+			config = gson.fromJson(reader, ElephantSevenConfiguration.class);
 			logger.info("Successfully loaded Karaka config from " + configFile);
 		} catch (Exception e) {
 			logger.info("Failed to read Karaka config from " + configFile + ", using default", e);

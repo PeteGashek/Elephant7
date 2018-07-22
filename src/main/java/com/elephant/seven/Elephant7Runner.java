@@ -9,10 +9,10 @@ import org.springframework.context.annotation.PropertySource;
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 @PropertySource("application.properties")
 @Import(SpringConfiguration.class)
-public class KarakaRunner {
+public class Elephant7Runner {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KarakaRunner.class, args);
+		SpringApplication.run(Elephant7Runner.class, args);
 	}
 
 }

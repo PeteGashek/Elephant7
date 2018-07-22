@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Paths;
 
 @Component
-public class KarakaConfigurationManagerImpl extends AbstractFileKarakaConfigurationManager {
+public class ElephantSevenConfigurationManagerImpl extends AbstractFileElephantSevenConfigurationManager {
 
-	public KarakaConfigurationManagerImpl() {
-		super(LogFactoryImpl.getLog(KarakaConfigurationManagerImpl.class));
+	public ElephantSevenConfigurationManagerImpl() {
+		super(LogFactoryImpl.getLog(ElephantSevenConfigurationManagerImpl.class));
 	}
 
 	@Override
@@ -20,8 +20,8 @@ public class KarakaConfigurationManagerImpl extends AbstractFileKarakaConfigurat
 	}
 
 	@Override
-	public KarakaConfiguration getDefaultConfig() {
-		KarakaConfiguration config = KarakaConfiguration.getDefault();
+	public ElephantSevenConfiguration getDefaultConfig() {
+		ElephantSevenConfiguration config = ElephantSevenConfiguration.getDefault();
 		config.setWorkingDir(Paths.get("work"));
 		return config;
 	}

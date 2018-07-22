@@ -13,8 +13,8 @@
 </div>
 <div th:fragment="header">
     <div class="block">
-        <span class="greeting" th:text="#{karaka.greeting}"></span>
-        <span class="right_align" th:text="#{karaka.settings}"></span>
+        <span class="greeting" th:text="#{elephant.seven.greeting}"></span>
+        <span class="right_align" th:text="#{elephant.seven.settings}"></span>
     </div>
     <div class="block" th:each="section: ${sections}">
         <span class="board_section_title" th:text="${section.title}"></span>
@@ -47,14 +47,14 @@
     <form id="post_form" th:action="@{${postLink}}" method="post" accept-charset="utf-8" th:inline="text">
         <input type="hidden" id="new_thread" th:if="${newThread}"/>
         <th:block th:if="${not newThread}">
-            <input type="radio" name="type" value="NORMAL" checked="checked"/>[[#{karaka.post.type.normal}]]
-            <input type="radio" name="type" value="OP"/>[[#{karaka.post.type.op}]]
-            <input type="radio" name="type" value="SAGE"/>[[#{karaka.post.type.sage}]]<br/>
+            <input type="radio" name="type" value="NORMAL" checked="checked"/>[[#{elephant.seven.post.type.normal}]]
+            <input type="radio" name="type" value="OP"/>[[#{elephant.seven.post.type.op}]]
+            <input type="radio" name="type" value="SAGE"/>[[#{elephant.seven.post.type.sage}]]<br/>
         </th:block>
         <input type="text" id="post_name" name="name" th:maxlength="${T(com.elephant.seven.util.Reference).MAX_NAME_LENGTH}"/><br/>
         <textarea id="post_message" name="message" th:maxlength="${T(com.elephant.seven.util.Reference).MAX_MESSAGE_BYTE_LENGTH / 4}"></textarea><br/>
         <span id="post_message_byte_counter" class="message_bytes_good" hidden="true"></span><br/>
-        <input type="submit" id="post_send" th:value="#{karaka.send}"/>
+        <input type="submit" id="post_send" th:value="#{elephant.seven.send}"/>
     </form>
 </th:block>
 </body>

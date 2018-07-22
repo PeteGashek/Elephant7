@@ -1,6 +1,6 @@
 package com.elephant.seven.boards;
 
-import com.elephant.seven.config.KarakaConfigurationManager;
+import com.elephant.seven.config.ElephantSevenConfigurationManager;
 import com.elephant.seven.data.BoardTableManager;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -47,15 +47,15 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 			.setPrettyPrinting()
 			.create();
 
-	private KarakaConfigurationManager karakaConfig;
+	private ElephantSevenConfigurationManager configurationManager;
 	private BoardTableManager tableManager;
 
 	private Config config;
 	private Map<String, Board> boards = new HashMap<>();
 
 	@Autowired
-	public JsonFileBoardConfiguration(KarakaConfigurationManager karakaConfig, BoardTableManager tableManager) {
-		this.karakaConfig = karakaConfig;
+	public JsonFileBoardConfiguration(ElephantSevenConfigurationManager configurationManager, BoardTableManager tableManager) {
+		this.configurationManager = configurationManager;
 		this.tableManager = tableManager;
 		reload();
 	}
@@ -71,7 +71,7 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 	}
 
 	private WritableResource getFileResource() {
-		return new FileSystemResource(karakaConfig.getConfig().getWorkingDir().resolve(filename).toFile());
+		return new FileSystemResource(configurationManager.getConfig().getWorkingDir().resolve(filename).toFile());
 	}
 
 	@Override

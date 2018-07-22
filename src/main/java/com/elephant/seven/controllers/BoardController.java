@@ -103,14 +103,14 @@ public class BoardController {
 
 	private String getError(Exception e, Locale locale) {
 		if (e instanceof TooLongNameException)
-			return messageSource.getMessage("karaka.send.failure.longname",
+			return messageSource.getMessage("elephant.seven.send.failure.longname",
 					new Object[]{Reference.MAX_NAME_LENGTH}, locale);
 		if (e instanceof EmptyPostException)
-			return messageSource.getMessage("karaka.send.failure.empty", null, locale);
+			return messageSource.getMessage("elephant.seven.send.failure.empty", null, locale);
 		if (e instanceof TooLongMessageException)
-			return messageSource.getMessage("karaka.send.failure.longmessage",
+			return messageSource.getMessage("elephant.seven.send.failure.longmessage",
 					new Object[]{Reference.MAX_MESSAGE_BYTE_LENGTH}, locale);
-		return messageSource.getMessage("karaka.send.failure.unknown", null, locale);
+		return messageSource.getMessage("elephant.seven.send.failure.unknown", null, locale);
 	}
 
 }
