@@ -19,10 +19,12 @@ body {
     position: fixed;
     left: 0px;
     top: 0px;
-    width: 9%;
+    width: 145px;
     height: 100%;
     border-right: 1px solid #DDDDDD;
     background-color: #EEEEEE;
+    margin: 8px 8px 8px 20px;
+    line-height: 17pt
 }
 
 #notification_list {
