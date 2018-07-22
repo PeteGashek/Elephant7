@@ -1,0 +1,22 @@
+{
+	"sections": [{
+		"title": "testTitle",
+		"boards": ["Bord1"]
+	}],
+	"defaultBoard": {
+		"readOnly": false,
+		"bumpLimit": 500,
+		"maxPages": 10,
+		"defaultUsername": ""
+	},
+	"boardList": [{
+		"code": "Bord1",
+		"description": "SomeDescr",
+		"readOnly": false,
+		"postTable": "PostTable1",
+		"threadTable": "ThreadTable1",
+		"bumpLimit": 1000,
+		"maxPages": 1,
+		"defaultUsername": "SomeUserName"
+	}]
+}
