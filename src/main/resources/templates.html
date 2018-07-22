@@ -43,6 +43,23 @@
         </div>
     </div>
 </div>
+<div id="thread_list" th:fragment="threadList (posts, isThreadList)">
+    <div class="thread-list" th:each="post,i: ${posts}" th:id="${post.postId}">
+        <div class="post_header" th:with="link=${isThreadList}? ${#httpServletRequest.requestURI +
+        (#strings.endsWith(#httpServletRequest.requestURI, '/')? '' : '/') + post.threadId} : ${'#' + post.postId}">
+            <a th:href="@{${link}}" class="post_id" th:text="${'#' + post.postId}"></a> |
+            <th:block th:if="${not isThreadList}"><span class="post_number" th:text="${i.count}"></span> |</th:block>
+            <span class="post_timestamp" th:text="${#calendars.format(post.timestamp, 'dd.MM.YYYY, HH:mm:ss')}"></span> |
+            <span th:class="${#strings.equals(post.type, 'OP')}? 'post_op' :
+            (${#strings.equals(post.type, 'SAGE')}? 'post_sage' : 'post_normal')" th:text="${post.name}"></span>
+        </div>
+        <div class="post_content">
+            <th:block th:each="line,i: ${#strings.arraySplit(post.message, T(java.lang.System).getProperty('line.separator'))}">
+                <th:block th:text="${line}"></th:block><br th:if="${not i.last}"/>
+            </th:block>
+        </div>
+    </div>
+</div>
 <th:block th:fragment="postForm (postLink, newThread)">
     <form id="post_form" th:action="@{${postLink}}" method="post" accept-charset="utf-8" th:inline="text">
         <input type="hidden" id="new_thread" th:if="${newThread}"/>

@@ -3,8 +3,8 @@ body {
     font-size: 0.9em;
 
     margin: 8px 8px 8px 40px;
-    background-color: #1c2936;
-    color: #bbb;
+    background-color: #EEEEEE;
+    color: #333333;
 }
 
 #page_top, #page_bottom {
@@ -22,9 +22,9 @@ body {
     width: 32px;
     height: 100%;
 
-    border-right: 1px solid #324b63;
+    border-right: 1px solid #DDDDDD;
 
-    background-color: #192530;
+    background-color: #EEEEEE;
 }
 
 #notification_list {
@@ -33,8 +33,22 @@ body {
     right: 4px;
 }
 
-.post, .notification {
-    width: 68%;
+.thread-list {
+
+    width: 70%;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 3px 6px 3px 6px;
+
+    background-color: #DDDDDD;
+}
+
+.post {
+    width: 42%;
     border: 1px solid #324b63;
     border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -44,16 +58,28 @@ body {
     margin-bottom: 2px;
     padding: 3px 6px 3px 6px;
 
-    background-color: #192530;
+    background-color: #DDDDDD;
+}
+
+.notification {
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 3px 6px 3px 6px;
+
+    background-color: #DDDDDD;
 }
 
 .post_header {
-    border-bottom: 1px solid #324b63;
     padding-bottom: 2px;
 }
 
 .post_op {
-    color: #0ba00b;
+    color: #FF6600;
 }
 
 .post_sage {
@@ -66,7 +92,7 @@ body {
 }
 
 .message_bytes_good {
-    color: #0ba00b;
+    color: #FF6600;
 }
 
 .message_bytes_bad {
@@ -74,5 +100,5 @@ body {
 }
 
 a {
-    color: #0ba00b;
+    color: #FF6600;
 }
