@@ -79,33 +79,6 @@ public class JsonFileBoardConfiguration implements BoardConfiguration {
 		Resource file = getFileResource();
 		try (Reader reader = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8)) {
 			config = gson.fromJson(reader, Config.class);
-			//---------------------------------------------------
-			//TODO: Move this to test somewhere
-//			Config config1 = new Config();
-//
-//			Section section = new Section();
-//			section.setTitle("testTitle");
-//			section.setBoards(Arrays.asList("Bord1"));
-//
-//			config1.sections.add(section);
-//
-//			Board board1 = new Board();
-//			board1.setDefaultConfig(new Board.DefaultConfig());
-//			board1.setCode("Bord1");
-//			board1.setBumpLimit(1000);
-//			board1.setDefaultUsername("SomeUserName");
-//			board1.setDescription("SomeDescr");
-//			board1.setMaxPages(1);
-//			board1.setPostTable("PostTable1");
-//			board1.setReadOnly(false);
-//			board1.setThreadTable("ThreadTable1");
-//
-//
-//
-//			config1.boardList.add(board1);
-//			Gson gson = new Gson();
-//			String jsonInString = gson.toJson(config1);
-			//----------------------------------------------------
 			config.boardList.forEach(board -> {
 				board.setDefaultConfig(config.defaultBoard);
 				boards.put(board.getCode(), board);
