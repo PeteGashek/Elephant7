@@ -45,9 +45,9 @@ public abstract class AbstractFileElephantSevenConfigurationManager implements E
 		Resource configFile = getFileResource();
 		try (Reader reader = new InputStreamReader(configFile.getInputStream(), StandardCharsets.UTF_8)) {
 			config = gson.fromJson(reader, ElephantSevenConfiguration.class);
-			logger.info("Successfully loaded Karaka config from " + configFile);
+			logger.info("Successfully loaded config from " + configFile);
 		} catch (Exception e) {
-			logger.info("Failed to read Karaka config from " + configFile + ", using default", e);
+			logger.info("Failed to read config from " + configFile + ", using default", e);
 			config = getDefaultConfig();
 			save();
 		}
@@ -63,7 +63,7 @@ public abstract class AbstractFileElephantSevenConfigurationManager implements E
 		try (Writer writer = new OutputStreamWriter(configFile.getOutputStream(), StandardCharsets.UTF_8)) {
 			gson.toJson(config, writer);
 		} catch (Exception e) {
-			logger.error("Failed to save Karaka config to " + configFile, e);
+			logger.error("Failed to save config to " + configFile, e);
 		}
 	}
 

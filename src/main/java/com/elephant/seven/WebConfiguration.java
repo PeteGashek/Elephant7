@@ -23,6 +23,7 @@ import java.util.Locale;
 @EnableWebMvc
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
+	@SuppressWarnings("SpringJavaAutowiringInspection")
 	@Autowired
 	private GsonHttpMessageConverter gsonHttpMessageConverter;
 

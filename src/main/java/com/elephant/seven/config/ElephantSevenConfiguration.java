@@ -11,7 +11,6 @@ public class ElephantSevenConfiguration {
 
 	private Path workingDir = null;
 	private DbConnectionConfig dbConfig = new DbConnectionConfig();
-
 	public Path getWorkingDir() {
 		return workingDir;
 	}
