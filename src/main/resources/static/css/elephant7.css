@@ -61,6 +61,12 @@ body {
     background-color: #DDDDDD;
 }
 
+.send {
+    padding: 2px 6px;
+    border: 1px solid #CACACA;
+    background: #EAEAEA;
+}
+
 .notification {
     border: 1px solid #DDDDDD;
     border-radius: 4px;

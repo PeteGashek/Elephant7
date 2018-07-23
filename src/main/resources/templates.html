@@ -70,7 +70,7 @@
         <input type="text" id="post_name" name="name" th:maxlength="${T(com.elephant.seven.util.Reference).MAX_NAME_LENGTH}"/><br/>
         <textarea id="post_message" name="message" th:maxlength="${T(com.elephant.seven.util.Reference).MAX_MESSAGE_BYTE_LENGTH / 4}"></textarea><br/>
         <span id="post_message_byte_counter" class="message_bytes_good" hidden="true"></span><br/>
-        <input type="submit" id="post_send" th:value="#{elephant.seven.send}"/>
+        <input class="send" type="submit" id="post_send" th:value="#{elephant.seven.send}"/>
     </form>
 </th:block>
 </body>

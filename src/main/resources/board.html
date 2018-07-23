@@ -7,10 +7,11 @@
     <script type="text/javascript" src="/static/js/elephant7.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/css/elephant7.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/makaba.css">
 </head>
 <body>
 <a name="page_top"></a>
-<div id="central_content" style="margin-left: 149px">
+<div id="central_content" style="margin-left: 170px">
 <div th:replace="templates :: header"></div>
 <div th:replace="templates :: postForm (${'/' + boardCode + '/post'}, true)"></div>
 <div th:replace="templates :: threadList (${threads}, true)"></div>
