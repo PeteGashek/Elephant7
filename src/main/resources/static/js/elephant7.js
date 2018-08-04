@@ -70,7 +70,7 @@ function constructPost(json, id) {
     }
     post.append(postContent);
 
-    var postFooter = $("<a>Reply</a>").addClass("reply_link").attr("href", "#post_form").attr("id","Reply");
+    var postFooter = $("<a>Reply</a>").addClass("reply_link").attr("href", "#post_form").attr("id","reply_button").attr("onclick","insertReplyLinkInMsg('#"+json.post_id+"');");
     post.append(postFooter);
     return post;
 }
