@@ -1,5 +1,8 @@
 package com.elephant.seven.posts;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Post {
 
 	private Long postId = 0L;
@@ -11,6 +14,7 @@ public class Post {
 
 	private String name = "";
 	private String message = null;
+	private List<String> repliesList = Collections.emptyList();
 
 	public Long getPostId() {
 		return postId;
@@ -60,6 +64,18 @@ public class Post {
 		this.message = message;
 	}
 
+	public List<String> getRepliesList() {
+		return repliesList;
+	}
+
+	public void setRepliesList(List<String> repliesList) {
+		this.repliesList = repliesList;
+	}
+
+	public void addToRepliesList(String reply) {
+		this.repliesList.add(reply);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -86,5 +102,4 @@ public class Post {
 		result = 31 * result + (message != null ? message.hashCode() : 0);
 		return result;
 	}
-
 }

@@ -65,7 +65,7 @@ function constructPost(json, id) {
     }
     post.append(postContent);
 
-    var postFooter = $("<a>Reply</a>").addClass("reply_link").attr("href", "#" + json.post_id).attr("id","Reply");
+    var postFooter = $("<a>Reply</a>").addClass("reply_link").attr("href", "#post_form").attr("id","Reply");
     post.append(postFooter);
     return post;
 }

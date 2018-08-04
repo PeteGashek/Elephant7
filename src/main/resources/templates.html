@@ -41,7 +41,8 @@
             </th:block>
         </div>
         <!-- reply stub hyreplink TODO: Add same into js builder of posts-->
-        <a class="reply_link" th:href="${'#' + post.postId}" id="Reply">Reply</a>
+        <!-- <a class="reply_link" th:href="${'#' + post.postId}" id="Reply" >Reply</a> -->
+        <a class="reply_link" href="#post_form" id="Reply" >Reply</a>
     </div>
 </div>
 <div id="thread_list" th:fragment="threadList (posts, isThreadList)">
@@ -65,6 +66,7 @@
     <form id="post_form" th:action="@{${postLink}}" method="post" accept-charset="utf-8" th:inline="text">
         <input type="hidden" id="new_thread" th:if="${newThread}"/>
         <th:block th:if="${not newThread}">
+            <!-- TODO: here add reply if passed any-->
             <input type="radio" name="type" value="NORMAL" checked="checked"/>[[#{elephant.seven.post.type.normal}]]
             <input type="radio" name="type" value="OP"/>[[#{elephant.seven.post.type.op}]]
             <input type="radio" name="type" value="SAGE"/>[[#{elephant.seven.post.type.sage}]]<br/>
