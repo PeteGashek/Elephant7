@@ -7,6 +7,11 @@ var autoupdateEnabled = false;
 var autoupdateTimer;
 var autoupdateTimerValue;
 
+function insertReplyLinkInMsg(messageRefId) {
+    document.getElementById("post_message").value=messageRefId;
+    //TODO: Kill after testing
+    //     alert(messageRefId);
+}
 function startAutoupdateTimer() {
     clearTimeout(autoupdateTimer);
     autoupdateTimerValue = autoupdateInterval;

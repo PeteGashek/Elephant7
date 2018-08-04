@@ -44,7 +44,7 @@ public class ApiController {
 
 	@RequestMapping("/test")
 	public ApiResponse test() {
-		return new ApiResponse("Hello, World!");
+		return new ApiResponse("Hello, elephant7!");
 	}
 
 	@RequestMapping(value = "/boards", method = RequestMethod.GET)

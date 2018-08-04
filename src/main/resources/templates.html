@@ -40,9 +40,7 @@
                 <th:block th:text="${line}"></th:block><br th:if="${not i.last}"/>
             </th:block>
         </div>
-        <!-- reply stub hyreplink TODO: Add same into js builder of posts-->
-        <!-- <a class="reply_link" th:href="${'#' + post.postId}" id="Reply" >Reply</a> -->
-        <a class="reply_link" href="#post_form" id="Reply" >Reply</a>
+        <a class="reply_link" href="#post_form" id="reply_button" th:onclick="'insertReplyLinkInMsg(\'' + ${'#' + post.postId} + '\');'" >Reply</a>
     </div>
 </div>
 <div id="thread_list" th:fragment="threadList (posts, isThreadList)">
