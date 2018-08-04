@@ -36,7 +36,7 @@ function constructPost(json, id) {
 
     var postHeader = $("<div></div>").addClass("post_header");
     postHeader.append($("<a></a>").addClass("post_id")
-    var postFooter = $("<a></a>").addClass("reply_link");
+        .attr("href", "#" + json.post_id)
         .text("#" + json.post_id)).append(" | ");
     postHeader.append($("<span></span>").addClass("post_number")
         .text(id)).append(" | ");
@@ -53,11 +53,9 @@ function constructPost(json, id) {
         default:
             posterName.addClass("post_normal");
     }
-    var postFooter = $("<a></a>").addClass("reply_link").attr("#" + json.post_id).text("Reply");
 
     postHeader.append(posterName);
     post.append(postHeader);
-    post.append(postFooter);
 
     var postContent = $("<div></div>").addClass("post_content");
     var lines = json.message.split("\n");
@@ -67,6 +65,8 @@ function constructPost(json, id) {
     }
     post.append(postContent);
 
+    var postFooter = $("<a>Reply</a>").addClass("reply_link").attr("href", "#" + json.post_id).attr("id","Reply");
+    post.append(postFooter);
     return post;
 }
 
