@@ -40,6 +40,8 @@
                 <th:block th:text="${line}"></th:block><br th:if="${not i.last}"/>
             </th:block>
         </div>
+        <!-- reply stub hyreplink -->
+        <a th:href="testtest" class="post_id" th:text="Reply"></a>
     </div>
 </div>
 <div id="thread_list" th:fragment="threadList (posts, isThreadList)">

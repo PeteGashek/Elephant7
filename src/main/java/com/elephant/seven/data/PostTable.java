@@ -13,5 +13,6 @@ public class PostTable {
 	public static final String TYPE_COLUMN = "type";
 	public static final String NAME_COLUMN = "name";
 	public static final String MESSAGE_COLUMN = "message";
+	public static final String REPLY_MSGS_IDS = "reply_messages_ids";
 
 }
