@@ -41,7 +41,7 @@
             </th:block>
         </div>
         <!-- reply stub hyreplink -->
-        <a href="#anchorName" class="post_id" th:text="Reply">link</a>
+        <a th:href="${'#' + post.postId}" id="Reply">Reply</a>
     </div>
 </div>
 <div id="thread_list" th:fragment="threadList (posts, isThreadList)">
