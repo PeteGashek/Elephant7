@@ -95,6 +95,7 @@ body {
 .post_content {
     width: 100%;
     word-wrap: break-word;
+    padding: 8px;
 }
 
 .message_bytes_good {
@@ -109,9 +110,17 @@ a {
     color: #FF6600;
 }
 
+.reply_link {
+
+    position: relative;
+    top: 2.2px;
+    color: #FF6600;
+}
+
 div:target {
-    transition:background-color 1s ease-in;
-    -webkit-transition:background-color 1s ease-in;
-    -moz-transition:background-color 1s ease-in;
+    transition:background-color 0.5s ease-in;
+    -webkit-transition:background-color 0.5s ease-in;
+    -moz-transition:background-color 0.5s ease-in;
     background-color: #686c71;
+    color : floralwhite;
 }
